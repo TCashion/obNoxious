@@ -23,7 +23,6 @@ const userSchema = new Schema({
     timestamps: true 
 });
 
-// update user password if changed 
 userSchema.pre('save', function(next) {
     const user = this; 
     if (!user.isModified('password')) return next(); 
