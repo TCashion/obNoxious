@@ -4,12 +4,13 @@ import './App.css';
 import NavBar from '../../components/NavBar/NavBar'
 import HomePage from '../HomePage/HomePage';
 import SignupPage from '../SignupPage/SignupPage';
+import LoginPage from '../LoginPage/LoginPage';
 import userService from '../../services/userService';
 
 class App extends Component {
 
   state = {
-    user: userService.getUser()
+    user: userService.getUser(),
   }
 
   handleLogout = () => {
@@ -18,14 +19,14 @@ class App extends Component {
   }
 
   handleSignupOrLogin = () => {
-    this.setState({user: userService.getUser()});
+    this.setState({ user: userService.getUser() });
   }
 
   render() {
     return (
       <div className="App">
         <main>
-          <NavBar 
+          <NavBar
             handleLogout={this.handleLogout}
             handleSignupOrLogin={this.handleSignupOrLogin}
             user={this.state.user}
@@ -34,8 +35,17 @@ class App extends Component {
             <Route exact path='/' render={() =>
               <HomePage />
             } />
-            <Route exact path='/signup' render={() =>
-              <SignupPage />
+            <Route exact path='/signup' render={({ history }) =>
+              <SignupPage
+                handleSignupOrLogin={this.handleSignupOrLogin}
+                history={history}
+              />
+            } />
+            <Route exact path='/login' render={({ history }) =>
+              <LoginPage
+                handleSignupOrLogin={this.handleSignupOrLogin}
+                history={history}
+              />
             } />
           </Switch>
         </main>

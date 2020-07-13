@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SignupForm from '../../components/SignupForm/SignupForm';
 
 class SignupPage extends Component {
-    
+
     state = {
         message: '',
     }
@@ -14,7 +14,11 @@ class SignupPage extends Component {
     render() {
         return (
             <div>
-                <SignupForm {...this.props} updateMessage={this.updateMessage} />
+                <SignupForm
+                    {...this.props}
+                    updateMessage={this.updateMessage}
+                    handleSignupOrLogin={this.props.handleSignupOrLogin} 
+                />
             </div>
         )
     }
