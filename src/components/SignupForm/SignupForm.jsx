@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import userService from '../../services/userService';
+import './SignupForm.css';
 
 class SignupForm extends Component {
     state = {
@@ -20,7 +21,7 @@ class SignupForm extends Component {
         e.preventDefault();
         try {
             await userService.signup(this.state);
-            // this.props.handleSignupOrLogin();
+            this.props.handleSignupOrLogin();
             this.props.history.push('/');
         } catch (err) {
             this.props.updateMessage(err.message)
@@ -34,7 +35,7 @@ class SignupForm extends Component {
     render() {
         return ( 
             <>
-                <form onSubmit={this.handleSubmit}>
+                <form className="user-form" onSubmit={this.handleSubmit}>
                     <input type="text" name="name" placeholder="Name" value={this.state.name} onChange={this.handleChange} />
                     <input type="text" name="email" placeholder="Email" value={this.state.email} onChange={this.handleChange} />
                     <input type="text" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
