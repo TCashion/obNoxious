@@ -1,14 +1,18 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
+import HomePage from '../HomePage/HomePage';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h3>
-          MERN Stack Template
-        </h3>
-      </header>
+      <main>
+        <Switch>
+          <Route exact path='/' render={() => 
+            <HomePage />
+          } />
+        </Switch>
+      </main>
     </div>
   );
 }
