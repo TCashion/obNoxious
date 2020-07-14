@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
+import userService from '../../services/userService';
 import NavBar from '../../components/NavBar/NavBar'
 import HomePage from '../HomePage/HomePage';
 import SignupPage from '../SignupPage/SignupPage';
 import LoginPage from '../LoginPage/LoginPage';
-import userService from '../../services/userService';
+import AddReport from '../../pages/AddReport/AddReport';
 
 class App extends Component {
 
@@ -66,6 +67,9 @@ class App extends Component {
                   handleSignupOrLogin={this.handleSignupOrLogin}
                   history={history}
                 />
+            } />
+            <Route exact path='/reports/new' render={({ history }) =>
+                <AddReport />
             } />
           </Switch>
         </main>
