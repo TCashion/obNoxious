@@ -1,3 +1,12 @@
+:root {
+  --main-minus-two: rgb(23, 85, 78);
+  --main-minus-one: rgb(122, 172, 153);
+  --main: rgb(169, 192, 190);
+  --main-plus-one: rgb(233, 210, 194);
+  --main-plus-two: rgb(247, 157, 126);
+  --main-plus-three: rgb(224, 114, 74);
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,10 +14,33 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+  background-color: var(--main);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.btn {
+  background-color: var(--main-minus-two)
+}
+
+nav {
+  background-color: var(--main-minus-one)
+}
+
+a {
+  color: var(--main-minus-one)
+}
+
+.row-user-form {
+  display: flex;
+  margin-top: 25vh;
+}
+
+.row-user-form .col.s12 {
+  margin: auto;
 }
 
