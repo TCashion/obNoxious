@@ -1,9 +1,11 @@
 import React from 'react';
+import ProfileCard from '../../components/ProfileCard/ProfileCard';
 
-function HomePage() {
+function HomePage(props) {
     return (
         <div>
-            <h1>HomePage</h1>
+            <h1>Dashboard:</h1>
+            <ProfileCard user={props.user}/>
         </div>
     )
 }

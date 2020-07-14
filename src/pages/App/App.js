@@ -34,21 +34,27 @@ class App extends Component {
           <Switch>
             <Route exact path='/' render={() =>
               userService.getUser() ?
-                <HomePage />
+                <HomePage user={this.state.user}/>
                 :
                 <Redirect to='/login' />
             } />
             <Route exact path='/signup' render={({ history }) =>
-              <SignupPage
-                handleSignupOrLogin={this.handleSignupOrLogin}
-                history={history}
-              />
+              userService.getUser() ?
+                <Redirect to='/' />
+                :
+                <SignupPage
+                  handleSignupOrLogin={this.handleSignupOrLogin}
+                  history={history}
+                />
             } />
             <Route exact path='/login' render={({ history }) =>
-              <LoginPage
-                handleSignupOrLogin={this.handleSignupOrLogin}
-                history={history}
-              />
+              userService.getUser() ?
+                <Redirect to='/' />
+                :
+                <LoginPage
+                  handleSignupOrLogin={this.handleSignupOrLogin}
+                  history={history}
+                />
             } />
           </Switch>
         </main>
