@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
 import NavBar from '../../components/NavBar/NavBar'
 import HomePage from '../HomePage/HomePage';
@@ -33,7 +33,10 @@ class App extends Component {
           />
           <Switch>
             <Route exact path='/' render={() =>
-              <HomePage />
+              userService.getUser() ?
+                <HomePage />
+                :
+                <Redirect to='/login' />
             } />
             <Route exact path='/signup' render={({ history }) =>
               <SignupPage
