@@ -32,7 +32,6 @@ async function login(req, res) {
 
 /*----- Helper Functions -----*/
 function createJWT(user) {
-    user = JSON.stringify(user);
     return jwt.sign(
         { user },
         process.env.SECRET,
