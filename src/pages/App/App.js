@@ -11,6 +11,17 @@ class App extends Component {
 
   state = {
     user: userService.getUser(),
+    plants: this.getPlants(),
+  }
+
+  getPlants() {
+    return [
+      // hardcoded for development 
+      {commonName: 'kudzu', scientificName: 'Pueraria lobata'},
+      {commonName: 'common tumbleweed', scientificName: 'kali tragus'},
+      {commonName: 'garlic mustard', scientificName: 'alliaria petiolata'},
+      {commonName: 'purple loosestrife', scientificName: 'lythrum salicaria'},
+    ]
   }
 
   handleLogout = () => {

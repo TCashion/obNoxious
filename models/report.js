@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
 const noteSchema = new mongoose.Schema({
     body: {
         type: String,
@@ -17,7 +16,6 @@ const noteSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
-
 
 const reportSchema = new Schema({
     user: {
