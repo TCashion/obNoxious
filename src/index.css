@@ -35,12 +35,16 @@ a {
   color: var(--main-minus-one)
 }
 
-.row-user-form {
+.row-center-card, .row-user-form {
   display: flex;
+}
+
+.row-user-form {
   margin-top: 25vh;
 }
 
-.row-user-form .col.s12 {
+.row-user-form .col.s12, .row-center-card .col.s12 {
   margin: auto;
 }
+
 
