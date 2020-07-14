@@ -19,6 +19,9 @@ class LoginPage extends Component {
                     updateMessage={this.updateMessage} 
                     handleSignupOrLogin={this.props.handleSignupOrLogin} 
                 />
+                <p>
+                    {this.state.message}
+                </p>
             </div>
         )
     }
