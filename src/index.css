@@ -24,15 +24,19 @@ code {
 }
 
 .btn {
-  background-color: var(--main-minus-two)
+  background-color: var(--main-minus-two);
+}
+
+.btn-danger {
+  background-color: crimson;
 }
 
 nav {
-  background-color: var(--main-minus-one)
+  background-color: var(--main-minus-one);
 }
 
 a {
-  color: var(--main-minus-one)
+  color: var(--main-minus-one);
 }
 
 .row-center-card, .row-user-form {
