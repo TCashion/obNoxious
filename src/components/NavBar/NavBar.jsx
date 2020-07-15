@@ -10,7 +10,10 @@ function NavBar(props) {
                 <div className="nav-wrapper">
                     <ul className="left hide-on-med-and-down">
                         <li>
-                            <Link to=''>Create New Report</Link>
+                            <Link to='/reports/new'>Create New Report</Link>
+                        </li>
+                        <li>
+                            <Link to='/plants/new'>Add Plant to Database</Link>
                         </li>
                     </ul>
                     <ul className="right hide-on-med-and-down">

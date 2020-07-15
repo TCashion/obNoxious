@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
+import userService from '../../services/userService';
 import NavBar from '../../components/NavBar/NavBar'
 import HomePage from '../HomePage/HomePage';
 import SignupPage from '../SignupPage/SignupPage';
 import LoginPage from '../LoginPage/LoginPage';
-import userService from '../../services/userService';
+import AddReport from '../Reports/AddReport/AddReport';
+import AddPlant from '../Plants/AddPlant/AddPlant';
 
 class App extends Component {
 
@@ -17,10 +19,10 @@ class App extends Component {
   getPlants() {
     return [
       // hardcoded for development 
-      {commonName: 'kudzu', scientificName: 'Pueraria lobata'},
-      {commonName: 'common tumbleweed', scientificName: 'kali tragus'},
-      {commonName: 'garlic mustard', scientificName: 'alliaria petiolata'},
-      {commonName: 'purple loosestrife', scientificName: 'lythrum salicaria'},
+      { commonName: 'kudzu', scientificName: 'Pueraria lobata' },
+      { commonName: 'common tumbleweed', scientificName: 'kali tragus' },
+      { commonName: 'garlic mustard', scientificName: 'alliaria petiolata' },
+      { commonName: 'purple loosestrife', scientificName: 'lythrum salicaria' },
     ]
   }
 
@@ -45,7 +47,7 @@ class App extends Component {
           <Switch>
             <Route exact path='/' render={() =>
               userService.getUser() ?
-                <HomePage user={this.state.user}/>
+                <HomePage user={this.state.user} />
                 :
                 <Redirect to='/login' />
             } />
@@ -66,6 +68,18 @@ class App extends Component {
                   handleSignupOrLogin={this.handleSignupOrLogin}
                   history={history}
                 />
+            } />
+            <Route exact path='/reports/new' render={({ history }) =>
+              userService.getUser() ?
+                <AddReport />
+                :
+                <Redirect to='/login' />
+            } />
+            <Route exact path='/plants/new' render={({ history }) =>
+              userService.getUser() ?
+                <AddPlant user={this.state.user}/>
+                :
+                <Redirect to='/login' />
             } />
           </Switch>
         </main>

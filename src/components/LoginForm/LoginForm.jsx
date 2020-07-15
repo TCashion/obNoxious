@@ -47,7 +47,7 @@ class LoginForm extends Component {
                                         <input type="password" className="form-control" placeholder="Password" value={this.state.pw} name="password" onChange={this.handleChange} />
                                     </div>
                                     <div className="col-sm-12 text-center">
-                                        <button className="btn btn-default">Log In</button>&nbsp;&nbsp;&nbsp;
+                                        <button className="btn btn-default" disabled={this.validateForm()}>Log In</button>&nbsp;&nbsp;&nbsp;
                                     </div>
                                 </form>
                             </div>
