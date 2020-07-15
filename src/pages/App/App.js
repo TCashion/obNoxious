@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
 import userService from '../../services/userService';
+import plantService from '../../services/plantsService';
 import NavBar from '../../components/NavBar/NavBar'
 import HomePage from '../HomePage/HomePage';
 import SignupPage from '../SignupPage/SignupPage';
@@ -13,17 +14,15 @@ class App extends Component {
 
   state = {
     user: userService.getUser(),
-    plants: this.getPlants(),
+    plants: this.getAllPlants(),
   }
 
-  getPlants() {
-    return [
-      // hardcoded for development 
-      { commonName: 'kudzu', scientificName: 'Pueraria lobata' },
-      { commonName: 'common tumbleweed', scientificName: 'kali tragus' },
-      { commonName: 'garlic mustard', scientificName: 'alliaria petiolata' },
-      { commonName: 'purple loosestrife', scientificName: 'lythrum salicaria' },
-    ]
+  getAllPlants() {
+
+  }
+
+  handleAddPlant = async (plant) => {
+    await plantService.createPlant(plant);
   }
 
   handleLogout = () => {
@@ -77,7 +76,11 @@ class App extends Component {
             } />
             <Route exact path='/plants/new' render={({ history }) =>
               userService.getUser() ?
-                <AddPlant user={this.state.user}/>
+                <AddPlant 
+                handleAddPlant={this.handleAddPlant}
+                history={history}
+                user={this.state.user}
+                />
                 :
                 <Redirect to='/login' />
             } />

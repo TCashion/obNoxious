@@ -69,10 +69,10 @@ class AddPlant extends Component {
         }));
     }
 
-    handleSubmitConfirmation = async (e) => {
+    handleSubmitConfirmation = (e) => {
         e.preventDefault();
-        console.log(this.state.plant)
-        // send current status to database;
+        this.props.handleAddPlant(this.state.plant);
+        this.props.history.push('/plants/new')
     }
 
     handleSubmitSearch = async (e) => {
@@ -160,7 +160,7 @@ class AddPlant extends Component {
                                                     <textarea name="distribution" className="materialize-textarea" id="distribution" cols="30" rows="10" disabled value={this.parseDistribution()} />
                                                 </div>
                                                 <div className="col-sm-12 text-center">
-                                                    <button className="btn btn-default">Yes</button> 
+                                                    <button type="submit" className="btn btn-default" >Yes</button> 
                                                     <button className="btn btn-danger" onClick={this.handleWrongPlant}>No</button> 
                                                 </div>
                                                 <div className="col-sm-12 text-center">
