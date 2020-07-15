@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import userService from '../../services/userService';
 
-class LoginForm extends Component {
+class NewPlantForm extends Component {
     state = {
-        email: '',
-        password: '',
+        commonName: '',
     }
 
     handleChange = (e) => {
@@ -17,37 +15,33 @@ class LoginForm extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await userService.login(this.state);
-            this.props.handleSignupOrLogin();
-            this.props.history.push('/');
+            await this.props.getNatureServePlant(this.state.commonName);
         } catch (err) {
-            this.props.updateMessage('Invalid Credentials')
+            this.props.updateMessage('Error - try another search term.')
         }
+
     }
 
     validateForm() {
-        return !(this.state.email && this.state.password);
+        return !(this.state.commonName.length);
     }
 
     render() {
         return (
-            <div className="row row-user-form">
+            <div className="row row-center-card">
                 <div className="col s12 m6">
                     <div className="card">
                         <div className="card-content">
                             <div className="card-title">
-                                PLEASE LOGIN TO CONTINUE
+                                Enter the common name for the plant you wish to add:
                             </div>
                             <div>
                                 <form onSubmit={this.handleSubmit} >
                                     <div className="col-sm-12">
-                                        <input type="email" className="form-control" placeholder="Email" value={this.state.email} name="email" onChange={this.handleChange} />
-                                    </div>
-                                    <div className="col-sm-12">
-                                        <input type="password" className="form-control" placeholder="Password" value={this.state.pw} name="password" onChange={this.handleChange} />
+                                        <input type="text" className="form-control" placeholder="Common Name" value={this.state.commonName} name="commonName" onChange={this.handleChange} />
                                     </div>
                                     <div className="col-sm-12 text-center">
-                                        <button className="btn btn-default" disabled={this.validateForm()}>Log In</button>&nbsp;&nbsp;&nbsp;
+                                        <button className="btn btn-default" disabled={this.validateForm()}>Search</button> the <a href="https://explorer.natureserve.org/" target="_blank" rel="noopener noreferrer">NatureServeExplorer</a> Database&nbsp;&nbsp;&nbsp;
                                     </div>
                                 </form>
                             </div>
@@ -59,4 +53,4 @@ class LoginForm extends Component {
     }
 }
 
-export default LoginForm;
+export default NewPlantForm;

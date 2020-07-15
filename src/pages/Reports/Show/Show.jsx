@@ -2,4 +2,4 @@ import React from 'react';
 
 
 
-export default IndexPage;
+export default Show;
