@@ -8,14 +8,7 @@ const style = {
 
 class AddPlant extends Component {
     state = {
-        plant: {
-            user: this.props.user._id,
-            commonName: '',
-            scientificName: '',
-            taxonomy: {},
-            distribution: [],
-            nsxUrl: '',
-        },
+        plant: {...this.getInitialPlantState()},
         message: '',
     }
 
@@ -49,6 +42,17 @@ class AddPlant extends Component {
         }));
     }
 
+    getInitialPlantState() {
+        return {
+            user: this.props.user._id,
+            commonName: '',
+            scientificName: '',
+            taxonomy: {},
+            distribution: [],
+            nsxUrl: '',
+        }
+    }
+
     getNatureServePlant = async (searchTerm) => {
         const plant = await natureserveAPI.getPlantInfo(searchTerm);
         return plant;
@@ -65,6 +69,12 @@ class AddPlant extends Component {
         }));
     }
 
+    handleSubmitConfirmation = async (e) => {
+        e.preventDefault();
+        console.log(this.state.plant)
+        // send current status to database;
+    }
+
     handleSubmitSearch = async (e) => {
         e.preventDefault();
         try {
@@ -78,12 +88,17 @@ class AddPlant extends Component {
         }
     }
 
+    handleWrongPlant = () => {
+        this.setState(({plant}) => ({
+            plant: this.getInitialPlantState()
+        }));
+    }
+
     parseDistribution = () => {
         let distribution = this.state.plant.distribution.map(contaminatedState => contaminatedState);
         distribution.sort();
         return distribution.join(', ')
     }
-
 
     parseTaxonomy = () => {
         let taxonomy = [];
@@ -127,26 +142,26 @@ class AddPlant extends Component {
                                             Is this the plant you wish to add to the database?:
                                         </div>
                                         <div>
-                                            <form >
+                                            <form onClick={this.handleSubmitConfirmation}>
                                                 <div className="input-field col s12">
-                                                    <label for="commonName" className="active">Common Name:</label>
+                                                    <label htmlFor="commonName" className="active">Common Name:</label>
                                                     <input type="text" className="validate" value={this.state.plant.commonName} name="commonName" disabled />
                                                 </div>
                                                 <div className="input-field col s12">
-                                                    <label for="scientificName" className="active">Scientific Name:</label>
+                                                    <label htmlFor="scientificName" className="active">Scientific Name:</label>
                                                     <input type="text" className="validate" value={this.state.plant.scientificName} name="scientificName" disabled />
                                                 </div>
                                                 <div className="input-field col s12">
-                                                    <label for="taxonomy" className="active">Taxonomy:</label>
-                                                    <textarea name="taxonomy" className="materialize-textarea" id="taxonomy" cols="30" rows="10" disabled>{this.parseTaxonomy()}</textarea>
+                                                    <label htmlFor="taxonomy" className="active">Taxonomy:</label>
+                                                    <textarea name="taxonomy" className="materialize-textarea" id="taxonomy" cols="30" rows="10" disabled value={this.parseTaxonomy()} />
                                                 </div>
                                                 <div className="input-field col s12">
-                                                    <label for="distribution" className="active">Distribution:</label>
-                                                    <textarea name="distribution" className="materialize-textarea" id="distribution" cols="30" rows="10" disabled>{this.parseDistribution()}</textarea>
+                                                    <label htmlFor="distribution" className="active">Distribution:</label>
+                                                    <textarea name="distribution" className="materialize-textarea" id="distribution" cols="30" rows="10" disabled value={this.parseDistribution()} />
                                                 </div>
                                                 <div className="col-sm-12 text-center">
                                                     <button className="btn btn-default">Yes</button> 
-                                                    <button className="btn btn-danger">No</button> 
+                                                    <button className="btn btn-danger" onClick={this.handleWrongPlant}>No</button> 
                                                 </div>
                                                 <div className="col-sm-12 text-center">
                                                     <p>Data provided by: <a href="https://explorer.natureserve.org/" target="_blank" rel="noopener noreferrer">NatureServeExplorer</a></p>
