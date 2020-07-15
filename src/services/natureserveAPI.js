@@ -26,7 +26,7 @@ export function getPlantInfo(searchTerm) {
         body: JSON.stringify(requestBody)
     })
     .then(res => res.json())
-    .then(data => console.log(data))
+    .then(data => console.log(data.results[0]))
     .catch((error) => {
         console.error('Error:', error);
     });

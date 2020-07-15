@@ -77,7 +77,7 @@ class App extends Component {
             } />
             <Route exact path='/plants/new' render={({ history }) =>
               userService.getUser() ?
-                <AddPlant />
+                <AddPlant user={this.state.user}/>
                 :
                 <Redirect to='/login' />
             } />

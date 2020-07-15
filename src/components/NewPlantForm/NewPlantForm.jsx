@@ -19,7 +19,6 @@ class NewPlantForm extends Component {
         } catch (err) {
             this.props.updateMessage('Error - try another search term.')
         }
-
     }
 
     validateForm() {
