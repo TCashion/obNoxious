@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as natureserveAPI from '../../../services/natureserveAPI';
 
 const style = {
-    marginTop: '20vh',       
+    marginTop: '20vh',
 }
 
 class AddPlant extends Component {
@@ -11,16 +11,42 @@ class AddPlant extends Component {
             user: this.props.user._id,
             commonName: '',
             scientificName: '',
-            description: '',
-            observationNotes: '',
-            taxonomy: '',
-            distribution: '',
+            taxonomy: {},
+            distribution: [],
             nsxUrl: '',
         },
-        message: '', 
-        newState: ''
+        message: '',
     }
 
+    addPlantToState = (plant) => {
+        const distribution = [];
+        plant.nations.forEach((nation) => {
+            if (nation.nationCode === 'US') {
+                nation.subnations.forEach(subnation => distribution.push(subnation.subnationCode))
+            };
+        });
+
+        const plantAttributes = {
+            commonName: plant.primaryCommonName,
+            scientificName: plant.scientificName,
+            taxonomy: {
+                kingdom: plant.speciesGlobal.kingdom ? plant.speciesGlobal.kingdom : undefined,
+                phylum: plant.speciesGlobal.phylum ? plant.speciesGlobal.phylum : undefined,
+                class: plant.speciesGlobal.taxclass ? plant.speciesGlobal.taxclass : undefined,
+                order: plant.speciesGlobal.taxorder ? plant.speciesGlobal.taxorder : undefined,
+                family: plant.speciesGlobal.family ? plant.speciesGlobal.family : undefined,
+                genus: plant.speciesGlobal.genus ? plant.speciesGlobal.genus : undefined
+            },
+            distribution,
+            nsxUrl: 'https://explorer.natureserve.org' + plant.nsxUrl
+        }
+        this.setState((state) => ({
+            plant: {
+                ...state.plant,
+                ...plantAttributes
+            }
+        }));
+    }
 
     getNatureServePlant = async (searchTerm) => {
         const plant = await natureserveAPI.getPlantInfo(searchTerm);
@@ -42,25 +68,28 @@ class AddPlant extends Component {
         e.preventDefault();
         try {
             const newPlant = await this.getNatureServePlant(this.state.plant.commonName);
-            this.verifyInvasiveSpecies(newPlant.results[0]); // pick up here with ternary 
+            this.verifyInvasiveSpecies(newPlant.results[0])
+                ? this.addPlantToState(newPlant.results[0])
+                :
+                this.updateMessage('Your search term did not result in any known invasive species. Please try a different term.')
         } catch (err) {
             this.updateMessage('Error - try another search term.')
         }
-    }
-    
-    verifyInvasiveSpecies = (speciesData) => {
-        const nations = speciesData.nations;
-        let invasive = false; 
-        nations.forEach((nation, idx) => {
-            if (nation.nationCode === 'US' && nation.subnations[0].exotic && nation.subnations[1].exotic ) invasive = true;
-        })
-        return invasive;
     }
 
     updateMessage = (msg) => {
         this.setState({
             message: msg,
         });
+    }
+
+    verifyInvasiveSpecies = (speciesData) => {
+        const nations = speciesData.nations;
+        let invasive = false;
+        nations.forEach((nation, idx) => {
+            if (nation.nationCode === 'US' && nation.subnations[0].exotic && nation.subnations[1].exotic) invasive = true;
+        })
+        return invasive;
     }
 
     validateForm() {
@@ -91,7 +120,7 @@ class AddPlant extends Component {
                         </div>
                     </div>
                 </div>
-                <p style={{color: 'crimson'}}>{this.state.message}</p>
+                <p style={{ color: 'crimson' }}>{this.state.message}</p>
             </>
         )
     }
