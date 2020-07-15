@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import * as natureserveAPI from '../../../services/natureserveAPI';
 
+const style = {
+    marginTop: '20vh',       
+}
+
 class AddPlant extends Component {
     state = {
         plant: {
@@ -16,6 +20,7 @@ class AddPlant extends Component {
         message: '', 
         newState: ''
     }
+
 
     getNatureServePlant = async (searchTerm) => {
         const plant = await natureserveAPI.getPlantInfo(searchTerm);
@@ -36,10 +41,20 @@ class AddPlant extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await this.getNatureServePlant(this.state.plant.commonName);
+            const newPlant = await this.getNatureServePlant(this.state.plant.commonName);
+            this.verifyInvasiveSpecies(newPlant.results[0]); // pick up here with ternary 
         } catch (err) {
-            this.props.updateMessage('Error - try another search term.')
+            this.updateMessage('Error - try another search term.')
         }
+    }
+    
+    verifyInvasiveSpecies = (speciesData) => {
+        const nations = speciesData.nations;
+        let invasive = false; 
+        nations.forEach((nation, idx) => {
+            if (nation.nationCode === 'US' && nation.subnations[0].exotic && nation.subnations[1].exotic ) invasive = true;
+        })
+        return invasive;
     }
 
     updateMessage = (msg) => {
@@ -55,7 +70,7 @@ class AddPlant extends Component {
     render() {
         return (
             <>
-                <div className="row row-center-card">
+                <div className="row row-center-card" style={style}>
                     <div className="col s12 m6">
                         <div className="card">
                             <div className="card-content">
@@ -76,7 +91,7 @@ class AddPlant extends Component {
                         </div>
                     </div>
                 </div>
-                <p>{this.state.message}</p>
+                <p style={{color: 'crimson'}}>{this.state.message}</p>
             </>
         )
     }
