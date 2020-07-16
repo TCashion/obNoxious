@@ -3,13 +3,14 @@ import * as natureserveAPI from '../../../services/natureserveAPI';
 import './AddPlant.css';
 
 const style = {
-    marginTop: '20vh',
+    marginTop: '15vh',
 }
 
 class AddPlant extends Component {
     state = {
-        plant: {...this.getInitialPlantState()},
+        plant: { ...this.getInitialPlantState() },
         message: '',
+        messageColor: 'crimson'
     }
 
     addPlantToState = (plant) => {
@@ -40,6 +41,7 @@ class AddPlant extends Component {
                 ...plantAttributes
             }
         }));
+        if (this.scanExistingPlants(plant.scientificName)) { this.updateMessage('This plant is already in our database.', 'green') };
     }
 
     getInitialPlantState() {
@@ -60,7 +62,7 @@ class AddPlant extends Component {
 
     handleChange = (e) => {
         e.persist();
-        this.updateMessage('');
+        this.updateMessage('', 'crimson');
         this.setState((state) => ({
             plant: {
                 ...state.plant,
@@ -69,10 +71,12 @@ class AddPlant extends Component {
         }));
     }
 
-    handleSubmitConfirmation = async (e) => {
+    handleSubmitConfirmation = (e) => {
         e.preventDefault();
-        console.log(this.state.plant)
-        // send current status to database;
+        if (this.scanExistingPlants(this.state.plant.scientificName)) return;
+        this.props.handleAddPlant(this.state.plant);
+        this.resetPlantState();
+        this.updateMessage('Successfully added the plant to the database. Thank you!', 'green')
     }
 
     handleSubmitSearch = async (e) => {
@@ -82,16 +86,14 @@ class AddPlant extends Component {
             this.verifyInvasiveSpecies(newPlant.results[0])
                 ? this.addPlantToState(newPlant.results[0])
                 :
-                this.updateMessage('Your search term did not result in any known invasive species. Please try a different term.')
+                this.updateMessage('Your search term did not result in any known invasive species. Please try a different term.', 'crimson')
         } catch (err) {
-            this.updateMessage('Error - try another search term.')
+            this.updateMessage('Error - try another search term.', 'crimson')
         }
     }
 
-    handleWrongPlant = () => {
-        this.setState(({plant}) => ({
-            plant: this.getInitialPlantState()
-        }));
+    handleWrongPlant = (e) => {
+        this.resetPlantState();
     }
 
     parseDistribution = () => {
@@ -110,9 +112,24 @@ class AddPlant extends Component {
         return taxonomy.join(' > ');
     }
 
-    updateMessage = (msg) => {
+    resetPlantState = () => {
+        this.setState(({ plant }) => ({
+            plant: this.getInitialPlantState()
+        }));
+    }
+
+    scanExistingPlants = (scientificName) => {
+        let exists = false;
+        this.props.plants.forEach(function (plant) {
+            if (plant.scientificName.toLowerCase() === scientificName.toLowerCase()) exists = true;
+        });
+        return exists;
+    };
+
+    updateMessage = (msg, color) => {
         this.setState({
             message: msg,
+            messageColor: color
         });
     }
 
@@ -142,7 +159,7 @@ class AddPlant extends Component {
                                             Is this the plant you wish to add to the database?:
                                         </div>
                                         <div>
-                                            <form onClick={this.handleSubmitConfirmation}>
+                                            <form onSubmit={this.handleSubmitConfirmation}>
                                                 <div className="input-field col s12">
                                                     <label htmlFor="commonName" className="active">Common Name:</label>
                                                     <input type="text" className="validate" value={this.state.plant.commonName} name="commonName" disabled />
@@ -160,8 +177,8 @@ class AddPlant extends Component {
                                                     <textarea name="distribution" className="materialize-textarea" id="distribution" cols="30" rows="10" disabled value={this.parseDistribution()} />
                                                 </div>
                                                 <div className="col-sm-12 text-center">
-                                                    <button className="btn btn-default">Yes</button> 
-                                                    <button className="btn btn-danger" onClick={this.handleWrongPlant}>No</button> 
+                                                    <button type="submit" className="btn btn-default" disabled={this.scanExistingPlants(this.state.plant.scientificName)}>Yes</button>
+                                                    <button className="btn btn-danger" onClick={this.handleWrongPlant}>No</button>
                                                 </div>
                                                 <div className="col-sm-12 text-center">
                                                     <p>Data provided by: <a href="https://explorer.natureserve.org/" target="_blank" rel="noopener noreferrer">NatureServeExplorer</a></p>
@@ -190,7 +207,38 @@ class AddPlant extends Component {
                         </div>
                     </div>
                 </div>
-                <p style={{ color: 'crimson' }}>{this.state.message}</p>
+                <p style={{ color: `${this.state.messageColor}` }}>{this.state.message}</p>
+                <div className="row row-center-card" style={style}>
+                    <div className="col s12 m6">
+                        <div className="card">
+                            <div className="card-content">
+                                <div className="card-title">
+                                    <h5>Registered plants:</h5>
+                                </div>
+                                <div>
+                                    <table className="centered">
+                                        <thead>
+                                            <tr>
+                                                <th>Common Name</th>
+                                                <th>Scientific Name</th>
+                                                <th>NatureServe Link</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.props.plants.map((plant) => 
+                                                    <tr key={plant._id}>
+                                                        <td>{plant.commonName}</td>
+                                                        <td>{plant.scientificName}</td>
+                                                        <td><a href={plant.nsxUrl} target="_blank" rel="noopener noreferrer">LINK</a></td>
+                                                    </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </>
         )
     }

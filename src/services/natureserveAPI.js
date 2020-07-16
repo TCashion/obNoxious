@@ -18,7 +18,7 @@ export function getPlantInfo(searchTerm) {
         'speciesTaxonomyCriteria': [{ 'informalTaxonomy': 'Plants', 'paramType': 'informalTaxonomy' }]
     };
 
-    return fetch(`${BASE_URL}`, {
+    return fetch(BASE_URL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
