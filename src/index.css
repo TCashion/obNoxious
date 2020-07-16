@@ -1,10 +1,11 @@
 :root {
-  --main-minus-two: rgb(23, 85, 78);
-  --main-minus-one: rgb(122, 172, 153);
+  --main-minus-three: rgb(23, 85, 44);
+  --main-minus-two: rgb(138, 172, 122);
+  --main-minus-one: rgb(241, 253, 246);
   --main: rgb(169, 192, 190);
-  --main-plus-one: rgb(233, 210, 194);
-  --main-plus-two: rgb(247, 157, 126);
-  --main-plus-three: rgb(224, 114, 74);
+  --main-plus-one: rgb(243, 241, 135);
+  --main-plus-two: rgb(247, 199, 126);
+  --main-plus-three: rgb(224, 154, 74);
 }
 
 body {
@@ -15,7 +16,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
-  background-color: var(--main);
+  background-color: var(--main-minus-one);
 }
 
 code {
@@ -24,7 +25,7 @@ code {
 }
 
 .btn {
-  background-color: var(--main-minus-two);
+  background-color: var(--main-minus-three);
 }
 
 .btn-danger {
@@ -32,11 +33,11 @@ code {
 }
 
 nav {
-  background-color: var(--main-minus-one);
+  background-color: var(--main-minus-two);
 }
 
 a {
-  color: var(--main-minus-one);
+  color: var(--main-minus-two);
 }
 
 .row-center-card, .row-user-form {

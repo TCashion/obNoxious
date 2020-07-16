@@ -6,17 +6,27 @@ import './NavBar.css';
 class NavBar extends Component {
     state = {
         addDropdownVisible: false,
+        viewDropdownVisible: false,
     }
 
     handleAddLinkClick = () => {
+        this.resetLinksToHidden();
         this.setState((state) => ({
             addDropdownVisible: !(state.addDropdownVisible)
         }));
     }
 
-    resetAddLinkHidden = () => {
+    handleViewLinkClick = () => {
+        this.resetLinksToHidden();
+        this.setState((state) => ({
+            viewDropdownVisible: !(state.viewDropdownVisible)
+        }));
+    }
+
+    resetLinksToHidden = () => {
         this.setState({
-            addDropdownVisible: false
+            addDropdownVisible: false,
+            viewDropdownVisible: false,
         });
     }
 
@@ -29,13 +39,22 @@ class NavBar extends Component {
                             <div className="nav-wrapper">
                                 <ul className="left hide-on-sm-and-down">
                                     <li>
-                                        <Link to='/' onClick={this.resetAddLinkHidden}>HOME</Link>
+                                        <Link to='/' onClick={this.resetLinksToHidden}>HOME</Link>
                                     </li>
                                     <li>
-                                        <Link to='' onClick={this.handleAddLinkClick}>+ Add</Link>
+                                        <Link onClick={this.handleAddLinkClick}>+ Add</Link>
                                         <NavDropdown 
                                             addDropdownVisible={this.state.addDropdownVisible} 
-                                            resetAddLinkHidden={this.resetAddLinkHidden} 
+                                            resetLinksToHidden={this.resetLinksToHidden} 
+                                            type='add'
+                                        />
+                                    </li>
+                                    <li>
+                                        <Link onClick={this.handleViewLinkClick}>View</Link>
+                                        <NavDropdown 
+                                            viewDropdownVisible={this.state.viewDropdownVisible} 
+                                            resetLinksToHidden={this.resetLinksToHidden} 
+                                            type='view'
                                         />
                                     </li>
                                 </ul>
