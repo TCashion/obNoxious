@@ -84,8 +84,10 @@ class App extends Component {
             <Route exact path='/plants/new' render={({ history }) =>
               userService.getUser() ?
                 <AddPlant 
+                getAllPlants={this.getAllPlants}
                 handleAddPlant={this.handleAddPlant}
                 history={history}
+                plants={this.state.plants}
                 user={this.state.user}
                 />
                 :
