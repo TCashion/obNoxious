@@ -1,3 +1,10 @@
 .welcome-message {
     margin: auto 15px;
 }
+
+/* Media Queries */
+@media only screen and (max-width: 768px) {
+    .hide-on-sm-and-down {
+        display: none !important;
+    }
+}
