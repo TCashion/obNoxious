@@ -10,6 +10,7 @@ class AddPlant extends Component {
     state = {
         plant: {...this.getInitialPlantState()},
         message: '',
+        messageColor: 'crimson'
     }
 
     addPlantToState = (plant) => {
@@ -60,7 +61,7 @@ class AddPlant extends Component {
 
     handleChange = (e) => {
         e.persist();
-        this.updateMessage('');
+        this.updateMessage('', 'crimson');
         this.setState((state) => ({
             plant: {
                 ...state.plant,
@@ -72,7 +73,8 @@ class AddPlant extends Component {
     handleSubmitConfirmation = (e) => {
         e.preventDefault();
         this.props.handleAddPlant(this.state.plant);
-        this.props.history.push('/plants/new')
+        this.resetPlantState();
+        this.updateMessage('Successfully added the plant to the database. Thank you!', 'green')
     }
 
     handleSubmitSearch = async (e) => {
@@ -82,16 +84,14 @@ class AddPlant extends Component {
             this.verifyInvasiveSpecies(newPlant.results[0])
                 ? this.addPlantToState(newPlant.results[0])
                 :
-                this.updateMessage('Your search term did not result in any known invasive species. Please try a different term.')
+                this.updateMessage('Your search term did not result in any known invasive species. Please try a different term.', 'crimson')
         } catch (err) {
-            this.updateMessage('Error - try another search term.')
+            this.updateMessage('Error - try another search term.', 'crimson')
         }
     }
 
     handleWrongPlant = () => {
-        this.setState(({plant}) => ({
-            plant: this.getInitialPlantState()
-        }));
+        this.resetPlantState();
     }
 
     parseDistribution = () => {
@@ -110,9 +110,16 @@ class AddPlant extends Component {
         return taxonomy.join(' > ');
     }
 
-    updateMessage = (msg) => {
+    resetPlantState = () => {
+        this.setState(({plant}) => ({
+            plant: this.getInitialPlantState()
+        }));
+    }
+
+    updateMessage = (msg, color) => {
         this.setState({
             message: msg,
+            messageColor: color
         });
     }
 
@@ -190,7 +197,7 @@ class AddPlant extends Component {
                         </div>
                     </div>
                 </div>
-                <p style={{ color: 'crimson' }}>{this.state.message}</p>
+                <p style={{ color: `${this.state.messageColor}` }}>{this.state.message}</p>
             </>
         )
     }
