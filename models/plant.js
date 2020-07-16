@@ -8,8 +8,15 @@ const plantSchema = new Schema({
     },
     commonName: String,
     scientificName: String,
-    taxonomy: String,
-    distribution: String,
+    taxonomy: {
+        kingdom: {type: String}, 
+        phylum: {type: String}, 
+        class: {type: String}, 
+        order: {type: String}, 
+        family: {type: String}, 
+        genus: {type: String}, 
+    },
+    distribution: [String],
     nsxUrl: String
 }, {
     timestamps: true

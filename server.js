@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
@@ -8,7 +10,6 @@ const plantsRoutes = require('./routes/api/plants');
 
 const app = express();
 
-require('dotenv').config();
 require('./config/database');
 
 // Mount middleware

@@ -11,9 +11,9 @@ async function index(req, res) {
 
 async function create(req, res) {
     console.log('reaches create')
-    const plant = new Plant(req.body);
     try {
-        await Plant.save();
+        const plant = await Plant.create(req.body);
+        console.log('plant created')
         res.status(201).json(plant);
     } catch (err) {
         res.status(500).json(err)
