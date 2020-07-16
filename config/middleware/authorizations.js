@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
     checkAuth, 
-    protectRoutes
+    extractUserFromToken
 };
 
 function checkAuth(req, res, next) {
@@ -10,7 +10,7 @@ function checkAuth(req, res, next) {
     return res.status(501).json({msg: 'Not Authorized'});
 };
 
-function protectRoutes(req, res, next) {
+function extractUserFromToken(req, res, next) {
     let token = req.get('Authorization') || req.query.token || req.body.token;
     if (token) {
         token = token.replace('Bearer ', '');

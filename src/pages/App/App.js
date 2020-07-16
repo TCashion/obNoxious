@@ -14,11 +14,14 @@ class App extends Component {
 
   state = {
     user: userService.getUser(),
-    plants: this.getAllPlants(),
+    plants: [],
   }
 
-  getAllPlants() {
-
+  getAllPlants = async () => {
+    const plants = await plantService.getPlants();
+    this.setState({
+      plants
+    });
   }
 
   handleAddPlant = async (plant) => {
@@ -32,6 +35,10 @@ class App extends Component {
 
   handleSignupOrLogin = () => {
     this.setState({ user: userService.getUser() });
+  }
+
+  componentDidMount = () => {
+    this.getAllPlants();
   }
 
   render() {

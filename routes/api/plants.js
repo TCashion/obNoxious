@@ -8,5 +8,4 @@ router.get('/', plantsCtrl.index);
 /*---------- Protected Routes ----------*/
 router.post('/', authorizations.checkAuth, plantsCtrl.create)
 
-
 module.exports = router; 
