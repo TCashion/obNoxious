@@ -10,10 +10,8 @@ async function index(req, res) {
 }
 
 async function create(req, res) {
-    console.log('reaches create')
     try {
         const plant = await Plant.create(req.body);
-        console.log('plant created')
         res.status(201).json(plant);
     } catch (err) {
         res.status(500).json(err)
