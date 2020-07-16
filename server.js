@@ -15,7 +15,7 @@ require('./config/database');
 // Mount middleware
 app.use(logger('dev'));
 app.use(express.json());
-app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'build', 'favicon.png')));
 app.use(express.static(path.join(__dirname, 'build')));
 
 // API routes

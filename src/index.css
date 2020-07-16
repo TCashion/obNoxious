@@ -1,6 +1,6 @@
 :root {
   --main-minus-three: rgb(23, 85, 44);
-  --main-minus-two: rgb(138, 172, 122);
+  --main-minus-two: hsl(101, 23%, 58%);
   --main-minus-one: rgb(241, 253, 246);
   --main: rgb(169, 192, 190);
   --main-plus-one: rgb(243, 241, 135);
