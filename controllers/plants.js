@@ -18,7 +18,12 @@ async function create(req, res) {
     }
 }
 
+async function lookupOne(req, res) {
+    console.log('lookup: ', req.body)
+}
+
 module.exports = {
     index,
-    create
+    create, 
+    lookupOne
 }

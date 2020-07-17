@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as natureserveAPI from '../../../services/natureserveAPI';
+import plantsService from '../../../services/plantsService';
 import './AddPlant.css';
 
 const style = {
