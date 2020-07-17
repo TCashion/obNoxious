@@ -6,3 +6,9 @@
 .dropdown-card {
     top: -7px;;
 }
+
+.collection-header {
+    background-color: var(--main-plus-one) !important;
+    color: var(--main-minus-three) !important;
+    cursor: initial;
+}

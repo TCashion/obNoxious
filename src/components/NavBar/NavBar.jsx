@@ -43,7 +43,7 @@ class NavBar extends Component {
                                         <Link to='/' onClick={this.resetLinksToHidden}>HOME</Link>
                                     </li>
                                     <li>
-                                        <Link onClick={this.handleAddLinkClick}>+ Add</Link>
+                                        <a href='#!' onClick={this.handleAddLinkClick}>+ Add</a>
                                         <NavDropdown 
                                             addDropdownVisible={this.state.addDropdownVisible} 
                                             resetLinksToHidden={this.resetLinksToHidden} 
@@ -51,7 +51,7 @@ class NavBar extends Component {
                                         />
                                     </li>
                                     <li>
-                                        <Link onClick={this.handleViewLinkClick}>View</Link>
+                                        <a href='#!' onClick={this.handleViewLinkClick}>View</a>
                                         <NavDropdown 
                                             viewDropdownVisible={this.state.viewDropdownVisible} 
                                             resetLinksToHidden={this.resetLinksToHidden} 
