@@ -8,7 +8,7 @@ function getPlants() {
             'Content-type': 'application/json',
         })
     })
-    .then(plants => [plants.json()]);
+    .then(plants => plants.json());
 }
 
 function createPlant(plant) {

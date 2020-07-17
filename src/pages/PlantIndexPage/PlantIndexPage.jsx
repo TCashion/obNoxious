@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-function IndexPage(props) {
+function PlantIndexPage(props) {
 
     const style = {
         marginTop: '5vh',
@@ -27,7 +28,13 @@ function IndexPage(props) {
                                     <tbody>
                                         {props.plants.map((plant) =>
                                             <tr key={plant._id}>
-                                                <td><a href={'/plants/' + plant._id}>{plant.commonName}</a></td>
+                                                <td><Link 
+                                                    to={{
+                                                        pathname: '/plants/detail',
+                                                        state: {plant: plant}
+                                                    }}
+                                                    >{plant.commonName}</ Link>
+                                                </td>
                                                 <td>{plant.scientificName}</td>
                                                 <td><a href={plant.nsxUrl} target="_blank" rel="noopener noreferrer">LINK</a></td>
                                             </tr>
@@ -43,4 +50,4 @@ function IndexPage(props) {
     )
 }
 
-export default IndexPage;
+export default PlantIndexPage;

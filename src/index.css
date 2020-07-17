@@ -40,6 +40,10 @@ a {
   color: var(--main-minus-two);
 }
 
+h1, h2, h3, h4, h5, h6 {
+  color: var(--main-minus-three)
+}
+
 .row-center-card, .row-user-form {
   display: flex;
 }
@@ -52,6 +56,15 @@ a {
   margin: auto;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: var(--main-minus-three)
+.mt15vh {
+  margin-top: 15vh;
+}
+
+.inline-el {
+  display: inline;
+  margin: 0 1rem;
+}
+
+.button-row {
+  margin: 15px 0;
 }
