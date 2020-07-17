@@ -43,15 +43,15 @@ class EditPasswordForm extends Component {
                                 <form className="user-form" onSubmit={this.handleSubmit}>
                                     <div className="input-field col-sm-12">
                                         <label htmlFor="password" className="active">Current password: </label>
-                                        <input type="password" name="password" value={this.state.existing} onChange={this.handleChange} />
+                                        <input type="password" name="password" minLength="6" value={this.state.existing} onChange={this.handleChange} />
                                     </div>
                                     <div className="input-field col-sm-12">
                                         <label htmlFor="newPassword" className="active">New password: </label>
-                                        <input type="password" name="newPassword" value={this.state.newPassword} onChange={this.handleChange} />
+                                        <input type="password" name="newPassword" minLength="6" value={this.state.newPassword} onChange={this.handleChange} />
                                     </div>
                                     <div className="input-field col-sm-12">
                                         <label htmlFor="passwordConf" className="active">Confirm new password: </label>
-                                        <input type="password" name="passwordConf" value={this.state.passwordConf} onChange={this.handleChange} />
+                                        <input type="password" name="passwordConf" minLength="6" value={this.state.passwordConf} onChange={this.handleChange} />
                                     </div>
                                     <div className="col-sm-12">
                                         <button className="btn btn-default" type="submit" disabled={this.validateForm()}>UPDATE</button>
