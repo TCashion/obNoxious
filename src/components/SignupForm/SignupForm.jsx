@@ -49,10 +49,10 @@ class SignupForm extends Component {
                                         <input type="email" name="email" placeholder="Email" value={this.state.email} onChange={this.handleChange} />
                                     </div>
                                     <div className="col-sm-12">
-                                        <input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange} />
+                                        <input type="password" name="password" placeholder="Password" minLength="6" value={this.state.password} onChange={this.handleChange} />
                                     </div>
                                     <div className="col-sm-12">
-                                        <input type="password" name="passwordConf" placeholder="Confirm Password" value={this.state.passwordConf} onChange={this.handleChange} />
+                                        <input type="password" name="passwordConf" placeholder="Confirm Password" minLength="6" value={this.state.passwordConf} onChange={this.handleChange} />
                                     </div>
                                     <div className="col-sm-12">
                                         <button className="btn btn-default" type="submit" disabled={this.validateForm()}>CREATE ACCOUNT</button>

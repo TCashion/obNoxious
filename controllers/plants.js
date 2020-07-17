@@ -19,10 +19,6 @@ async function create(req, res) {
     }
 }
 
-async function lookupOne(req, res) {
-    console.log('lookup: ', req.body)
-}
-
 /* --------- HELPER FUNCTIONS --------- */ 
 
 function sortByCommonName(plantOne, plantTwo) {
@@ -34,5 +30,4 @@ function sortByCommonName(plantOne, plantTwo) {
 module.exports = {
     index,
     create, 
-    lookupOne
 }

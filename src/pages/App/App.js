@@ -7,6 +7,7 @@ import NavBar from '../../components/NavBar/NavBar'
 import HomePage from '../HomePage/HomePage';
 import SignupPage from '../SignupPage/SignupPage';
 import LoginPage from '../LoginPage/LoginPage';
+import EditPasswordPage from '../EditPasswordPage/EditPasswordPage';
 import PlantIndexPage from '../PlantIndexPage/PlantIndexPage';
 import PlantShowPage from '../PlantShowPage/PlantShowPage';
 import AddPlantPage from '../AddPlantPage/AddPlantPage';
@@ -92,6 +93,15 @@ class App extends Component {
                   handleSignupOrLogin={this.handleSignupOrLogin}
                   history={history}
                 />
+            } />
+            <Route exact path='/password' render={({ history }) =>
+              userService.getUser() ?
+                <EditPasswordPage
+                  history={history}
+                  user={this.state.user}
+                />
+                :
+                <Redirect to='/' />
             } />
             <Route exact path='/reports/new' render={({ history }) =>
               userService.getUser() ?

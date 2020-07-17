@@ -31,6 +31,21 @@ function login(creds) {
     .then(({ token }) => tokenService.setTokenInLocalStorage(token));
 }
 
+function updatePassword(creds) {
+    return fetch(BASE_URL + 'password', {
+        method: 'PUT',
+        headers: new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${tokenService.getToken()}`
+        }), 
+        body: JSON.stringify(creds)
+    })
+    .then(res => {
+        if (res.ok) return res.json();
+        throw new Error('Invalid credentials!')
+    })
+}
+
 function getUser() {
     return tokenService.getUserFromToken();
 }
@@ -40,8 +55,9 @@ function logout() {
 }
 
 export default {
-    signup,
     getUser,
     logout, 
-    login
+    login, 
+    updatePassword,
+    signup
 };

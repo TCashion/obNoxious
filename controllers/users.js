@@ -1,5 +1,7 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const SALT_ROUNDS = 6; 
 
 async function signup(req, res) {
     const user = new User(req.body);
@@ -29,6 +31,23 @@ async function login(req, res) {
     }
 }
 
+async function updatePassword(req, res) {
+    try {
+        const user = await User.findOne({ email: req.body.email });
+        if (!user) return res.status(400).json({ err: 'Invalid credentials!' });
+        user.comparePassword(req.body.password, (err, isMatch) => {
+            if (isMatch && (req.body.newPassword === req.body.passwordConf) ) {
+                saveNewPassword(user, req, res)
+                // res.status(201).json(user);
+            } else {
+                return res.status(400).json({ err: 'Invalid credentials!' });
+            }
+        });
+    } catch (err) {
+        res.status(400).json(err);
+    }
+}
+
 
 /*----- Helper Functions -----*/
 function createJWT(user) {
@@ -39,8 +58,19 @@ function createJWT(user) {
     );
 }
 
+async function saveNewPassword(user, req, res) {
+    user.password = req.body.newPassword;
+    try {
+        user.save();
+        const token = createJWT(user);
+        res.status(201).json({token});
+    } catch (err) {
+        return res.status(400).json({ err: 'Invalid credentials!' });
+    }
+}
 
 module.exports = {
     signup,
-    login
+    login,
+    updatePassword
 };

@@ -20,9 +20,9 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 // API routes
 
-app.use('/api/users', usersRoutes);
 // authorization middleware
 app.use(authorizations.extractUserFromToken);
+app.use('/api/users', usersRoutes);
 app.use('/api/plants', plantsRoutes);
 
 // Catch all for bad routes 
