@@ -11,7 +11,7 @@ import EditPasswordPage from '../EditPasswordPage/EditPasswordPage';
 import PlantIndexPage from '../PlantIndexPage/PlantIndexPage';
 import PlantShowPage from '../PlantShowPage/PlantShowPage';
 import AddPlantPage from '../AddPlantPage/AddPlantPage';
-import AddReport from '../Reports/AddReport/AddReport';
+import AddReportPage from '../AddReportPage/AddReportPage';
 
 class App extends Component {
 
@@ -103,16 +103,15 @@ class App extends Component {
                 :
                 <Redirect to='/' />
             } />
-            <Route exact path='/reports/new' render={({ history }) =>
+            <Route exact path='/plants' render={() =>
               userService.getUser() ?
-                <AddReport />
+                <PlantIndexPage plants={this.state.plants} />
                 :
                 <Redirect to='/login' />
             } />
             <Route exact path='/plants/new' render={({ history }) =>
               userService.getUser() ?
                 <AddPlantPage
-                  getAllPlants={this.getAllPlants}
                   handleAddPlant={this.handleAddPlant}
                   history={history}
                   parseDistribution={this.parseDistribution}
@@ -123,18 +122,22 @@ class App extends Component {
                 :
                 <Redirect to='/login' />
             } />
-            <Route exact path='/plants' render={() =>
-              userService.getUser() ?
-                <PlantIndexPage plants={this.state.plants} />
-                :
-                <Redirect to='/login' />
-            } />
             <Route exact path='/plants/detail' render={({ history, location }) =>
               userService.getUser() ?
                 <PlantShowPage 
                   location={location}
                   parseDistribution={this.parseDistribution}
                   parseTaxonomy={this.parseTaxonomy}
+                />
+                :
+                <Redirect to='/login' />
+            } />
+            <Route exact path='/reports/new' render={({ history }) =>
+              userService.getUser() ?
+                <AddReportPage
+                  history={history}
+                  plants={this.state.plants}
+                  user={this.state.user}
                 />
                 :
                 <Redirect to='/login' />
