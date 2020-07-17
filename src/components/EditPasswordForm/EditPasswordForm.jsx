@@ -3,6 +3,7 @@ import userService from '../../services/userService';
 
 class EditPasswordForm extends Component {
     state = {
+        email: this.props.user.email,
         password: '',
         newPassword: '',
         passwordConf: ''
@@ -17,13 +18,12 @@ class EditPasswordForm extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(this.state)
-        // try {
-        //     // await userService.signup(this.state);
+        try {
+            await userService.updatePassword(this.state);
         //     // this.props.history.push('/');
-        // } catch (err) {
-        //     this.updateMessage(err.message)
-        // }
+        } catch (err) {
+            this.props.updateMessage(err.message)
+        }
     }
 
     validateForm() {

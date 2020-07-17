@@ -23,19 +23,7 @@ function createPlant(plant) {
     .then(plant => plant.json());
 }
 
-function lookupOne(scientificName) {
-    return fetch(BASE_URL, {
-        method: 'GET', 
-        headers: new Headers ({
-            'Content-type': 'application/json',
-        }),
-        body: JSON.stringify(scientificName)
-    })
-    .then(plant => plant.json());
-}
-
 export default {
     createPlant,
     getPlants,
-    lookupOne
 }
