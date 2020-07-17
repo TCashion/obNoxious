@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import * as natureserveAPI from '../../../services/natureserveAPI';
-import './AddPlant.css';
+import * as natureserveAPI from '../../services/natureserveAPI';
+import './AddPlantPage.css';
 
-const style = {
-    marginTop: '15vh',
-}
-
-class AddPlant extends Component {
+class AddPlantPage extends Component {
     state = {
         plant: { ...this.getInitialPlantState() },
         message: '',
@@ -96,22 +92,6 @@ class AddPlant extends Component {
         this.resetPlantState();
     }
 
-    parseDistribution = () => {
-        let distribution = this.state.plant.distribution.map(contaminatedState => contaminatedState);
-        distribution.sort();
-        return distribution.join(', ')
-    }
-
-    parseTaxonomy = () => {
-        let taxonomy = [];
-        for (const key in this.state.plant.taxonomy) {
-            const upperKey = key[0].toUpperCase() + key.substr(1);
-            const pairString = `${upperKey}: ${this.state.plant.taxonomy[key]}`
-            taxonomy.push(pairString)
-        };
-        return taxonomy.join(' > ');
-    }
-
     resetPlantState = () => {
         this.setState(({ plant }) => ({
             plant: this.getInitialPlantState()
@@ -149,7 +129,7 @@ class AddPlant extends Component {
     render() {
         return (
             <>
-                <div className="row row-center-card" style={style}>
+                <div className="row row-center-card mt15vh">
                     <div className="col s12 m6">
                         <div className="card">
                             <div className="card-content">
@@ -170,13 +150,13 @@ class AddPlant extends Component {
                                                 </div>
                                                 <div className="input-field col s12">
                                                     <label htmlFor="taxonomy" className="active">Taxonomy:</label>
-                                                    <textarea name="taxonomy" className="materialize-textarea" id="taxonomy" cols="30" rows="10" disabled value={this.parseTaxonomy()} />
+                                                    <textarea name="taxonomy" className="materialize-textarea" id="taxonomy" cols="30" rows="10" disabled value={this.props.parseTaxonomy(this.state.plant)} />
                                                 </div>
                                                 <div className="input-field col s12">
-                                                    <label htmlFor="distribution" className="active">Distribution:</label>
-                                                    <textarea name="distribution" className="materialize-textarea" id="distribution" cols="30" rows="10" disabled value={this.parseDistribution()} />
+                                                    <label htmlFor="distribution" className="active">US Distribution:</label>
+                                                    <textarea name="distribution" className="materialize-textarea" id="distribution" cols="30" rows="10" disabled value={this.props.parseDistribution(this.state.plant)} />
                                                 </div>
-                                                <div className="col-sm-12 text-center">
+                                                <div className="col-sm-12 text-center button-row">
                                                     <button type="submit" className="btn btn-default" disabled={this.scanExistingPlants(this.state.plant.scientificName)}>Yes</button>
                                                     <button className="btn btn-danger" onClick={this.handleWrongPlant}>No</button>
                                                 </div>
@@ -208,40 +188,9 @@ class AddPlant extends Component {
                     </div>
                 </div>
                 <p style={{ color: `${this.state.messageColor}` }}>{this.state.message}</p>
-                <div className="row row-center-card" style={style}>
-                    <div className="col s12 m6">
-                        <div className="card">
-                            <div className="card-content">
-                                <div className="card-title">
-                                    <h5>Registered plants:</h5>
-                                </div>
-                                <div>
-                                    <table className="centered">
-                                        <thead>
-                                            <tr>
-                                                <th>Common Name</th>
-                                                <th>Scientific Name</th>
-                                                <th>NatureServe Link</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {this.props.plants.map((plant) => 
-                                                    <tr key={plant._id}>
-                                                        <td>{plant.commonName}</td>
-                                                        <td>{plant.scientificName}</td>
-                                                        <td><a href={plant.nsxUrl} target="_blank" rel="noopener noreferrer">LINK</a></td>
-                                                    </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </>
         )
     }
 }
 
-export default AddPlant;
+export default AddPlantPage;

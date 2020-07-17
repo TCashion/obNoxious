@@ -38,13 +38,21 @@ function NavDropdown(props) {
                     }
                     {(props.type === 'view') ? 
                         <>
+                            <a 
+                                href="#!"
+                                className="collection-item collection-header"
+                            >PLANTS</a>
                             <Link 
                                 to='/plants' 
                                 className="collection-item"
                                 onClick={props.resetLinksToHidden}
                             >All Plants In Database</Link>
+                            <a 
+                                href="#!"
+                                className="collection-item collection-header"
+                            >REPORTS</a>
                             <Link 
-                                to='' 
+                                to='/reports' 
                                 className="collection-item"
                                 onClick={props.resetLinksToHidden}
                             >All User Reports</Link>
