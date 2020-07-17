@@ -7,12 +7,12 @@ function NavDropdown(props) {
     let dropdownStyle;
     if (props.type === 'add') {
         dropdownStyle = {
-            display: props.addDropdownVisible ? 'block' : 'none', 
+            display: props.addDropdownVisible ? 'block' : 'none',
         };
     };
     if (props.type === 'view') {
         dropdownStyle = {
-            display: props.viewDropdownVisible ? 'block' : 'none', 
+            display: props.viewDropdownVisible ? 'block' : 'none',
         };
     };
 
@@ -20,44 +20,52 @@ function NavDropdown(props) {
         <div className="card dropdown-card" style={dropdownStyle}>
             <div className="card-content">
                 <div className="collection">
-                    {(props.type === 'add') ? 
+                    {(props.type === 'add') ?
                         <>
-                            <Link 
-                                to='/plants/new' 
-                                className="collection-item"
-                                onClick={props.resetLinksToHidden}
-                            >New Plant to Database</Link>
-                            <Link 
-                                to='/reports/new' 
-                                className="collection-item"
-                                onClick={props.resetLinksToHidden}
-                            >Report a Sighting</Link>
-                        </>
-                    :
-                        <></>
-                    }
-                    {(props.type === 'view') ? 
-                        <>
-                            <a 
+                            <a
                                 href="#!"
                                 className="collection-item collection-header"
                             >PLANTS</a>
-                            <Link 
-                                to='/plants' 
+                            <Link
+                                to='/plants/new'
                                 className="collection-item"
                                 onClick={props.resetLinksToHidden}
-                            >All Plants In Database</Link>
+                            >New Plant to Database</Link>
                             <a 
                                 href="#!"
                                 className="collection-item collection-header"
                             >REPORTS</a>
-                            <Link 
-                                to='/reports' 
+                            <Link
+                                to='/reports/new'
+                                className="collection-item"
+                                onClick={props.resetLinksToHidden}
+                            >Report a Sighting</Link>
+                        </>
+                        :
+                        <></>
+                    }
+                    {(props.type === 'view') ?
+                        <>
+                            <a
+                                href="#!"
+                                className="collection-item collection-header"
+                            >PLANTS</a>
+                            <Link
+                                to='/plants'
+                                className="collection-item"
+                                onClick={props.resetLinksToHidden}
+                            >All Plants In Database</Link>
+                            <a
+                                href="#!"
+                                className="collection-item collection-header"
+                            >REPORTS</a>
+                            <Link
+                                to='/reports'
                                 className="collection-item"
                                 onClick={props.resetLinksToHidden}
                             >All User Reports</Link>
                         </>
-                    :
+                        :
                         <></>
                     }
                 </div>
