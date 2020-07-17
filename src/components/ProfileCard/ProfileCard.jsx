@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './ProfileCard.css';
 
 function ProfileCard({ user }) {
@@ -11,6 +12,7 @@ function ProfileCard({ user }) {
                     </div>
                     <div className="card-content">
                         <h3>{user.name}</h3>
+                        <Link to='/password'>Change Password</Link>
                     </div>
                 </div>
             </div>
