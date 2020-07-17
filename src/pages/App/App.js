@@ -7,6 +7,7 @@ import NavBar from '../../components/NavBar/NavBar'
 import HomePage from '../HomePage/HomePage';
 import SignupPage from '../SignupPage/SignupPage';
 import LoginPage from '../LoginPage/LoginPage';
+import IndexPage from '../Plants/IndexPage/IndexPage';
 import AddReport from '../Reports/AddReport/AddReport';
 import AddPlant from '../Plants/AddPlant/AddPlant';
 
@@ -92,6 +93,9 @@ class App extends Component {
                 />
                 :
                 <Redirect to='/login' />
+            } />
+            <Route exact path='/plants' render={() => 
+              <IndexPage />
             } />
           </Switch>
         </main>
