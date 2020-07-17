@@ -38,6 +38,10 @@ function NavDropdown(props) {
                     }
                     {(props.type === 'view') ? 
                         <>
+                            <a 
+                                href="#"
+                                className="collection-item collection-header"
+                            >PLANTS</a>
                             <Link 
                                 to='/plants' 
                                 className="collection-item"

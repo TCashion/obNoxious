@@ -95,7 +95,7 @@ class App extends Component {
                 <Redirect to='/login' />
             } />
             <Route exact path='/plants' render={() => 
-              <IndexPage />
+              <IndexPage plants={this.state.plants}/>
             } />
           </Switch>
         </main>

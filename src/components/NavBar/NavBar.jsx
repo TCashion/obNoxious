@@ -10,17 +10,18 @@ class NavBar extends Component {
     }
 
     handleAddLinkClick = () => {
-        this.resetLinksToHidden();
-        this.setState((state) => ({
-            addDropdownVisible: !(state.addDropdownVisible)
-        }));
+        this.toggleVisibility('addDropdownVisible');
     }
 
     handleViewLinkClick = () => {
+        this.toggleVisibility('viewDropdownVisible');
+    }
+
+    toggleVisibility = (dropDownStateStr) => {
         this.resetLinksToHidden();
-        this.setState((state) => ({
-            viewDropdownVisible: !(state.viewDropdownVisible)
-        }));
+        this.setState({
+            [`${dropDownStateStr}`]: !(this.state[dropDownStateStr]) 
+        });
     }
 
     resetLinksToHidden = () => {
