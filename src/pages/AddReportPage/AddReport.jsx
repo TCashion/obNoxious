@@ -1,9 +1,9 @@
 import React from 'react';
 
-function AddReport() {
+function AddReportPage() {
     return (
         <h1>Add Report</h1>
     )
 }
 
-export default AddReport;
+export default AddReportPage;
