@@ -22,7 +22,10 @@ const reportSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    noxiousSpecies: Schema.Types.ObjectId,
+    noxiousSpecies: {
+        type: Schema.Types.ObjectId,
+        ref: 'Plant'
+    },
     location: {
         lat: {
             type: Number,

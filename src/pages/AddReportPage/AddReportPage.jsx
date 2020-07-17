@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
+import 'materialize-css';
+import { DatePicker } from 'react-materialize';
 
 class AddReportPage extends Component {
     state = {
         message: '',
         messageColor: 'crimson',
-        report: {
+        report: { ...this.getInitialReportState() }
+    }
+
+    getInitialReportState() {
+        return {
             user: this.props.user,
             noxiousSpecies: '',
-            date: Date.now()
+            date: this.getToday()
         }
+    }
+
+    getToday() {
+        const today = new Date();
+        return this.parseDate(today);
     }
 
     handleChange = (e) => {
         e.persist();
+        console.log(e.target)
         this.updateMessage('', 'crimson');
         this.setState((state) => ({
             report: {
@@ -20,6 +32,23 @@ class AddReportPage extends Component {
                 [e.target.name]: e.target.value
             }
         }));
+    }
+
+    handleDateChange = (e) => {
+        this.setState((state) => ({
+            report: {
+                ...state.report, 
+                date: this.parseDate(e)
+            }
+        }))
+    }
+
+    parseDate(date) {
+        const yyyy = date.getFullYear();
+        let mm = date.getMonth() + 1;
+        if (mm < 10) mm = '0' + mm;
+        const dd = date.getDate();
+        return `${yyyy}-${mm}-${dd}`
     }
 
     updateMessage = (msg, color) => {
@@ -33,7 +62,9 @@ class AddReportPage extends Component {
         const script =
             `
                 const selectEls = document.querySelectorAll('select');
-                const instances = M.FormSelect.init(selectEls);
+                const dateEls = document.querySelectorAll('.datepicker');
+                const selectInstances = M.FormSelect.init(selectEls);
+                const dateInstances = M.Datepicker.init(dateEls, {format: 'yyyy-mm-dd'});
             `
         const scriptDiv = document.createElement('script');
         scriptDiv.innerHTML = script;
@@ -58,8 +89,6 @@ class AddReportPage extends Component {
                                     <form onSubmit={this.handleSubmitConfirmation}>
                                         <div className="input-field col s12">
                                             <label htmlFor="noxiousSpecies" className="active">Species sighted:</label>
-                                            {/* <input type="select" value={this.state.report.noxiousSpecies} 
-                                            name="noxiousSpecies" onChange={this.handleChange} /> */}
                                             <select
                                                 className="browser-default"
                                                 name="noxiousSpecies"
@@ -75,8 +104,12 @@ class AddReportPage extends Component {
                                             </select>
                                         </div>
                                         <div className="input-field col s12">
-                                            <label htmlFor="scientificName" className="active">Scientific Name:</label>
-                                            {/* <input type="text" className="validate" value={this.state.plant.scientificName} name="scientificName" disabled /> */}
+                                            <label htmlFor="scientificName" className="active">Date observed:</label>
+                                            <DatePicker
+                                                value={this.state.report.date}
+                                                id="date"
+                                                onChange={this.handleDateChange} 
+                                            />
                                         </div>
                                         <div className="input-field col s12">
                                             <label htmlFor="taxonomy" className="active">Taxonomy:</label>
