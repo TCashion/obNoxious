@@ -27,7 +27,7 @@ function IndexPage(props) {
                                     <tbody>
                                         {props.plants.map((plant) =>
                                             <tr key={plant._id}>
-                                                <td>{plant.commonName}</td>
+                                                <td><a href={'/plants/' + plant._id}>{plant.commonName}</a></td>
                                                 <td>{plant.scientificName}</td>
                                                 <td><a href={plant.nsxUrl} target="_blank" rel="noopener noreferrer">LINK</a></td>
                                             </tr>
