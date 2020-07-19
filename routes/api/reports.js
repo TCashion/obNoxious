@@ -6,8 +6,6 @@ const authorizations = require('../../config/middleware/authorizations');
 /*---------- Public Routes ----------*/
 
 
-
-
 /*---------- Protected Routes ----------*/
 router.post('/', authorizations.checkAuth, reportsCtrl.create)
 

@@ -30,10 +30,10 @@ class App extends Component {
     });
   }
 
-  getOneReport = async (_id) => {
-    const report = await plantsService.findOne(_id)
-    return report;
-  }
+  // getOneReport = async (_id) => {
+  //   const report = await reportsService.getOne(_id)
+  //   return report;
+  // }
 
   handleAddPlant = async (plant) => {
     await plantsService.createPlant(plant);
@@ -154,6 +154,7 @@ class App extends Component {
             <Route exact path='/reports/new' render={({ history }) =>
               userService.getUser() ?
                 <AddReportPage
+                  getOneReport={this.getOneReport}
                   handleAddReport={this.handleAddReport}
                   history={history}
                   plants={this.state.plants}
