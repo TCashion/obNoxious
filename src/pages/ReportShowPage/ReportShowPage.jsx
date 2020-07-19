@@ -5,10 +5,6 @@ class ReportShowPage extends Component {
         reportData: this.props.location.state.report
     }
 
-    // componentWillMount() {
-    //     console.log(this.state)
-    // }
-
     render() {
         return (
             <>
@@ -17,7 +13,7 @@ class ReportShowPage extends Component {
                         <div className="card">
                             <div className="card-content">
                                 <div className="card-title">
-                                    {/* Detail for {this.state.reportData.noxiousSpecies.taxonomy.class} */}
+                                    Detail for {this.state.reportData.noxiousSpecies.taxonomy.class}
                                 </div>
                                 {/* <div>
                                     <div className="input-field col s12 left-align">
