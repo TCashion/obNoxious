@@ -7,6 +7,6 @@ router.post('/signup', usersCtrl.signup);
 router.post('/login', usersCtrl.login);
 
 /*---------- Protected Routes ----------*/
-router.put('/password', authorizations.checkAuth, usersCtrl.updatePassword)
+router.put('/password', authorizations.checkUserLoggedIn, usersCtrl.updatePassword)
 
 module.exports = router; 

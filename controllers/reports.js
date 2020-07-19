@@ -34,8 +34,18 @@ async function findOne(req, res) {
     }
 }
 
+async function deleteOne(req, res) {
+    try {
+        const deletedReport = await Report.findByIdAndDelete(req.body._id);
+        res.status(200).json(deletedReport)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
+
 module.exports = {
     index,
     create, 
-    findOne
+    findOne,
+    deleteOne
 }

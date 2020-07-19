@@ -49,6 +49,10 @@ class App extends Component {
     return newReport;
   }
 
+  handleDeleteReport = async (report) => {
+    await reportsService.deleteReport(report);
+  }
+
   handleLogout = () => {
     userService.logout();
     this.setState({ user: null });
@@ -183,6 +187,8 @@ class App extends Component {
             <Route exact path='/reports/detail' render={({ history, location }) =>
               userService.getUser() ?
                 <ReportShowPage
+                  handleDeleteReport={this.handleDeleteReport}
+                  history={history}
                   location={location}
                   user={this.state.user}
                 />

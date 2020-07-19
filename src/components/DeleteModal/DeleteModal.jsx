@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import M from 'materialize-css';
-// import 'materialize-css/dist/css/materialize.min.css';
+
+// namespace of data changed to generic 'item' for reusability
 
 class DeleteModal extends Component {
     componentDidMount() {
@@ -11,6 +12,11 @@ class DeleteModal extends Component {
             dismissable: false,
         }
         M.Modal.init(this.Modal, options)
+    }
+
+    handleConfirmDelete = () => {
+        this.props.handleDeleteItem(this.props.itemData);
+        this.props.history.push(this.props.redirectRoute);
     }
 
     render() {
@@ -24,11 +30,14 @@ class DeleteModal extends Component {
                     className="modal"
                 >
                     <div className="modal-content">
-                        <h5>Delete report {this.props.reportData._id}?</h5>
+                        <h5>Delete this {this.props.itemType}?</h5>
                         <p>You won't be able to undo this action.</p>
                     </div>
                     <div className="modal-footer">
-                        <button className="waves-effect waves-green btn btn-default">CONFIRM</button>
+                        <button 
+                            className="waves-effect waves-green btn btn-default"
+                            onClick={this.handleConfirmDelete}
+                        >CONFIRM</button>
                         <button className="modal-close waves-effect waves-green btn-flat">Cancel</button>
                     </div>
                 </div>

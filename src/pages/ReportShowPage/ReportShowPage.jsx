@@ -25,8 +25,12 @@ class ReportShowPage extends Component {
                                         {this.state.reportData.user._id === this.props.user._id ?
                                             <div className="col-sm-12 text-center button-row">
                                                 <button className="btn btn-default">EDIT</button>
-                                                <DeleteModal 
-                                                    reportData={this.state.reportData}
+                                                <DeleteModal
+                                                    itemData={this.state.reportData}
+                                                    handleDeleteItem={this.props.handleDeleteReport}
+                                                    history={this.props.history}
+                                                    itemType='report'
+                                                    redirectRoute='/reports'
                                                 />
                                             </div>
                                             :
