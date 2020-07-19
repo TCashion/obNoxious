@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import 'materialize-css';
+import './AddReportPage.css';
 import { DatePicker } from 'react-materialize';
 
 class AddReportPage extends Component {
@@ -24,7 +26,6 @@ class AddReportPage extends Component {
 
     handleChange = (e) => {
         e.persist();
-        console.log(e.target)
         this.updateMessage('', 'crimson');
         this.setState((state) => ({
             report: {
@@ -41,6 +42,12 @@ class AddReportPage extends Component {
                 date: this.parseDate(e)
             }
         }))
+    }
+
+    handleSubmit = async (e) => {
+        e.preventDefault(); 
+        await this.props.handleAddReport(this.state.report);
+        this.props.history.push('/reports');
     }
 
     parseDate(date) {
@@ -61,10 +68,8 @@ class AddReportPage extends Component {
     updateSelectOptions() {
         const script =
             `
-                const selectEls = document.querySelectorAll('select');
-                const dateEls = document.querySelectorAll('.datepicker');
-                const selectInstances = M.FormSelect.init(selectEls);
-                const dateInstances = M.Datepicker.init(dateEls, {format: 'yyyy-mm-dd'});
+                selectEls = document.querySelectorAll('select');
+                selectInstances = M.FormSelect.init(selectEls);
             `
         const scriptDiv = document.createElement('script');
         scriptDiv.innerHTML = script;
@@ -73,6 +78,10 @@ class AddReportPage extends Component {
 
     componentDidMount() {
         this.updateSelectOptions();
+    }
+
+    validateForm() {
+        return !(this.state.report.noxiousSpecies);
     }
 
     render() {
@@ -86,11 +95,11 @@ class AddReportPage extends Component {
                                     Create your report here:
                                 </div>
                                 <div>
-                                    <form onSubmit={this.handleSubmitConfirmation}>
+                                    <form onSubmit={this.handleSubmit}>
                                         <div className="input-field col s12">
                                             <label htmlFor="noxiousSpecies" className="active">Species sighted:</label>
                                             <select
-                                                className="browser-default"
+                                                className="browser-default form-select"
                                                 name="noxiousSpecies"
                                                 onChange={this.handleChange}
                                             >
@@ -102,26 +111,18 @@ class AddReportPage extends Component {
                                                     >{plant.commonName}</option>
                                                 )}
                                             </select>
+                                            <p className="whisper">Can't find what you're looking for? <Link to='../plants/new'>Add it to the database.</Link></p>
                                         </div>
                                         <div className="input-field col s12">
                                             <label htmlFor="scientificName" className="active">Date observed:</label>
                                             <DatePicker
-                                                value={this.state.report.date}
+                                                defaultValue={this.state.report.date}
                                                 id="date"
                                                 onChange={this.handleDateChange} 
                                             />
                                         </div>
-                                        <div className="input-field col s12">
-                                            <label htmlFor="taxonomy" className="active">Taxonomy:</label>
-                                            {/* <textarea name="taxonomy" className="materialize-textarea" id="taxonomy" cols="30" rows="10" disabled value={this.props.parseTaxonomy(this.state.plant)} /> */}
-                                        </div>
-                                        <div className="input-field col s12">
-                                            <label htmlFor="distribution" className="active">US Distribution:</label>
-                                            {/* <textarea name="distribution" className="materialize-textarea" id="distribution" cols="30" rows="10" disabled value={this.props.parseDistribution(this.state.plant)} /> */}
-                                        </div>
                                         <div className="col-sm-12 text-center button-row">
-                                            {/* <button type="submit" className="btn btn-default" disabled={this.scanExistingPlants(this.state.plant.scientificName)}>Yes</button> */}
-                                            {/* <button className="btn btn-danger" onClick={this.handleWrongPlant}>No</button> */}
+                                            <button type="submit" className="btn btn-default" disabled={this.validateForm()}>Create Report</button>
                                         </div>
                                     </form>
                                 </div>
@@ -130,6 +131,7 @@ class AddReportPage extends Component {
                     </div>
                 </div>
                 <p style={{ color: `${this.state.messageColor}` }}>{this.state.message}</p>
+                <script>{`let selectEls; let selectInstances`}</script>
             </>
         )
     }
