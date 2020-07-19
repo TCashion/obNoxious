@@ -40,6 +40,11 @@ class App extends Component {
     return report;
   }
 
+  getTodaysDate = () => {
+    const today = new Date();
+    return this.parseDate(today);
+  }
+
   handleAddPlant = async (plant) => {
     await plantsService.createPlant(plant);
   }
@@ -175,6 +180,7 @@ class App extends Component {
               userService.getUser() ?
                 <AddReportPage
                   getOneReport={this.getOneReport}
+                  getTodaysDate={this.getTodaysDate}
                   handleAddReport={this.handleAddReport}
                   history={history}
                   parseDate={this.parseDate}
@@ -187,9 +193,11 @@ class App extends Component {
             <Route exact path='/reports/detail' render={({ history, location }) =>
               userService.getUser() ?
                 <ReportShowPage
+                  getTodaysDate={this.getTodaysDate}
                   handleDeleteReport={this.handleDeleteReport}
                   history={history}
                   location={location}
+                  parseDate={this.parseDate}
                   user={this.state.user}
                 />
                 :
