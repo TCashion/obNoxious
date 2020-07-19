@@ -22,7 +22,10 @@ const reportSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    invaders: [String],
+    noxiousSpecies: {
+        type: Schema.Types.ObjectId,
+        ref: 'Plant'
+    },
     location: {
         lat: {
             type: Number,
@@ -39,10 +42,7 @@ const reportSchema = new Schema({
             return new Date();
         },
     },
-    notes: [noteSchema],
-    treated: {
-        type: Boolean
-    }
+    notes: [noteSchema]
 }, {
     timestamps: true
 });

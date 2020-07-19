@@ -1,0 +1,16 @@
+.form-select {
+    margin-top: 15px;
+    border-color: var(--main-minus-two);
+}
+
+.input-field .col {
+    width: 100%;
+}
+
+.datepicker-date-display {
+    background-color: var(--main-minus-two);
+}
+
+.is-today button, .datepicker-done, .datepicker-cancel {
+    color: var(--main-minus-two);
+}
