@@ -46,8 +46,13 @@ class AddReportPage extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault(); 
-        await this.props.handleAddReport(this.state.report);
-        this.props.history.push('/reports');
+        const newReport = await this.props.handleAddReport(this.state.report);
+        this.props.history.push({
+            pathname: '/reports/detail',
+            state: {
+                report: this.props.getOneReport(newReport._id)
+            }
+        });
     }
 
     parseDate(date) {

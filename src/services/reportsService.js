@@ -20,7 +20,8 @@ function createReport(report) {
         }),
         body: JSON.stringify(report)
     })
-    .then(report => report.json());
+    .then(newReport => newReport.json())
+    .then(responseBody => responseBody);
 }
 
 export default {

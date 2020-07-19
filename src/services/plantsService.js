@@ -20,7 +20,7 @@ function createPlant(plant) {
         }), 
         body: JSON.stringify(plant)
     })
-    .then(plant => plant.json());
+    .then(newPlant => newPlant.json());
 }
 
 export default {

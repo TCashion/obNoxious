@@ -30,6 +30,11 @@ class App extends Component {
     });
   }
 
+  getOneReport = async (_id) => {
+    const report = await plantsService.findOne(_id)
+    return report;
+  }
+
   handleAddPlant = async (plant) => {
     await plantsService.createPlant(plant);
   }
