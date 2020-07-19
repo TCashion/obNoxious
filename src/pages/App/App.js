@@ -20,6 +20,7 @@ class App extends Component {
 
   state = {
     plants: [],
+    user: userService.getUser()
   }
 
   getAllPlants = async () => {
@@ -55,6 +56,14 @@ class App extends Component {
 
   handleSignupOrLogin = () => {
     this.setState({ user: userService.getUser() });
+  }
+
+  parseDate(date) {
+    const yyyy = date.getFullYear();
+    let mm = date.getMonth() + 1;
+    if (mm < 10) mm = '0' + mm;
+    const dd = date.getDate();
+    return `${yyyy}-${mm}-${dd}`
   }
 
   parseDistribution = (plant) => {
@@ -151,7 +160,10 @@ class App extends Component {
             } />
             <Route exact path='/reports' render={() =>
               userService.getUser() ?
-                <ReportIndexPage getAllReports={this.getAllReports}/>
+                <ReportIndexPage 
+                  getAllReports={this.getAllReports}
+                  parseDate={this.parseDate}
+                />
                 :
                 <Redirect to='/login' />
             } />
@@ -161,6 +173,7 @@ class App extends Component {
                   getOneReport={this.getOneReport}
                   handleAddReport={this.handleAddReport}
                   history={history}
+                  parseDate={this.parseDate}
                   plants={this.state.plants}
                   user={this.state.user}
                 />

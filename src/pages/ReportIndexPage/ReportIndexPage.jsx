@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 class ReportIndexPage extends Component {
     state = {
-        showUserReportsOrAllReports: [1, 0], 
         reports:  []
     }
 
@@ -45,7 +44,7 @@ class ReportIndexPage extends Component {
                                                         pathname: '/reports/detail',
                                                         state: {report}
                                                     }}
-                                                    >{report.date}</ Link></td>
+                                                    >{report.date.split('T')[0]}</ Link></td>
                                                 <td>{report.noxiousSpecies ? report.noxiousSpecies.commonName : 'undefined'}</td>
                                                 <td>{report.user.name}</td>
                                             </tr>

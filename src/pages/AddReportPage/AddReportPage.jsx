@@ -21,7 +21,7 @@ class AddReportPage extends Component {
 
     getToday() {
         const today = new Date();
-        return this.parseDate(today);
+        return this.props.parseDate(today);
     }
 
     handleChange = (e) => {
@@ -39,7 +39,7 @@ class AddReportPage extends Component {
         this.setState((state) => ({
             report: {
                 ...state.report, 
-                date: this.parseDate(e)
+                date: this.props.parseDate(e)
             }
         }))
     }
@@ -53,14 +53,6 @@ class AddReportPage extends Component {
                 report: newReport
             }
         });
-    }
-
-    parseDate(date) {
-        const yyyy = date.getFullYear();
-        let mm = date.getMonth() + 1;
-        if (mm < 10) mm = '0' + mm;
-        const dd = date.getDate();
-        return `${yyyy}-${mm}-${dd}`
     }
 
     updateMessage = (msg, color) => {
