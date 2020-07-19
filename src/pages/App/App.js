@@ -19,7 +19,6 @@ import ReportIndexPage from '../ReportIndexPage/ReportIndexPage';
 class App extends Component {
 
   state = {
-    user: userService.getUser(),
     plants: [],
   }
 
@@ -28,6 +27,11 @@ class App extends Component {
     this.setState({
       plants
     });
+  }
+
+  getAllReports = async () => {
+    const reports = await reportsService.getReports();
+    return reports;
   }
 
   getOneReport = async (_id) => {
@@ -147,7 +151,7 @@ class App extends Component {
             } />
             <Route exact path='/reports' render={() =>
               userService.getUser() ?
-                <ReportIndexPage />
+                <ReportIndexPage getAllReports={this.getAllReports}/>
                 :
                 <Redirect to='/login' />
             } />
