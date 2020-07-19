@@ -184,6 +184,7 @@ class App extends Component {
               userService.getUser() ?
                 <ReportShowPage
                   location={location}
+                  user={this.state.user}
                 />
                 :
                 <Redirect to='/login' />

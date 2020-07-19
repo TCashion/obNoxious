@@ -1,0 +1,14 @@
+.emphasized {
+    color: var(--main-minus-two);
+    text-decoration: underline;
+}
+
+.show-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 50px 0;
+}
+
+.row .col {
+    padding: 0px;
+}
