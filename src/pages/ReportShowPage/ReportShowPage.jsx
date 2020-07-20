@@ -8,10 +8,6 @@ class ReportShowPage extends Component {
         reportData: this.props.location.state.report
     }
 
-    handleAddNoteClick = () => {
-        console.log('click')
-    }
-
     render() {
         return (
             <>
@@ -56,14 +52,15 @@ class ReportShowPage extends Component {
                                             <p>Got some notes, yet.</p>
                                             :
                                             <>
-                                                <h6 className="left-align" style={{display: 'inline'}}>No notes, yet.</h6>
+                                                <h6 className="left-align" style={{ display: 'inline' }}>No notes, yet.</h6>
                                                 {this.state.reportData.user._id === this.props.user._id ?
-                                                    <div className="col-sm-12 button-row" style={{display: 'inline'}}>
+                                                    <div className="col-sm-12 button-row" style={{ display: 'inline' }}>
                                                         <AddNoteModal
                                                             getTodaysDate={this.props.getTodaysDate}
+                                                            handleAddNote={this.props.handleAddNote}
+                                                            history={this.props.history}
                                                             reportData={this.state.reportData}
                                                             parseDate={this.props.parseDate}
-                                                            history={this.props.history}
                                                         />
                                                     </div>
                                                     :

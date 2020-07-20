@@ -10,6 +10,8 @@ class AddNoteModal extends Component {
 
     getInitialNoteState() {
         return {
+            user: this.props.reportData.user,
+            parentReport: this.props.reportData._id,
             note: '',
             date: this.props.getTodaysDate()
         }
@@ -46,8 +48,7 @@ class AddNoteModal extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log('create note: ', this.state.note)
-
+        this.props.handleAddNote(this.state.note)
     }
 
     render() {
