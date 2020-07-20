@@ -15,13 +15,8 @@ class AddReportPage extends Component {
         return {
             user: this.props.user,
             noxiousSpecies: '',
-            date: this.getToday()
+            date: this.props.getTodaysDate()
         }
-    }
-
-    getToday() {
-        const today = new Date();
-        return this.parseDate(today);
     }
 
     handleChange = (e) => {
@@ -39,7 +34,7 @@ class AddReportPage extends Component {
         this.setState((state) => ({
             report: {
                 ...state.report, 
-                date: this.parseDate(e)
+                date: this.props.parseDate(e)
             }
         }))
     }
@@ -53,14 +48,6 @@ class AddReportPage extends Component {
                 report: newReport
             }
         });
-    }
-
-    parseDate(date) {
-        const yyyy = date.getFullYear();
-        let mm = date.getMonth() + 1;
-        if (mm < 10) mm = '0' + mm;
-        const dd = date.getDate();
-        return `${yyyy}-${mm}-${dd}`
     }
 
     updateMessage = (msg, color) => {
@@ -119,7 +106,7 @@ class AddReportPage extends Component {
                                             <p className="whisper">Can't find what you're looking for? <Link to='../plants/new'>Add it to the database.</Link></p>
                                         </div>
                                         <div className="input-field col s12">
-                                            <label htmlFor="scientificName" className="active">Date observed:</label>
+                                            <label htmlFor="date" className="active">Date observed:</label>
                                             <DatePicker
                                                 defaultValue={this.state.report.date}
                                                 id="date"

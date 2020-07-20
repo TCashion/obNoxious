@@ -20,6 +20,7 @@ class App extends Component {
 
   state = {
     plants: [],
+    user: userService.getUser(),
   }
 
   getAllPlants = async () => {
@@ -39,6 +40,11 @@ class App extends Component {
     return report;
   }
 
+  getTodaysDate = () => {
+    const today = new Date();
+    return this.parseDate(today);
+  }
+
   handleAddPlant = async (plant) => {
     await plantsService.createPlant(plant);
   }
@@ -48,6 +54,10 @@ class App extends Component {
     return newReport;
   }
 
+  handleDeleteReport = async (report) => {
+    await reportsService.deleteReport(report);
+  }
+
   handleLogout = () => {
     userService.logout();
     this.setState({ user: null });
@@ -55,6 +65,15 @@ class App extends Component {
 
   handleSignupOrLogin = () => {
     this.setState({ user: userService.getUser() });
+  }
+
+  parseDate(date) {
+    if (typeof(date) === 'string') date = new Date(date.split('.')[0]);
+    const yyyy = date.getFullYear();
+    let mm = date.getMonth() + 1;
+    if (mm < 10) mm = '0' + mm;
+    const dd = date.getDate();
+    return `${yyyy}-${mm}-${dd}`
   }
 
   parseDistribution = (plant) => {
@@ -71,6 +90,12 @@ class App extends Component {
       taxonomy.push(pairString)
     };
     return taxonomy.join(' > ');
+  }
+
+  sortByDateAscending = (a, b) => {
+    const firstDate = new Date(a.date);
+    const secondDate = new Date(b.date);
+    return firstDate - secondDate;
   }
 
   componentDidMount = () => {
@@ -151,7 +176,11 @@ class App extends Component {
             } />
             <Route exact path='/reports' render={() =>
               userService.getUser() ?
-                <ReportIndexPage getAllReports={this.getAllReports}/>
+                <ReportIndexPage 
+                  getAllReports={this.getAllReports}
+                  sortByDateAscending={this.sortByDateAscending}
+                  parseDate={this.parseDate}
+                />
                 :
                 <Redirect to='/login' />
             } />
@@ -159,8 +188,10 @@ class App extends Component {
               userService.getUser() ?
                 <AddReportPage
                   getOneReport={this.getOneReport}
+                  getTodaysDate={this.getTodaysDate}
                   handleAddReport={this.handleAddReport}
                   history={history}
+                  parseDate={this.parseDate}
                   plants={this.state.plants}
                   user={this.state.user}
                 />
@@ -170,7 +201,13 @@ class App extends Component {
             <Route exact path='/reports/detail' render={({ history, location }) =>
               userService.getUser() ?
                 <ReportShowPage
+                  getTodaysDate={this.getTodaysDate}
+                  handleDeleteReport={this.handleDeleteReport}
+                  history={history}
                   location={location}
+                  parseDate={this.parseDate}
+                  sortByDateAscending={this.sortByDateAscending}
+                  user={this.state.user}
                 />
                 :
                 <Redirect to='/login' />

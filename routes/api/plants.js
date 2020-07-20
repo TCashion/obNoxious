@@ -6,6 +6,6 @@ const authorizations = require('../../config/middleware/authorizations');
 router.get('/', plantsCtrl.index);
 
 /*---------- Protected Routes ----------*/
-router.post('/', authorizations.checkAuth, plantsCtrl.create)
+router.post('/', authorizations.checkUserLoggedIn, plantsCtrl.create)
 
 module.exports = router; 

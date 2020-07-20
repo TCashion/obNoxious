@@ -20,7 +20,8 @@ class EditPasswordForm extends Component {
         e.preventDefault();
         try {
             await userService.updatePassword(this.state);
-        //     // this.props.history.push('/');
+            this.props.updateMessage('Password change successful.');
+            this.props.history.push('/');
         } catch (err) {
             this.props.updateMessage(err.message)
         }

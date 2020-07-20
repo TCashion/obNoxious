@@ -1,42 +1,32 @@
 import tokenService from './tokenService';
 
-const BASE_URL = '/api/reports';
+const BASE_URL = '/api/reports/notes';
 
-function getReports() {
-    return fetch(BASE_URL, {
-        headers: new Headers({
-            'Content-type': 'application/json',
-        })
-    })
-    .then(reports => reports.json());
-}
-
-function createReport(report) {
+function createNote(note) {
     return fetch(BASE_URL, {
         method: 'POST',
         headers: new Headers({
             'Content-type': 'application/json',
             'Authorization': `Bearer ${tokenService.getToken()}`
         }),
-        body: JSON.stringify(report)
+        body: JSON.stringify(note)
     })
-    .then(newReport => newReport.json())
+    .then(newNote => newNote.json())
 }
 
-function deleteReport(report) {
+function deleteNote(note) {
     return fetch(BASE_URL, {
         method: 'DELETE',
         headers: new Headers({
             'Content-type': 'application/json',
             'Authorization': `Bearer ${tokenService.getToken()}`
         }),
-        body: JSON.stringify(report)
+        body: JSON.stringify(note)
     })
-    .then(deletedReport => deletedReport.json())
+    .then(deletedNote => deletedNote.json())
 }
 
 export default {
-    createReport,
-    getReports,
-    deleteReport
+    createNote,
+    deleteNote
 }

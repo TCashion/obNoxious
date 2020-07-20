@@ -7,7 +7,8 @@ const authorizations = require('../../config/middleware/authorizations');
 router.get('/', reportsCtrl.index)
 
 /*---------- Protected Routes ----------*/
-router.post('/', authorizations.checkAuth, reportsCtrl.create)
+router.post('/', authorizations.checkUserLoggedIn, reportsCtrl.create)
+router.delete('/', authorizations.checkUserLoggedIn, authorizations.checkUserIsCreator, reportsCtrl.deleteOne)
 
 
 module.exports = router; 

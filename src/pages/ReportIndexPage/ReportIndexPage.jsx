@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 
 class ReportIndexPage extends Component {
     state = {
-        showUserReportsOrAllReports: [1, 0], 
         reports:  []
     }
 
     async getReports() {
-        const reports = await this.props.getAllReports();   
+        const reports = await this.props.getAllReports();
+        reports.sort(this.props.sortByDateAscending)
         this.setState({
             reports
         })
@@ -45,7 +45,7 @@ class ReportIndexPage extends Component {
                                                         pathname: '/reports/detail',
                                                         state: {report}
                                                     }}
-                                                    >{report.date}</ Link></td>
+                                                    >{report.date.split('T')[0]}</ Link></td>
                                                 <td>{report.noxiousSpecies ? report.noxiousSpecies.commonName : 'undefined'}</td>
                                                 <td>{report.user.name}</td>
                                             </tr>

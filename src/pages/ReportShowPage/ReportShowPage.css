@@ -1,0 +1,18 @@
+.ReportShow-emphasized {
+    color: var(--main-minus-two);
+    text-decoration: underline;
+}
+
+.ReportShow-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 50px 0;
+}
+
+.row .col {
+    padding: 0px;
+}
+
+.ReportShow-card {
+    margin: 2rem;
+}
