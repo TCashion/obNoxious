@@ -63,7 +63,7 @@ class EditPasswordForm extends Component {
                                 <form className="user-form" onSubmit={this.handleSubmit}>
                                     <div className="input-field col-sm-12">
                                         <label htmlFor="password" className="active">Current password: </label>
-                                        <input type="password" name="password" minLength="6" value={this.state.formData.existing} onChange={this.handleChange} />
+                                        <input type="password" name="password" minLength="6" value={this.state.formData.password} onChange={this.handleChange} />
                                     </div>
                                     <div className="input-field col-sm-12">
                                         <label htmlFor="newPassword" className="active">New password: </label>
