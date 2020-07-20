@@ -4,7 +4,6 @@ import './App.css';
 import userService from '../../services/userService';
 import plantsService from '../../services/plantsService';
 import reportsService from '../../services/reportsService';
-import notesService from '../../services/notesService';
 import NavBar from '../../components/NavBar/NavBar'
 import HomePage from '../HomePage/HomePage';
 import SignupPage from '../SignupPage/SignupPage';
@@ -44,10 +43,6 @@ class App extends Component {
   getTodaysDate = () => {
     const today = new Date();
     return this.parseDate(today);
-  }
-
-  handleAddNote = async (note) => {
-    await notesService.createNote(note);
   }
 
   handleAddPlant = async (plant) => {
@@ -199,7 +194,6 @@ class App extends Component {
               userService.getUser() ?
                 <ReportShowPage
                   getTodaysDate={this.getTodaysDate}
-                  handleAddNote={this.handleAddNote}
                   handleDeleteReport={this.handleDeleteReport}
                   history={history}
                   location={location}

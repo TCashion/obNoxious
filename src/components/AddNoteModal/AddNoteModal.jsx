@@ -43,9 +43,6 @@ class AddNoteModal extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
         await this.props.handleAddNote(this.state.note);
-        this.setState({
-            note: {...this.getInitialNoteState()}
-        });
         this.resetModal();
     }
 
@@ -57,6 +54,7 @@ class AddNoteModal extends Component {
             dismissable: false,
         }
         M.Modal.init(this.Modal, options)
+        this.setState({note: {...this.getInitialNoteState()}})
     }
 
     render() {
@@ -96,7 +94,10 @@ class AddNoteModal extends Component {
                                 className="waves-effect waves-green btn btn-default"
                                 type="submit"
                             >ADD NOTE</button>
-                            <button className="modal-close waves-effect waves-green btn-flat">Cancel</button>
+                            <button 
+                                type="button"
+                                className="modal-close waves-effect waves-green btn-flat"
+                            >Cancel</button>
                         </div>
                     </form>
                 </div>

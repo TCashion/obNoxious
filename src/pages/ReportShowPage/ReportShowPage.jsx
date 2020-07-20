@@ -2,10 +2,19 @@ import React, { Component } from 'react';
 import './ReportShowPage.css';
 import DeleteModal from '../../components/DeleteModal/DeleteModal';
 import AddNoteModal from '../../components/AddNoteModal/AddNoteModal';
+import notesService from '../../services/notesService';
+
 
 class ReportShowPage extends Component {
     state = {
         reportData: this.props.location.state.report
+    }
+
+    handleAddNote = async (note) => {
+        const updatedReport = await notesService.createNote(note);
+        this.setState({
+            reportData: updatedReport
+        });
     }
 
     render() {
@@ -49,8 +58,9 @@ class ReportShowPage extends Component {
                                         {this.state.reportData.user._id === this.props.user._id ?
                                             <div className="col-sm-12 button-row" style={{ display: 'inline' }}>
                                                 <AddNoteModal
+                                                    refreshReportData={this.refreshReportData}
                                                     getTodaysDate={this.props.getTodaysDate}
-                                                    handleAddNote={this.props.handleAddNote}
+                                                    handleAddNote={this.handleAddNote}
                                                     history={this.props.history}
                                                     reportData={this.state.reportData}
                                                     parseDate={this.props.parseDate}
@@ -73,7 +83,7 @@ class ReportShowPage extends Component {
                                                     </thead>
                                                     <tbody>
                                                         {this.state.reportData.notes.map((note) =>
-                                                            <tr>
+                                                            <tr key={note._id}>
                                                                 <td>{this.props.parseDate(new Date(note.date))}</td>
                                                                 <td>{note.body}</td>
                                                             </tr>

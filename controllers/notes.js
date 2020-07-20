@@ -6,10 +6,14 @@ async function create(req, res) {
         date: req.body.date,
     }
     try {
-        const report = await Report.findById(req.body.parentReportId);
-        report.notes.push(newNote);
-        report.save();
-        res.status(201).json(report);
+        const report = await Report.findById(req.body.parentReportId)
+        .populate('noxiousSpecies')
+        .populate('user')
+        .exec(function(err, report) {
+            report.notes.push(newNote);
+            report.save();
+            res.status(201).json(report);
+        })
     } catch (err) {
         res.status(500).json(err)
     }
