@@ -1,13 +1,13 @@
-.dropdown-card .card-content {
+.NavDropdown-card .card-content {
     padding: 0;
     width: 120px;
 }
 
-.dropdown-card {
+.NavDropdown-card {
     top: -7px;;
 }
 
-.collection-header {
+.NavDropdown-collection-header {
     background-color: var(--main-plus-one) !important;
     color: var(--main-minus-three) !important;
     cursor: initial;

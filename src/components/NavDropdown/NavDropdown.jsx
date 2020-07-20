@@ -17,14 +17,14 @@ function NavDropdown(props) {
     };
 
     return (
-        <div className="card dropdown-card" style={dropdownStyle}>
+        <div className="card NavDropdown-card" style={dropdownStyle}>
             <div className="card-content">
                 <div className="collection">
                     {(props.type === 'add') ?
                         <>
                             <a
                                 href="#!"
-                                className="collection-item collection-header"
+                                className="collection-item NavDropdown-collection-header"
                             >PLANTS</a>
                             <Link
                                 to='/plants/new'
@@ -33,7 +33,7 @@ function NavDropdown(props) {
                             >New Plant to Database</Link>
                             <a 
                                 href="#!"
-                                className="collection-item collection-header"
+                                className="collection-item NavDropdown-collection-header"
                             >REPORTS</a>
                             <Link
                                 to='/reports/new'
@@ -48,7 +48,7 @@ function NavDropdown(props) {
                         <>
                             <a
                                 href="#!"
-                                className="collection-item collection-header"
+                                className="collection-item NavDropdown-collection-header"
                             >PLANTS</a>
                             <Link
                                 to='/plants'
@@ -57,7 +57,7 @@ function NavDropdown(props) {
                             >All Plants In Database</Link>
                             <a
                                 href="#!"
-                                className="collection-item collection-header"
+                                className="collection-item NavDropdown-collection-header"
                             >REPORTS</a>
                             <Link
                                 to='/reports'
