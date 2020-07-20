@@ -9,7 +9,13 @@ class AddNoteModal extends Component {
     }
 
     componentDidMount() {
-        this.resetModal();
+        const options = {
+            inDuration: 250,
+            outDuration: 250,
+            opacity: 0.5,
+            dismissable: false,
+        }
+        M.Modal.init(this.Modal, options)
     }
 
     getInitialNoteState() {
@@ -43,17 +49,11 @@ class AddNoteModal extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
         await this.props.handleAddNote(this.state.note);
-        this.resetModal();
+        this.resetModalState();
+        M.Modal.getInstance(this.Modal).close();
     }
 
-    resetModal = () => {
-        const options = {
-            inDuration: 250,
-            outDuration: 250,
-            opacity: 0.5,
-            dismissable: false,
-        }
-        M.Modal.init(this.Modal, options)
+    resetModalState = () => {
         this.setState({note: {...this.getInitialNoteState()}})
     }
 

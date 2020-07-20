@@ -15,9 +15,9 @@ class ReportShowPage extends Component {
 
     handleAddNote = async (note) => {
         const updatedReport = await notesService.createNote(note);
-        this.setState({
+        this.setState((state) => ({
             reportData: updatedReport
-        });
+        }));
     }
 
     sortNotesByDateAscending = () => {
@@ -47,7 +47,6 @@ class ReportShowPage extends Component {
                                     <div>
                                         {this.state.reportData.user._id === this.props.user._id ?
                                             <div className="col-sm-12 text-center button-row">
-                                                <button className="btn btn-default">EDIT</button>
                                                 <DeleteModal
                                                     itemData={this.state.reportData}
                                                     handleDeleteItem={this.props.handleDeleteReport}
