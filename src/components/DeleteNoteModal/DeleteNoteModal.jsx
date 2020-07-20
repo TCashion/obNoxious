@@ -22,7 +22,7 @@ class DeleteNoteModal extends Component {
     render() {
         return (
             <div style={{ display: 'inline' }}>
-                <a className="waves-effect waves-light btn-flat modal-trigger" data-target={this.modalId}>X</a>
+                <a className="waves-effect waves-light btn-flat modal-trigger" data-target={this.modalId} href="#delete-note">X</a>
 
                 <div
                     ref={Modal => { this.Modal = Modal; }}
@@ -32,7 +32,7 @@ class DeleteNoteModal extends Component {
                     <form onSubmit={this.handleSubmit}>
                         <div className="modal-content">
                             <h5>Are you sure you want to delete this note?</h5>
-                            <p>body: {this.props.note.body}</p>
+                            <p>Note message: {this.props.note.body}</p>
                         </div>
                         <div className="modal-footer">
                             <button
