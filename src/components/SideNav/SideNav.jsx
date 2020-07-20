@@ -1,11 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './SideNav.css';
 import NavDropdown from '../NavDropdown/NavDropdown';
 
 function SideNav(props) {
     return (
         <>
             <ul id="slide-out" className="left sidenav">
+                <li>
+                    <p className="NavBar-welcome-message">Welcome, {props.user.name}!</p>
+                </li>
                 <li>
                     <Link to='/' onClick={props.resetLinksToHidden}>HOME</Link>
                 </li>
@@ -24,9 +28,6 @@ function SideNav(props) {
                         resetLinksToHidden={props.resetLinksToHidden}
                         type='view'
                     />
-                </li>
-                <li>
-                    <p className="NavBar-welcome-message">Welcome, {props.user.name}!</p>
                 </li>
                 <li>
                     <Link to='' onClick={props.handleLogout}>LOG OUT</Link>
