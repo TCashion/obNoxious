@@ -4,10 +4,13 @@ import DeleteModal from '../../components/DeleteModal/DeleteModal';
 import AddNoteModal from '../../components/AddNoteModal/AddNoteModal';
 import notesService from '../../services/notesService';
 
-
 class ReportShowPage extends Component {
     state = {
         reportData: this.props.location.state.report
+    }
+
+    componentDidMount() {
+        this.sortNotesByDateAscending();
     }
 
     handleAddNote = async (note) => {
@@ -15,6 +18,16 @@ class ReportShowPage extends Component {
         this.setState({
             reportData: updatedReport
         });
+    }
+
+    sortNotesByDateAscending = () => {
+        const reportDataCopy = {...this.state.reportData};
+        const notesCopy = [...reportDataCopy.notes];
+        notesCopy.sort(this.props.sortByDateAscending);
+        reportDataCopy.notes = notesCopy;
+        this.setState((state) => ({
+            reportData: reportDataCopy
+        }))
     }
 
     render() {

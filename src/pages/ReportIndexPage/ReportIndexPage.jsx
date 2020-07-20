@@ -7,7 +7,8 @@ class ReportIndexPage extends Component {
     }
 
     async getReports() {
-        const reports = await this.props.getAllReports();   
+        const reports = await this.props.getAllReports();
+        reports.sort(this.props.sortByDateAscending)
         this.setState({
             reports
         })

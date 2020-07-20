@@ -91,6 +91,12 @@ class App extends Component {
     return taxonomy.join(' > ');
   }
 
+  sortByDateAscending = (a, b) => {
+    const firstDate = new Date(a.date);
+    const secondDate = new Date(b.date);
+    return firstDate - secondDate;
+  }
+
   componentDidMount = () => {
     this.getAllPlants();
   }
@@ -171,6 +177,7 @@ class App extends Component {
               userService.getUser() ?
                 <ReportIndexPage 
                   getAllReports={this.getAllReports}
+                  sortByDateAscending={this.sortByDateAscending}
                   parseDate={this.parseDate}
                 />
                 :
@@ -198,6 +205,7 @@ class App extends Component {
                   history={history}
                   location={location}
                   parseDate={this.parseDate}
+                  sortByDateAscending={this.sortByDateAscending}
                   user={this.state.user}
                 />
                 :
