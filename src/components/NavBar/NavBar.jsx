@@ -61,7 +61,7 @@ class NavBar extends Component {
                                 </ul>
                                 <ul className="right hide-on-sm-and-down">
                                     <li>
-                                        <p className="welcome-message">Welcome, {this.props.user.name}!</p>
+                                        <p className="NavBar-welcome-message">Welcome, {this.props.user.name}!</p>
                                     </li>
                                     <li>
                                         <Link to='' onClick={this.props.handleLogout}>LOG OUT</Link>

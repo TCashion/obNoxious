@@ -72,3 +72,11 @@ h1, h2, h3, h4, h5, h6 {
 .collection a.collection-item {
   color: var(--main-minus-two);
 }
+
+.datepicker-date-display {
+  background-color: var(--main-minus-two);
+}
+
+.is-today button, .datepicker-done, .datepicker-cancel {
+  color: var(--main-minus-two);
+}

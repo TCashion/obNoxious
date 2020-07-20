@@ -34,7 +34,6 @@ class PlantShowPage extends Component {
                                     </div>
                                     <div className="col-sm-12 text-center button-row">
                                         <Link to='/plants' className="btn btn-default">BACK</Link>
-                                        <Link to='/' className="btn btn-danger">HOME</Link>
                                     </div>
                                 </div>
                             </div>
