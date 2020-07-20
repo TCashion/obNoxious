@@ -1,13 +1,18 @@
 const Report = require('../models/report');
 
 async function create(req, res) {
-    console.log(req.body)
-    // try {
-    //     const report = await Report.create(req.body);
-    //     res.status(201).json(report);
-    // } catch (err) {
-    //     res.status(500).json(err)
-    // }
+    const newNote = {
+        body: req.body.note,
+        date: req.body.date,
+    }
+    try {
+        const report = await Report.findById(req.body.parentReportId);
+        report.notes.push(newNote);
+        report.save();
+        res.status(201).json(report);
+    } catch (err) {
+        res.status(500).json(err)
+    }
 }
 
 // async function deleteOne(req, res) {
