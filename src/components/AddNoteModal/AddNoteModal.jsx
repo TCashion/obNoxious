@@ -8,6 +8,10 @@ class AddNoteModal extends Component {
         note: { ...this.getInitialNoteState() }
     }
 
+    componentDidMount() {
+        this.resetModal();
+    }
+
     getInitialNoteState() {
         return {
             user: this.props.reportData.user,
@@ -15,16 +19,6 @@ class AddNoteModal extends Component {
             note: '',
             date: this.props.getTodaysDate()
         }
-    }
-
-    componentDidMount() {
-        const options = {
-            inDuration: 250,
-            outDuration: 250,
-            opacity: 0.5,
-            dismissable: false,
-        }
-        M.Modal.init(this.Modal, options)
     }
 
     handleChange = (e) => {
@@ -46,9 +40,23 @@ class AddNoteModal extends Component {
         }))
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = async (e) => {
         e.preventDefault();
-        this.props.handleAddNote(this.state.note)
+        await this.props.handleAddNote(this.state.note);
+        this.setState({
+            note: {...this.getInitialNoteState()}
+        });
+        this.resetModal();
+    }
+
+    resetModal = () => {
+        const options = {
+            inDuration: 250,
+            outDuration: 250,
+            opacity: 0.5,
+            dismissable: false,
+        }
+        M.Modal.init(this.Modal, options)
     }
 
     render() {
@@ -78,7 +86,7 @@ class AddNoteModal extends Component {
                                     id="note" 
                                     name="note" 
                                     className="materialize-textarea" 
-                                    defaultValue={this.state.note.note}
+                                    value={this.state.note.note}
                                     onChange={this.handleChange}
                                 ></textarea>
                             </div>
