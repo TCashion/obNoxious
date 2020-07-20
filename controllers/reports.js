@@ -19,7 +19,9 @@ async function create(req, res) {
         const plant = await Plant.findOne({commonName: req.body.noxiousSpecies})
         req.body.noxiousSpecies = plant;
         const report = await Report.create(req.body);
-        res.status(201).json(report);
+        Report.populate(report, { path: 'user', model: 'User' }, function(err, report) {
+            res.status(201).json(report);
+        })
     } catch (err) {
         res.status(500).json(err)
     }
