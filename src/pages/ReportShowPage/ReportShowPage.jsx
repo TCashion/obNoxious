@@ -46,31 +46,49 @@ class ReportShowPage extends Component {
                                 <div className="card-content">
                                     <div className="card-title">
                                         Notes:
+                                        {this.state.reportData.user._id === this.props.user._id ?
+                                            <div className="col-sm-12 button-row" style={{ display: 'inline' }}>
+                                                <AddNoteModal
+                                                    getTodaysDate={this.props.getTodaysDate}
+                                                    handleAddNote={this.props.handleAddNote}
+                                                    history={this.props.history}
+                                                    reportData={this.state.reportData}
+                                                    parseDate={this.props.parseDate}
+                                                />
+                                            </div>
+                                            :
+                                            <></>
+                                        }
                                     </div>
                                     <div className="input-field col s12">
                                         {this.state.reportData.notes.length ?
-                                            <p>Got some notes, yet.</p>
+                                            <>
+                                                <p>Notes submitted by {this.state.reportData.user.name}:</p>
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Date</th>
+                                                            <th>Note</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {this.state.reportData.notes.map((note) =>
+                                                            <tr>
+                                                                <td>{this.props.parseDate(new Date(note.date))}</td>
+                                                                <td>{note.body}</td>
+                                                            </tr>
+                                                        )}
+                                                    </tbody>
+                                                </table>
+                                            </>
                                             :
                                             <>
                                                 <h6 className="left-align" style={{ display: 'inline' }}>No notes, yet.</h6>
-                                                {this.state.reportData.user._id === this.props.user._id ?
-                                                    <div className="col-sm-12 button-row" style={{ display: 'inline' }}>
-                                                        <AddNoteModal
-                                                            getTodaysDate={this.props.getTodaysDate}
-                                                            handleAddNote={this.props.handleAddNote}
-                                                            history={this.props.history}
-                                                            reportData={this.state.reportData}
-                                                            parseDate={this.props.parseDate}
-                                                        />
-                                                    </div>
-                                                    :
-                                                    <></>
-                                                }
                                             </>
                                         }
                                     </div>
                                     <div>
-                                        Notes
+                                        <p>Check back later for updates.</p>
                                     </div>
                                 </div>
                             </div>
