@@ -28,7 +28,7 @@ function NavDropdown(props) {
                             >PLANTS</a>
                             <Link
                                 to='/plants/new'
-                                className="collection-item"
+                                className="collection-item sidenav-close"
                                 onClick={props.resetLinksToHidden}
                             >New Plant to Database</Link>
                             <a 
@@ -37,7 +37,7 @@ function NavDropdown(props) {
                             >REPORTS</a>
                             <Link
                                 to='/reports/new'
-                                className="collection-item"
+                                className="collection-item sidenav-close"
                                 onClick={props.resetLinksToHidden}
                             >Report a Sighting</Link>
                         </>
@@ -52,7 +52,7 @@ function NavDropdown(props) {
                             >PLANTS</a>
                             <Link
                                 to='/plants'
-                                className="collection-item"
+                                className="collection-item sidenav-close"
                                 onClick={props.resetLinksToHidden}
                             >All Plants In Database</Link>
                             <a
@@ -61,7 +61,7 @@ function NavDropdown(props) {
                             >REPORTS</a>
                             <Link
                                 to='/reports'
-                                className="collection-item"
+                                className="collection-item sidenav-close"
                                 onClick={props.resetLinksToHidden}
                             >All User Reports</Link>
                         </>

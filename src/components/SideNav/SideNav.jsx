@@ -12,7 +12,11 @@ function SideNav(props) {
                         <p className="NavBar-welcome-message">Welcome, {props.user.name}!</p>
                     </li>
                     <li>
-                        <Link to='/' onClick={props.resetLinksToHidden}>HOME</Link>
+                        <Link
+                            className="sidenav-close"
+                            onClick={props.resetLinksToHidden}
+                            to='/'
+                        >HOME</Link>
                     </li>
                     <li>
                         <a href='#!' onClick={props.handleAddLinkClick}>+ Add</a>
@@ -31,16 +35,25 @@ function SideNav(props) {
                         />
                     </li>
                     <li>
-                        <Link to='/login' onClick={props.handleLogout}>LOG OUT</Link>
+                        <Link
+                            className="sidenav-close"
+                            onClick={props.handleLogout}
+                            to='/login'
+                        >LOG OUT</Link>
                     </li>
                 </ul>
                 :
                 <ul id="slide-out" className="left sidenav">
                     <li>
-                        <Link to='/signup'>SIGN UP</Link>
+                        <Link
+                            className="sidenav-close"
+                            to='/signup'
+                        >SIGN UP</Link>
                     </li>
                     <li>
-                        <Link to='/login'>LOG IN</Link>
+                        <Link
+                            className="sidenav-close"
+                            to='/login'>LOG IN</Link>
                     </li>
                 </ul>
             }
