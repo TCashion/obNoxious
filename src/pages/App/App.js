@@ -68,6 +68,7 @@ class App extends Component {
   }
 
   parseDate(date) {
+    if (typeof(date) === 'string') date = new Date(date.split('.')[0]);
     const yyyy = date.getFullYear();
     let mm = date.getMonth() + 1;
     if (mm < 10) mm = '0' + mm;

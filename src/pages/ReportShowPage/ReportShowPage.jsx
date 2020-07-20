@@ -96,7 +96,7 @@ class ReportShowPage extends Component {
                                                     <tbody>
                                                         {this.state.reportData.notes.map((note) =>
                                                             <tr key={note._id}>
-                                                                <td>{this.props.parseDate(new Date(note.date))}</td>
+                                                                <td>{this.props.parseDate(note.date)}</td>
                                                                 <td>{note.body}</td>
                                                             </tr>
                                                         )}

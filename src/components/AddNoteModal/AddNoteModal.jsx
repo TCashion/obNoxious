@@ -5,7 +5,8 @@ import { DatePicker } from 'react-materialize';
 
 class AddNoteModal extends Component {
     state = {
-        note: { ...this.getInitialNoteState() }
+        note: { ...this.getInitialNoteState() }, 
+        currentDate: this.props.parseDate(new Date())
     }
 
     componentDidMount() {
