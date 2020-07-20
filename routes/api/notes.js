@@ -8,6 +8,8 @@ const authorizations = require('../../config/middleware/authorizations');
 
 /*---------- Protected Routes ----------*/
 router.post('/', authorizations.checkUserLoggedIn, authorizations.checkUserIsCreator, notesCtrl.create)
+// router.delete('/', authorizations.checkUserLoggedIn, authorizations.checkUserIsCreator, notesCtrl.deleteOne)
+router.delete('/', authorizations.checkUserLoggedIn, authorizations.checkUserIsCreator, notesCtrl.deleteOne)
 
 module.exports = router; 
 

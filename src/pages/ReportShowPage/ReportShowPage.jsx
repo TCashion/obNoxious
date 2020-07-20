@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './ReportShowPage.css';
 import DeleteModal from '../../components/DeleteModal/DeleteModal';
 import AddNoteModal from '../../components/AddNoteModal/AddNoteModal';
+import DeleteNoteModal from '../../components/DeleteNoteModal/DeleteNoteModal';
 import notesService from '../../services/notesService';
 
 class ReportShowPage extends Component {
@@ -20,8 +21,17 @@ class ReportShowPage extends Component {
         }));
     }
 
+    handleDeleteNote = async (note) => {
+        note.user=this.state.reportData.user;
+        note.reportId=this.state.reportData._id;
+        const updatedReport = await notesService.deleteNote(note);
+        this.setState((state) => ({
+            reportData: updatedReport
+        }));
+    }
+
     sortNotesByDateAscending = () => {
-        const reportDataCopy = {...this.state.reportData};
+        const reportDataCopy = { ...this.state.reportData };
         const notesCopy = [...reportDataCopy.notes];
         notesCopy.sort(this.props.sortByDateAscending);
         reportDataCopy.notes = notesCopy;
@@ -89,6 +99,11 @@ class ReportShowPage extends Component {
                                                 <table>
                                                     <thead>
                                                         <tr>
+                                                            {this.state.reportData.user._id === this.props.user._id ?
+                                                                <th></th>
+                                                                :
+                                                                <></>
+                                                            }
                                                             <th>Date</th>
                                                             <th>Note</th>
                                                         </tr>
@@ -96,6 +111,18 @@ class ReportShowPage extends Component {
                                                     <tbody>
                                                         {this.state.reportData.notes.map((note) =>
                                                             <tr key={note._id}>
+                                                                {this.state.reportData.user._id === this.props.user._id ?
+                                                                    <td>
+                                                                        <div className="col-sm-12 button-row" style={{ display: 'inline' }}>
+                                                                            <DeleteNoteModal 
+                                                                                handleDeleteNote={this.handleDeleteNote}
+                                                                                note={note}
+                                                                            />
+                                                                        </div>
+                                                                    </td>
+                                                                    :
+                                                                    <></>
+                                                                }
                                                                 <td>{this.props.parseDate(note.date)}</td>
                                                                 <td>{note.body}</td>
                                                             </tr>
