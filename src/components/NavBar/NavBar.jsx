@@ -85,6 +85,7 @@ class NavBar extends Component {
                         </div>
                         :
                         <div className="navbar-fixed">
+                            <a href="#!" data-target="slide-out" className="sidenav-trigger left NavBar-menu-icon show-on-sm"><i className="material-icons">menu</i></a>
                             <nav>
                                 <div className="nav-wrapper">
                                     <ul className="right hide-on-sm-and-down">
