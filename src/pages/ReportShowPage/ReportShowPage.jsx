@@ -98,7 +98,9 @@ class ReportShowPage extends Component {
                                                 />
                                             </div>
                                             :
-                                            <></>
+                                            <>
+                                            <p style={{color: 'white'}}>obNoxious</p>
+                                            </>
                                         }
                                     </div>
                                 </div>
