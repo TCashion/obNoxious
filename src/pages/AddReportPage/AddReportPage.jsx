@@ -36,7 +36,7 @@ class AddReportPage extends Component {
                 ...state.report, 
                 date: this.props.parseDate(e)
             }
-        }))
+        }));
     }
 
     handleSubmit = async (e) => {

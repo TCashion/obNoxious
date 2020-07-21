@@ -10,22 +10,29 @@ class MapDisplay extends Component {
     }
 
     initMap = async () => {
-        const locations = this.props.reportData.location;
+        const location = this.props.location;
         mapboxgl.accessToken = await this.getMapBoxToken();
         var map = new mapboxgl.Map({
             container: 'map-container',
             style: 'mapbox://styles/mapbox/satellite-v9', // stylesheet location
-            center: [locations.long, locations.lat], // starting position [lng, lat]
+            center: [location.long, location.lat], // starting position [lng, lat]
             zoom: 14 // starting zoom
         });
-        this.initMapMarkers(locations, map)
+        this.initMapMarkers(location, map)
     }
 
-    initMapMarkers = (locations, map) => {
-        const markerCoordsLngLat = [locations.long, locations.lat]
-        return new Marker({ draggable: true })
+    initMapMarkers = (location, map) => {
+        const markerCoordsLngLat = [location.long, location.lat]
+        const marker = new Marker({ draggable: true })
             .setLngLat(markerCoordsLngLat)
             .addTo(map)
+
+        marker.on('dragend', () => this.onDragEnd(marker))
+    }
+
+    onDragEnd(marker) {
+        const newLngLat = marker.getLngLat();
+        this.props.handleMoveMarker(newLngLat);
     }
 
     /* ---------- Lifecycle methods ---------- */

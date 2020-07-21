@@ -45,6 +45,19 @@ class ReportShowPage extends Component {
         });
     }
 
+    handleMoveMarker = (newLngLat) => {
+        const newLocation = {
+            lat: newLngLat.lat,
+            long: newLngLat.lng
+        }
+        this.setState((state) => ({
+            reportData: {
+                ...state.reportData, 
+                location: newLocation
+            }
+        }));
+    }
+    
     removeStateFromLocalStorage = () => {
         localStorage.removeItem('reportData');
     }
@@ -108,7 +121,8 @@ class ReportShowPage extends Component {
                             </div>
                         </div>
                         <MapDisplay 
-                            reportData={this.state.reportData}
+                            location={this.state.reportData.location}
+                            handleMoveMarker={this.handleMoveMarker}
                         />
                         <div className="col s12">
                             <div className="card ReportShow-card">
