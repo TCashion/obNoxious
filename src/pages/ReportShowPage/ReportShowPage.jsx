@@ -7,11 +7,15 @@ import notesService from '../../services/notesService';
 
 class ReportShowPage extends Component {
     state = {
-        reportData: this.props.location.state.report
+        reportData: {...this.getInitialReportState()}
     }
 
-    componentDidMount() {
-        this.sortNotesByDateAscending();
+    getInitialReportState() {
+        if (localStorage.getItem('reportData')) {
+            return JSON.parse(localStorage.getItem('reportData'));
+        } else {
+            return this.props.location.state.report
+        }
     }
 
     handleAddNote = async (note) => {
@@ -19,6 +23,11 @@ class ReportShowPage extends Component {
         this.setState((state) => ({
             reportData: updatedReport
         }));
+        this.saveStateToLocalStorage(this.state.reportData);
+        this.props.history.push({
+            pathname: '/reports/detail',
+            state: this.state
+        });
     }
 
     handleDeleteNote = async (note) => {
@@ -28,6 +37,19 @@ class ReportShowPage extends Component {
         this.setState((state) => ({
             reportData: updatedReport
         }));
+        this.saveStateToLocalStorage(this.state.reportData);
+        this.props.history.push({
+            pathname: '/reports/detail',
+            state: this.state
+        });
+    }
+
+    removeStateFromLocalStorage = () => {
+        localStorage.removeItem('reportData');
+    }
+
+    saveStateToLocalStorage = (reportData) => {
+        localStorage.setItem('reportData', JSON.stringify(reportData))
     }
 
     sortNotesByDateAscending = () => {
@@ -38,6 +60,16 @@ class ReportShowPage extends Component {
         this.setState((state) => ({
             reportData: reportDataCopy
         }))
+    }
+
+    /* ---------- Lifecycle methods ---------- */
+
+    componentDidMount() {
+        this.sortNotesByDateAscending();
+    }
+
+    componentWillUnmount() {
+        this.removeStateFromLocalStorage();
     }
 
     render() {
