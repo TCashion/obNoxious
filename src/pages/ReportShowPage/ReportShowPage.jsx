@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import mapboxgl from 'mapbox-gl';
 import './ReportShowPage.css';
 import DeleteModal from '../../components/DeleteModal/DeleteModal';
 import AddNoteModal from '../../components/AddNoteModal/AddNoteModal';
 import DeleteNoteModal from '../../components/DeleteNoteModal/DeleteNoteModal';
 import notesService from '../../services/notesService';
+import mapboxService from '../../services/mapboxService';
 
 class ReportShowPage extends Component {
     state = {
-        reportData: {...this.getInitialReportState()}
+        reportData: { ...this.getInitialReportState() }
     }
 
     getInitialReportState() {
@@ -16,6 +18,11 @@ class ReportShowPage extends Component {
         } else {
             return this.props.location.state.report
         }
+    }
+
+    getMapBoxToken = async () => {
+        const mapBoxToken = await mapboxService.getMapBoxAccessToken();
+        return mapBoxToken;
     }
 
     handleAddNote = async (note) => {
@@ -31,8 +38,8 @@ class ReportShowPage extends Component {
     }
 
     handleDeleteNote = async (note) => {
-        note.user=this.state.reportData.user;
-        note.reportId=this.state.reportData._id;
+        note.user = this.state.reportData.user;
+        note.reportId = this.state.reportData._id;
         const updatedReport = await notesService.deleteNote(note);
         this.setState((state) => ({
             reportData: updatedReport
@@ -42,6 +49,17 @@ class ReportShowPage extends Component {
             pathname: '/reports/detail',
             state: this.state
         });
+    }
+
+    initMap = async () => {
+        mapboxgl.accessToken = await this.getMapBoxToken();
+        var map = new mapboxgl.Map({
+            container: 'map-container',
+            style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+            center: [-105, 39.75], // starting position [lng, lat]
+            zoom: 10 // starting zoom
+        });
+        return map;
     }
 
     removeStateFromLocalStorage = () => {
@@ -66,6 +84,7 @@ class ReportShowPage extends Component {
 
     componentDidMount() {
         this.sortNotesByDateAscending();
+        this.initMap();
     }
 
     componentWillUnmount() {
@@ -105,6 +124,16 @@ class ReportShowPage extends Component {
                             </div>
                         </div>
                         <div className="col s12 m6">
+                            <div className="card ReportShow-card">
+                                <div className="card-content" id="map-container">
+                                    <div className="card-title">
+                                        MAP
+                                    </div>
+                                    <div id='map' style={{ width: '400px', height: '300px' }}></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col s12">
                             <div className="card ReportShow-card">
                                 <div className="card-content">
                                     <div className="card-title">
@@ -146,7 +175,7 @@ class ReportShowPage extends Component {
                                                                 {this.state.reportData.user._id === this.props.user._id ?
                                                                     <td>
                                                                         <div className="col-sm-12 button-row" style={{ display: 'inline' }}>
-                                                                            <DeleteNoteModal 
+                                                                            <DeleteNoteModal
                                                                                 handleDeleteNote={this.handleDeleteNote}
                                                                                 note={note}
                                                                             />

@@ -1,7 +1,5 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const SALT_ROUNDS = 6; 
 
 async function signup(req, res) {
     const user = new User(req.body);
