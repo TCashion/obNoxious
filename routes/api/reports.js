@@ -4,9 +4,9 @@ const authorizations = require('../../config/middleware/authorizations');
 
 
 /*---------- Public Routes ----------*/
-router.get('/', reportsCtrl.index)
 
 /*---------- Protected Routes ----------*/
+router.get('/', authorizations.checkUserLoggedIn, reportsCtrl.index)
 router.post('/', authorizations.checkUserLoggedIn, reportsCtrl.create)
 router.delete('/', authorizations.checkUserLoggedIn, authorizations.checkUserIsCreator, reportsCtrl.deleteOne)
 

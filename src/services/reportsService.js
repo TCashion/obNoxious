@@ -6,6 +6,7 @@ function getReports() {
     return fetch(BASE_URL, {
         headers: new Headers({
             'Content-type': 'application/json',
+            'Authorization': `Bearer ${tokenService.getToken()}`
         })
     })
     .then(reports => reports.json());
