@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import mapboxgl from 'mapbox-gl';
 import './ReportShowPage.css';
 import DeleteModal from '../../components/DeleteModal/DeleteModal';
 import AddNoteModal from '../../components/AddNoteModal/AddNoteModal';
 import DeleteNoteModal from '../../components/DeleteNoteModal/DeleteNoteModal';
 import notesService from '../../services/notesService';
-import mapboxService from '../../services/mapboxService';
+import MapDisplay from '../../components/MapDisplay/MapDisplay';
 
 class ReportShowPage extends Component {
     state = {
@@ -18,11 +17,6 @@ class ReportShowPage extends Component {
         } else {
             return this.props.location.state.report
         }
-    }
-
-    getMapBoxToken = async () => {
-        const mapBoxToken = await mapboxService.getMapBoxAccessToken();
-        return mapBoxToken;
     }
 
     handleAddNote = async (note) => {
@@ -51,17 +45,6 @@ class ReportShowPage extends Component {
         });
     }
 
-    initMap = async () => {
-        mapboxgl.accessToken = await this.getMapBoxToken();
-        var map = new mapboxgl.Map({
-            container: 'map-container',
-            style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-            center: [-105, 39.75], // starting position [lng, lat]
-            zoom: 10 // starting zoom
-        });
-        return map;
-    }
-
     removeStateFromLocalStorage = () => {
         localStorage.removeItem('reportData');
     }
@@ -84,7 +67,6 @@ class ReportShowPage extends Component {
 
     componentDidMount() {
         this.sortNotesByDateAscending();
-        this.initMap();
     }
 
     componentWillUnmount() {
@@ -117,22 +99,17 @@ class ReportShowPage extends Component {
                                                 />
                                             </div>
                                             :
-                                            <></>
+                                            <>
+                                            <p style={{color: 'white'}}>obNoxious</p>
+                                            </>
                                         }
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="col s12 m6">
-                            <div className="card ReportShow-card">
-                                <div className="card-content" id="map-container">
-                                    <div className="card-title">
-                                        MAP
-                                    </div>
-                                    <div id='map' style={{ width: '400px', height: '300px' }}></div>
-                                </div>
-                            </div>
-                        </div>
+                        <MapDisplay 
+                            reportData={this.state.reportData}
+                        />
                         <div className="col s12">
                             <div className="card ReportShow-card">
                                 <div className="card-content">
