@@ -1,20 +1,21 @@
 # obNoxious
 
-
 ## The problem
 
 #### What is a noxious weed? 
 
-Noxious weeds are a major issue in the realm of ecological conservation. Plant species brought from other continents and transplanted into wild environments tend to crowd out native vegetation due to their lack of natural competitors. This is an issue worldwide, but this app focuses on invasive species in North America, specifically the United States.  
+Noxious weeds are a major issue in ecological conservation. Plant species brought from other continents and introduced into wild environments tend to out-compete and crowd out native vegetation. This can result in widespread loss of habitat for both native plant and animal species. 
 
-When I initially set out to create this app, I was unable to find an API containing current, reliable, and public data specific to noxious weeds. So, with the help of the NatureServeExpolorer API (an extensive database of most plant and animal species in North America), I set out to create a public API. 
+When I initially set out to create this app, I was unable to find an API containing current, reliable, and public data specific to noxious weeds. So, with the help of the NatureServe Explorer (an extensive database of most plant and animal species in North America), I set out to create a public API to fill this gap in public resources. 
 
 ## The solution
 
+Inasive species are an issue worldwide, but this app focuses on those species invading North America, specifically the United States. 
+
 The obNoxious app servers two purposes: 
 
-* 1) To provide an API resource available to the public containing identifying information about noxious plant species. 
-* 2) To provide an interface for authenticated users to report sightings of noxious species, thereby building a user-supported database mapping the distribution of some of the most tenacious invaders.
+* 1) To provide an API resource available to the public that contains identifying information about noxious plant species. 
+* 2) To provide an interface for authenticated users to report sightings of noxious species, thereby building a user-supported database that maps the distribution of some of the US's most tenacious invaders.
 
 ## Accessing the API
 
@@ -74,3 +75,4 @@ Here are some of the major remaining icebox features:
 * AAU, I want to tag the locations of my reports with a built-in map API. 
 * AAU, I want to upload photos of the species that I report. 
 * AAU, I want to get special super-user access so that I can download all user reports (for example, if a state or agricultural agency would like to view the map data).
+* AAU, I want to be able to build on the data provided by NatureServe Explorer by adding data to fields such as aliases, origin, etc. 
