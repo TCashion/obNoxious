@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import mapboxgl, { Marker } from 'mapbox-gl';
 import mapboxService from '../../services/mapboxService';
+import './MapDisplay.css';
 
 class MapDisplay extends Component {
 
@@ -44,7 +45,7 @@ class MapDisplay extends Component {
     render() {
         return (
             <div className="col s12 m6">
-                <div className="card ReportShow-card">
+                <div className="card MapDisplay-card">
                     <div className="card-content" id="map-container">
                         <div className="card-title">
                             MAP
