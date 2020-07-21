@@ -169,7 +169,7 @@ class AddPlantPage extends Component {
                                     :
                                     <>
                                         <div className="card-title">
-                                            Enter the common name for the plant you wish to add:
+                                            Enter the common or scientific name for the plant you wish to add:
                                         </div>
                                         <div>
                                             <form onSubmit={this.handleSubmitSearch} >

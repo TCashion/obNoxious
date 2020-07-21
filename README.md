@@ -24,7 +24,7 @@ The method and URL endpoint for the obNoxious API are:
 GET https://obnoxious.herokuapp.com/api/plants
 ```
 
-(Screenshot example below)
+(Screenshot example [below](#screenshots))
 
 Querying the endpoint will return an array of objects, with each object representing a specific plant record. 
 
@@ -34,13 +34,16 @@ These endpoints are fully public, so you do not need an access token or API key.
 
 Check out some of the features of the obNoxious app: 
 
-    ![Postman plant query]()
-    ![Responsive]()
-    ![Authentication]()
-    ![]()
-    ![]()
-    ![]()
-    ![]()
+* Publicly available API (`GET https://obnoxious.herokuapp.com/api/plants`)
+![Postman plant query](https://i.imgur.com/I16Ul80.png)
+* Mobile-first, responsive design
+![Responsive](https://i.imgur.com/Cnut0Rd.png)
+* Full authentication capabilities, including changing password
+![Authentication](https://i.imgur.com/V3RktZH.png)
+* Ability for authenticated users to contribute to the database
+![Add Plants](https://i.imgur.com/huWMlvN.png)
+* Logic to prevent duplicate database entries
+![Prevent Duplicates](https://i.imgur.com/OPJiMSy.png)
 
 ## Technologies Used
 
@@ -66,4 +69,8 @@ And, as mentioned before, the NatureServe Explorer API:
 
 ## Next Steps 
 
-* 
+Here are some of the major remaining icebox features: 
+
+* AAU, I want to tag the locations of my reports with a built-in map API. 
+* AAU, I want to upload photos of the species that I report. 
+* AAU, I want to get special super-user access so that I can download all user reports (for example, if a state or agricultural agency would like to view the map data).
