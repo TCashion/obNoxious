@@ -14,6 +14,8 @@ class ReportIndexPage extends Component {
         })
     }
 
+    /* ---------- Lifecycle methods ---------- */
+
     componentDidMount() {
         this.getReports(); 
     }

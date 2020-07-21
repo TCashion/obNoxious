@@ -9,16 +9,6 @@ class AddNoteModal extends Component {
         currentDate: this.props.parseDate(new Date())
     }
 
-    componentDidMount() {
-        const options = {
-            inDuration: 250,
-            outDuration: 250,
-            opacity: 0.5,
-            dismissable: false,
-        }
-        M.Modal.init(this.Modal, options)
-    }
-
     getInitialNoteState() {
         return {
             user: this.props.reportData.user,
@@ -56,6 +46,18 @@ class AddNoteModal extends Component {
 
     resetModalState = () => {
         this.setState({note: {...this.getInitialNoteState()}})
+    }
+
+    /* ---------- Lifecycle methods ---------- */
+
+    componentDidMount() {
+        const options = {
+            inDuration: 250,
+            outDuration: 250,
+            opacity: 0.5,
+            dismissable: false,
+        }
+        M.Modal.init(this.Modal, options)
     }
 
     render() {

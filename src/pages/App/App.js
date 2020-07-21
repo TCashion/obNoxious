@@ -98,6 +98,8 @@ class App extends Component {
     return firstDate - secondDate;
   }
 
+  /* ---------- Lifecycle methods ---------- */
+
   componentDidMount = () => {
     this.getAllPlants();
   }

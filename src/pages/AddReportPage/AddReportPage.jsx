@@ -68,12 +68,14 @@ class AddReportPage extends Component {
         document.body.appendChild(scriptDiv)
     }
 
-    componentDidMount() {
-        this.updateSelectOptions();
-    }
-
     validateForm() {
         return !(this.state.report.noxiousSpecies);
+    }
+    
+    /* ---------- Lifecycle methods ---------- */
+    
+    componentDidMount() {
+        this.updateSelectOptions();
     }
 
     render() {

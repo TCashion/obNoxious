@@ -4,6 +4,15 @@ import M from 'materialize-css';
 // namespace of data changed to generic 'item' for reusability
 
 class DeleteModal extends Component {
+    
+
+    handleConfirmDelete = () => {
+        this.props.handleDeleteItem(this.props.itemData);
+        this.props.history.push(this.props.redirectRoute);
+    }
+
+    /* ---------- Lifecycle methods ---------- */
+
     componentDidMount() {
         const options = {
             inDuration: 250,
@@ -12,11 +21,6 @@ class DeleteModal extends Component {
             dismissable: false,
         }
         M.Modal.init(this.Modal, options)
-    }
-
-    handleConfirmDelete = () => {
-        this.props.handleDeleteItem(this.props.itemData);
-        this.props.history.push(this.props.redirectRoute);
     }
 
     render() {

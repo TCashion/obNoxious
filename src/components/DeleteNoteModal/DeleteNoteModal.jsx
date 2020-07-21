@@ -3,7 +3,14 @@ import M from 'materialize-css';
 
 class DeleteNoteModal extends Component {
     modalId = `#delete-note/${this.props.note._id}`
-
+    
+    handleSubmit = async (e) => {
+        e.preventDefault();
+        this.props.handleDeleteNote(this.props.note);
+    }
+    
+    /* ---------- Lifecycle methods ---------- */
+    
     componentDidMount() {
         const options = {
             inDuration: 250,
@@ -12,11 +19,6 @@ class DeleteNoteModal extends Component {
             dismissable: false,
         }
         M.Modal.init(this.Modal, options)
-    }
-
-    handleSubmit = async (e) => {
-        e.preventDefault();
-        this.props.handleDeleteNote(this.props.note);
     }
 
     render() {

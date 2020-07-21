@@ -11,10 +11,6 @@ class NavBar extends Component {
         viewDropdownVisible: false,
     }
 
-    componentDidMount = () => {
-        this.initializeSideNav()
-    }
-
     handleAddLinkClick = () => {
         this.toggleVisibility('addDropdownVisible');
     }
@@ -40,6 +36,12 @@ class NavBar extends Component {
             addDropdownVisible: false,
             viewDropdownVisible: false,
         });
+    }
+
+    /* ---------- Lifecycle methods ---------- */
+
+    componentDidMount = () => {
+        this.initializeSideNav()
     }
 
     render() {
