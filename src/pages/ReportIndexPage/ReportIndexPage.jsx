@@ -26,7 +26,7 @@ class ReportIndexPage extends Component {
                     <div className="card">
                         <div className="card-content">
                             <div className="card-title">
-                                <h5>User Reports:</h5>
+                                <h5>User Reported Sightings of Known Invasive Species:</h5>
                             </div>
                             <div>
                                 <table className="centered">

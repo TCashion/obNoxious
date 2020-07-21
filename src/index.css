@@ -80,3 +80,7 @@ h1, h2, h3, h4, h5, h6 {
 .is-today button, .datepicker-done, .datepicker-cancel {
   color: var(--main-minus-two);
 }
+
+.card {
+  margin: 1rem;
+}

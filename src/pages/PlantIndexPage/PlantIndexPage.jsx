@@ -15,6 +15,7 @@ function PlantIndexPage(props) {
                         <div className="card-content">
                             <div className="card-title">
                                 <h5>Registered plants:</h5>
+                                <p>The following species are confirmed non-native, invasive species in North America.</p>
                             </div>
                             <div>
                                 <table className="centered">
