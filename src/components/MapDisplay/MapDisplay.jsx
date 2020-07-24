@@ -5,15 +5,22 @@ import './MapDisplay.css';
 
 class MapDisplay extends Component {
 
-    getCurrentPosition = () => {
-        return navigator.geolocation.getCurrentPosition(this.setClientPosition);
+    getMarkersArr = () => {
+        let filledMarkersArr = [];
+        if (this.props.type === 'createReport') {
+            filledMarkersArr.push(this.state.clientPositionLngLat);
+        } else if (this.props.type === 'showReport') {
+            this.props.reportData.featureCollection.features.forEach((feature) => {
+                feature.geometry.coordinates.forEach((pointCoordinates) => {
+                    filledMarkersArr.push(pointCoordinates)
+                });
+            });
+        };
+        return filledMarkersArr;
     }
 
-    setClientPosition = (position) => {
-        const clientPositionLngLat = [position.coords.longitude, position.coords.latitude];
-        this.setState({clientPositionLngLat});
-        if (this.props.type === 'createReport') this.props.setClientCoordinatesToForm(clientPositionLngLat);
-        this.initMap();
+    getCurrentPosition = () => {
+        return navigator.geolocation.getCurrentPosition(this.setClientPosition);
     }
 
     getMapBoxToken = async () => {
@@ -22,13 +29,7 @@ class MapDisplay extends Component {
     }
 
     initMap = async () => {
-        // if this is the createReport page, set one value as client location then pass that in to initmarker
-        let markersArr = [];
-        if (this.props.type === 'createReport') {
-            markersArr.push(this.state.clientPositionLngLat);
-        }
-        // if it's a show page, this could be an array, 
-        // so get array from report data 
+        const markersArr = this.getMarkersArr();
         mapboxgl.accessToken = await this.getMapBoxToken();
         var map = new mapboxgl.Map({
             container: 'map-container',
@@ -52,6 +53,13 @@ class MapDisplay extends Component {
     onDragEnd(marker) {
         const newLngLat = marker.getLngLat();
         this.props.handleMoveMarker(newLngLat);
+    }
+
+    setClientPosition = (position) => {
+        const clientPositionLngLat = [position.coords.longitude, position.coords.latitude];
+        this.setState({clientPositionLngLat});
+        if (this.props.type === 'createReport') this.props.setClientCoordinatesToForm(clientPositionLngLat);
+        this.initMap();
     }
 
     /* ---------- Lifecycle methods ---------- */
