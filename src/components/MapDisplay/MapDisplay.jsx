@@ -75,9 +75,9 @@ class MapDisplay extends Component {
                 <div className="card MapDisplay-card">
                     <h4>{this.props.type === 'createReport' ? 'Report location: ' : 'Reported Location(s): '}</h4>
                     <div className="card-content">
-                        <div className="card MapDisplay-card">
-                            <div className="card-content" id="map-container">
-                                <div id='map' style={{ width: '400px', height: '300px' }}></div>
+                        <div className="MapDisplay-content">
+                            <div id="map-container">
+                                <div id='map'></div>
                             </div>
                         </div>
                     </div>
