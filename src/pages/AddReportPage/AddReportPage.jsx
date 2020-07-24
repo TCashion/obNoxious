@@ -34,14 +34,14 @@ class AddReportPage extends Component {
     handleDateChange = (e) => {
         this.setState((state) => ({
             report: {
-                ...state.report, 
+                ...state.report,
                 date: this.props.parseDate(e)
             }
         }));
     }
 
     handleSubmit = async (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
         let newReport = await this.props.handleAddReport(this.state.report);
         this.props.history.push({
             pathname: '/reports/detail',
@@ -72,9 +72,9 @@ class AddReportPage extends Component {
     validateForm() {
         return !(this.state.report.noxiousSpecies);
     }
-    
+
     /* ---------- Lifecycle methods ---------- */
-    
+
     componentDidMount() {
         this.updateSelectOptions();
     }
@@ -113,20 +113,20 @@ class AddReportPage extends Component {
                                             <DatePicker
                                                 defaultValue={this.state.report.date}
                                                 id="date"
-                                                onChange={this.handleDateChange} 
+                                                onChange={this.handleDateChange}
                                             />
                                         </div>
                                         <div className="col-sm-12 text-center button-row">
                                             <button type="submit" className="btn btn-default" disabled={this.validateForm()}>Create Report</button>
                                         </div>
                                     </form>
-                                    <MapDisplay 
-                                        type='createReport'
-                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <MapDisplay
+                        type='createReport'
+                    />
                 </div>
                 <p style={{ color: `${this.state.messageColor}` }}>{this.state.message}</p>
                 <script>{`let selectEls; let selectInstances`}</script>

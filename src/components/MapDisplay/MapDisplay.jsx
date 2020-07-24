@@ -10,11 +10,13 @@ class MapDisplay extends Component {
     }
 
     setClientPosition = (position) => {
+        const clientPositionLngLat = [position.coords.longitude, position.coords.latitude];
         this.setState({
-            clientPositionLngLat: [position.coords.longitude, position.coords.latitude]
+            clientPositionLngLat
         });
+        this.initMap();
     }
-    
+
     getMapBoxToken = async () => {
         const mapBoxToken = await mapboxService.getMapBoxAccessToken();
         return mapBoxToken;
@@ -26,10 +28,10 @@ class MapDisplay extends Component {
         var map = new mapboxgl.Map({
             container: 'map-container',
             style: 'mapbox://styles/mapbox/satellite-v9', // stylesheet location
-            center: [location.lng, location.lat], // starting position [lng, lat]
+            center: location, // starting position [lng, lat]
             zoom: 14 // starting zoom
         });
-        this.initMapMarkers(location, map)
+        // this.initMapMarkers(location, map)
     }
 
     initMapMarkers = (location, map) => {
@@ -50,7 +52,6 @@ class MapDisplay extends Component {
 
     async componentDidMount() {
         this.getCurrentPosition();
-        // this.initMap();
     }
 
     render() {
@@ -60,7 +61,7 @@ class MapDisplay extends Component {
                     <div className="card-content" id="map-container">
                         <div className="card-title">
                             MAP
-                                    </div>
+                        </div>
                         <div id='map' style={{ width: '400px', height: '300px' }}></div>
                     </div>
                 </div>
