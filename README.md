@@ -73,6 +73,10 @@ And, as mentioned before, the NatureServe Explorer API:
 Here are some of the major remaining icebox features: 
 
 * AAU, I want to tag the locations of my reports with a built-in map API. 
+
+COMING SOON!
+![MapBox API](https://i.imgur.com/8KmG9lW.png)
+
 * AAU, I want to upload photos of the species that I report. 
 * AAU, I want to get special super-user access so that I can download all user reports (for example, if a state or agricultural agency would like to view the map data).
 * AAU, I want to be able to build on the data provided by NatureServe Explorer by adding data to fields such as aliases, origin, etc. 

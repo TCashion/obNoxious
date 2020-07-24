@@ -63,7 +63,7 @@ class AddNoteModal extends Component {
     render() {
         return (
             <div style={{ display: 'inline' }}>
-                <a className="waves-effect waves-light btn btn-default modal-trigger" href="#add-note">ADD A NOTE</a>
+                <a className="waves-effect waves-light btn btn-default AddNote-btn modal-trigger" href="#add-note">ADD A NOTE</a>
 
                 <div
                     ref={Modal => { this.Modal = Modal; }}

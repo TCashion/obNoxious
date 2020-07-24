@@ -1,3 +1,7 @@
 .AddNote-modal {
     height: 450px;
 }
+
+.AddNote-btn {
+    margin: 0 3rem;
+} 
