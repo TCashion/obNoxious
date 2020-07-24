@@ -11,9 +11,8 @@ class MapDisplay extends Component {
 
     setClientPosition = (position) => {
         const clientPositionLngLat = [position.coords.longitude, position.coords.latitude];
-        this.setState({
-            clientPositionLngLat
-        });
+        this.setState({clientPositionLngLat});
+        if (this.props.type === 'createReport') this.props.setClientCoordinatesToForm(clientPositionLngLat);
         this.initMap();
     }
 

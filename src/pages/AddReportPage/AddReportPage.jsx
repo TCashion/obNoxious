@@ -12,12 +12,31 @@ class AddReportPage extends Component {
         report: { ...this.getInitialReportState() }
     }
 
+    setClientCoordinatesToForm = (clientCoordindates) => {
+        this.setState((state) => ({
+            report: {
+                ...state.report,
+                featureCollection: {
+                    type: 'FeatureCollection',
+                    features: [{
+                        type: 'Feature',
+                        geometry: {
+                            geometryType: 'Point',
+                            coordinates: [clientCoordindates ? clientCoordindates : [0,0]]
+                        }
+                    }]
+                }
+            }
+        }));
+    }
+
     getInitialReportState() {
         return {
             user: this.props.user,
             noxiousSpecies: '',
-            date: this.props.getTodaysDate()
-        }
+            date: this.props.getTodaysDate(),
+            featureCollection: {}
+        };
     }
 
     handleChange = (e) => {
@@ -126,6 +145,7 @@ class AddReportPage extends Component {
                     </div>
                     <MapDisplay
                         type='createReport'
+                        setClientCoordinatesToForm={this.setClientCoordinatesToForm}
                     />
                 </div>
                 <p style={{ color: `${this.state.messageColor}` }}>{this.state.message}</p>
