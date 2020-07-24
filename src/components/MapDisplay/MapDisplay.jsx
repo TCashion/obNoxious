@@ -5,18 +5,28 @@ import './MapDisplay.css';
 
 class MapDisplay extends Component {
 
+    getCurrentPosition = () => {
+        return navigator.geolocation.getCurrentPosition(this.setClientPosition);
+    }
+
+    setClientPosition = (position) => {
+        this.setState({
+            clientPositionLngLat: [position.coords.longitude, position.coords.latitude]
+        });
+    }
+    
     getMapBoxToken = async () => {
         const mapBoxToken = await mapboxService.getMapBoxAccessToken();
         return mapBoxToken;
     }
 
     initMap = async () => {
-        const location = this.props.location;
+        const location = this.props.location ? this.props.location : this.state.clientPositionLngLat;
         mapboxgl.accessToken = await this.getMapBoxToken();
         var map = new mapboxgl.Map({
             container: 'map-container',
             style: 'mapbox://styles/mapbox/satellite-v9', // stylesheet location
-            center: [location.long, location.lat], // starting position [lng, lat]
+            center: [location.lng, location.lat], // starting position [lng, lat]
             zoom: 14 // starting zoom
         });
         this.initMapMarkers(location, map)
@@ -38,8 +48,9 @@ class MapDisplay extends Component {
 
     /* ---------- Lifecycle methods ---------- */
 
-    componentDidMount() {
-        this.initMap();
+    async componentDidMount() {
+        this.getCurrentPosition();
+        // this.initMap();
     }
 
     render() {

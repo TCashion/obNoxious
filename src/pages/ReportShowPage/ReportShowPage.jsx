@@ -123,6 +123,7 @@ class ReportShowPage extends Component {
                         <MapDisplay 
                             location={this.state.reportData.location}
                             handleMoveMarker={this.handleMoveMarker}
+                            type='showReport'
                         />
                         <div className="col s12">
                             <div className="card ReportShow-card">

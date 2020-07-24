@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import 'materialize-css';
 import './AddReportPage.css';
 import { DatePicker } from 'react-materialize';
+import MapDisplay from '../../components/MapDisplay/MapDisplay';
 
 class AddReportPage extends Component {
     state = {
@@ -119,6 +120,9 @@ class AddReportPage extends Component {
                                             <button type="submit" className="btn btn-default" disabled={this.validateForm()}>Create Report</button>
                                         </div>
                                     </form>
+                                    <MapDisplay 
+                                        type='createReport'
+                                    />
                                 </div>
                             </div>
                         </div>
