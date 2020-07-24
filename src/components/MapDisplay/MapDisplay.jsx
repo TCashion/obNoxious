@@ -56,7 +56,7 @@ class MapDisplay extends Component {
 
     /* ---------- Lifecycle methods ---------- */
 
-    async componentDidMount() {
+    componentDidMount() {
         this.getCurrentPosition();
     }
 
