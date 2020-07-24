@@ -159,7 +159,7 @@ class App extends Component {
                   handleAddPlant={this.handleAddPlant}
                   history={history}
                   parseDistribution={this.parseDistribution}
-                  parseTaxonomy={this.parseDistribution}
+                  parseTaxonomy={this.parseTaxonomy}
                   plants={this.state.plants}
                   user={this.state.user}
                 />

@@ -1,15 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const locationSchema = new mongoose.Schema({
-    lat: {
-        type: Number,
-        required: true
+const featureSchema = new mongoose.Schema({
+    type: {
+        type: String, 
+        default: 'Feature'
     },
-    lng: {
-        type: Number,
-        required: true
-    }
+    geometry: {
+        geometryType: {
+            type: String, 
+            default: 'Point',
+        },
+        coordinates: [Number]
+    }, 
+    properties: Object
 }, {
     timestamps: true
 })
@@ -39,7 +43,13 @@ const reportSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Plant'
     },
-    locations: [locationSchema],
+    featureCollection: {
+        type: {
+            type: String, 
+            default: 'FeatureCollection'
+        },
+        features: [featureSchema]
+    },
     date: {
         type: Date,
         default: function() {
