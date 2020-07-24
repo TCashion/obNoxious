@@ -19,7 +19,7 @@ class MapDisplay extends Component {
         return filledMarkersArr;
     }
 
-    getCurrentPosition = () => {
+    getClientCurrentPosition = () => {
         return navigator.geolocation.getCurrentPosition(this.setClientPosition);
     }
 
@@ -39,7 +39,7 @@ class MapDisplay extends Component {
         });
         this.initMapMarkers(markersArr, map);
     }
-    
+
     initMapMarkers = (markersArr, map) => {
         markersArr.forEach((marker) => {
             const markerCoordsLngLat = marker;
@@ -57,24 +57,29 @@ class MapDisplay extends Component {
 
     setClientPosition = (position) => {
         const clientPositionLngLat = [position.coords.longitude, position.coords.latitude];
-        this.setState({clientPositionLngLat});
-        if (this.props.type === 'createReport') this.props.setClientCoordinatesToForm(clientPositionLngLat);
+        this.setState({ clientPositionLngLat });
+        this.props.setClientCoordinatesToForm(clientPositionLngLat);
         this.initMap();
     }
 
     /* ---------- Lifecycle methods ---------- */
 
     componentDidMount() {
-        this.getCurrentPosition();
+        if (this.props.type === 'createReport') this.getClientCurrentPosition();
+        if (this.props.type === 'showReport') this.initMap();
     }
 
     render() {
         return (
             <div className="col s12 m6">
-                <h4>{this.props.type === 'createReport' ? 'Report location: ' : 'Location: '}</h4>
                 <div className="card MapDisplay-card">
-                    <div className="card-content" id="map-container">
-                        <div id='map' style={{ width: '400px', height: '300px' }}></div>
+                    <h4>{this.props.type === 'createReport' ? 'Report location: ' : 'Reported Location(s): '}</h4>
+                    <div className="card-content">
+                        <div className="card MapDisplay-card">
+                            <div className="card-content" id="map-container">
+                                <div id='map' style={{ width: '400px', height: '300px' }}></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
