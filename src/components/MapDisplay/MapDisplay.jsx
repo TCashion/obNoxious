@@ -31,15 +31,14 @@ class MapDisplay extends Component {
             center: location, // starting position [lng, lat]
             zoom: 14 // starting zoom
         });
-        // this.initMapMarkers(location, map)
+        this.initMapMarkers(location, map)
     }
 
     initMapMarkers = (location, map) => {
-        const markerCoordsLngLat = [location.long, location.lat]
+        const markerCoordsLngLat = location
         const marker = new Marker({ draggable: true })
             .setLngLat(markerCoordsLngLat)
             .addTo(map)
-
         marker.on('dragend', () => this.onDragEnd(marker))
     }
 
@@ -57,11 +56,9 @@ class MapDisplay extends Component {
     render() {
         return (
             <div className="col s12 m6">
+                <h4>{this.props.type === 'createReport' ? 'Report location: ' : 'Location: '}</h4>
                 <div className="card MapDisplay-card">
                     <div className="card-content" id="map-container">
-                        <div className="card-title">
-                            MAP
-                        </div>
                         <div id='map' style={{ width: '400px', height: '300px' }}></div>
                     </div>
                 </div>
