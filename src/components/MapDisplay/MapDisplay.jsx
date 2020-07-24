@@ -22,23 +22,31 @@ class MapDisplay extends Component {
     }
 
     initMap = async () => {
-        const location = this.props.location ? this.props.location : this.state.clientPositionLngLat;
+        // if this is the createReport page, set one value as client location then pass that in to initmarker
+        let markersArr = [];
+        if (this.props.type === 'createReport') {
+            markersArr.push(this.state.clientPositionLngLat);
+        }
+        // if it's a show page, this could be an array, 
+        // so get array from report data 
         mapboxgl.accessToken = await this.getMapBoxToken();
         var map = new mapboxgl.Map({
             container: 'map-container',
             style: 'mapbox://styles/mapbox/satellite-v9', // stylesheet location
-            center: location, // starting position [lng, lat]
+            center: markersArr[0], // starting position [lng, lat]
             zoom: 14 // starting zoom
         });
-        this.initMapMarkers(location, map)
+        this.initMapMarkers(markersArr, map);
     }
-
-    initMapMarkers = (location, map) => {
-        const markerCoordsLngLat = location
-        const marker = new Marker({ draggable: true })
-            .setLngLat(markerCoordsLngLat)
-            .addTo(map)
-        marker.on('dragend', () => this.onDragEnd(marker))
+    
+    initMapMarkers = (markersArr, map) => {
+        markersArr.forEach((marker) => {
+            const markerCoordsLngLat = marker;
+            const newMarker = new Marker({ draggable: true })
+                .setLngLat(markerCoordsLngLat)
+                .addTo(map)
+            newMarker.on('dragend', () => this.onDragEnd(newMarker))
+        });
     }
 
     onDragEnd(marker) {

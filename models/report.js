@@ -7,14 +7,14 @@ const featureSchema = new mongoose.Schema({
         default: 'Feature'
     },
     geometry: {
-        geometryType: {
+        type: {
             type: String, 
             default: 'Point',
         },
-        coordinates: [{
+        coordinates: [[{
             type: Number,
-            default: [0,0]
-        }]
+            default: 0
+        }]]
     }, 
     properties: Object
 }, {

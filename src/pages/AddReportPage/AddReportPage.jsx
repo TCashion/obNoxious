@@ -13,21 +13,7 @@ class AddReportPage extends Component {
     }
 
     setClientCoordinatesToForm = (clientCoordindates) => {
-        this.setState((state) => ({
-            report: {
-                ...state.report,
-                featureCollection: {
-                    type: 'FeatureCollection',
-                    features: [{
-                        type: 'Feature',
-                        geometry: {
-                            geometryType: 'Point',
-                            coordinates: [clientCoordindates ? clientCoordindates : [0,0]]
-                        }
-                    }]
-                }
-            }
-        }));
+        this.updatePositionOnState(clientCoordindates);
     }
 
     getInitialReportState() {
@@ -59,6 +45,11 @@ class AddReportPage extends Component {
         }));
     }
 
+    handleMoveMarker = (newLngLat) => {
+        const newLocation = [newLngLat.lng, newLngLat.lat];
+        this.updatePositionOnState(newLocation);
+    }
+
     handleSubmit = async (e) => {
         e.preventDefault();
         let newReport = await this.props.handleAddReport(this.state.report);
@@ -75,6 +66,24 @@ class AddReportPage extends Component {
             message: msg,
             messageColor: color
         });
+    }
+
+    updatePositionOnState = (newCoordinates) => {
+        this.setState((state) => ({
+            report: {
+                ...state.report,
+                featureCollection: {
+                    type: 'FeatureCollection',
+                    features: [{
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [newCoordinates ? newCoordinates : [0,0]]
+                        }
+                    }]
+                }
+            }
+        }));
     }
 
     updateSelectOptions() {
@@ -144,8 +153,9 @@ class AddReportPage extends Component {
                         </div>
                     </div>
                     <MapDisplay
-                        type='createReport'
+                        handleMoveMarker={this.handleMoveMarker}
                         setClientCoordinatesToForm={this.setClientCoordinatesToForm}
+                        type='createReport'
                     />
                 </div>
                 <p style={{ color: `${this.state.messageColor}` }}>{this.state.message}</p>

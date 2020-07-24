@@ -121,7 +121,7 @@ class ReportShowPage extends Component {
                             </div>
                         </div>
                         <MapDisplay 
-                            location={this.state.reportData.location}
+                            reportData={this.state.reportData}
                             handleMoveMarker={this.handleMoveMarker}
                             type='showReport'
                         />
