@@ -5,6 +5,10 @@ import './MapDisplay.css';
 
 class MapDisplay extends Component {
 
+    state = {
+        addMarkerOpen: false,
+    }
+
     getMarkersArr = () => {
         let filledMarkersArr = [];
         if (this.props.type === 'createReport') {
@@ -33,7 +37,7 @@ class MapDisplay extends Component {
         mapboxgl.accessToken = await this.getMapBoxToken();
         var map = new mapboxgl.Map({
             container: 'map-container',
-            style: 'mapbox://styles/mapbox/satellite-v9', // stylesheet location
+            style: 'mapbox://styles/mapbox/satellite-streets-v11', // stylesheet location
             center: markersArr[0], // starting position [lng, lat]
             zoom: 14 // starting zoom
         });
@@ -74,6 +78,7 @@ class MapDisplay extends Component {
             <div className="col s12 m6">
                 <div className="card MapDisplay-card">
                     <h4>{this.props.type === 'createReport' ? 'Report location: ' : 'Reported Location(s): '}</h4>
+                    <p>{this.props.type === 'createReport' ? 'Mark the initial point here. You can add more points on the next page.' : null}</p>
                     <div className="card-content">
                         <div className="MapDisplay-content">
                             <div id="map-container">
@@ -81,6 +86,7 @@ class MapDisplay extends Component {
                             </div>
                         </div>
                     </div>
+                    <button className="btn btn-default">ADD ANOTHER POINT</button>
                 </div>
             </div>
         )

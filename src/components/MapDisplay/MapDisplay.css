@@ -9,6 +9,14 @@
     margin: 1rem;
 }
 
+.MapDisplay-card > .card-content {
+    padding: 0 24px; 
+}
+
+.MapDisplay-card > .btn {
+    margin-bottom: 1rem;
+}
+
 @media only screen and (max-width: 768px) {
     .MapDisplay-content {
         margin: 0; 

@@ -8,12 +8,10 @@ function SideNav(props) {
         <>
             {props.user ?
                 <ul id="slide-out" className="left sidenav">
-                    <li>
-                        <li className="SideNav-logo-li">
-                            <div className="SideNav-logo-container">
-                                <img className="SideNav-logo" src="https://i.imgur.com/NMGuA3T.png" alt="Logo" />
-                            </div>
-                        </li>
+                    <li className="SideNav-logo-li">
+                        <div className="SideNav-logo-container">
+                            <img className="SideNav-logo" src="https://i.imgur.com/NMGuA3T.png" alt="Logo" />
+                        </div>
                         <p className="NavBar-welcome-message">Welcome, {props.user.name}!</p>
                     </li>
                     <li>
