@@ -1,5 +1,5 @@
 const router = require('express').Router(); 
-const mapBoxesCtrl = require('../../controllers/mapBoxes');
+const mapBoxesCtrl = require('../../controllers/mapboxes');
 const authorizations = require('../../config/middleware/authorizations');
 
 /*---------- Public Routes ----------*/
