@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import 'materialize-css';
 import './AddReportPage.css';
 import { DatePicker } from 'react-materialize';
+import MapDisplay from '../../components/MapDisplay/MapDisplay';
 
 class AddReportPage extends Component {
     state = {
@@ -11,12 +12,17 @@ class AddReportPage extends Component {
         report: { ...this.getInitialReportState() }
     }
 
+    setClientCoordinatesToForm = (clientCoordindates) => {
+        this.updatePositionOnState(clientCoordindates);
+    }
+
     getInitialReportState() {
         return {
             user: this.props.user,
             noxiousSpecies: '',
-            date: this.props.getTodaysDate()
-        }
+            date: this.props.getTodaysDate(),
+            featureCollection: {}
+        };
     }
 
     handleChange = (e) => {
@@ -33,14 +39,19 @@ class AddReportPage extends Component {
     handleDateChange = (e) => {
         this.setState((state) => ({
             report: {
-                ...state.report, 
+                ...state.report,
                 date: this.props.parseDate(e)
             }
-        }))
+        }));
+    }
+
+    handleMoveMarker = (newLngLat) => {
+        const newLocation = [newLngLat.lng, newLngLat.lat];
+        this.updatePositionOnState(newLocation);
     }
 
     handleSubmit = async (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
         let newReport = await this.props.handleAddReport(this.state.report);
         this.props.history.push({
             pathname: '/reports/detail',
@@ -57,6 +68,24 @@ class AddReportPage extends Component {
         });
     }
 
+    updatePositionOnState = (newCoordinates) => {
+        this.setState((state) => ({
+            report: {
+                ...state.report,
+                featureCollection: {
+                    type: 'FeatureCollection',
+                    features: [{
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [newCoordinates ? newCoordinates : [0,0]]
+                        }
+                    }]
+                }
+            }
+        }));
+    }
+
     updateSelectOptions() {
         const script =
             `
@@ -71,9 +100,9 @@ class AddReportPage extends Component {
     validateForm() {
         return !(this.state.report.noxiousSpecies);
     }
-    
+
     /* ---------- Lifecycle methods ---------- */
-    
+
     componentDidMount() {
         this.updateSelectOptions();
     }
@@ -112,7 +141,7 @@ class AddReportPage extends Component {
                                             <DatePicker
                                                 defaultValue={this.state.report.date}
                                                 id="date"
-                                                onChange={this.handleDateChange} 
+                                                onChange={this.handleDateChange}
                                             />
                                         </div>
                                         <div className="col-sm-12 text-center button-row">
@@ -123,6 +152,11 @@ class AddReportPage extends Component {
                             </div>
                         </div>
                     </div>
+                    <MapDisplay
+                        handleMoveMarker={this.handleMoveMarker}
+                        setClientCoordinatesToForm={this.setClientCoordinatesToForm}
+                        type='createReport'
+                    />
                 </div>
                 <p style={{ color: `${this.state.messageColor}` }}>{this.state.message}</p>
                 <script>{`let selectEls; let selectInstances`}</script>

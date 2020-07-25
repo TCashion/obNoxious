@@ -9,6 +9,7 @@ const usersRoutes = require('./routes/api/users');
 const plantsRoutes = require('./routes/api/plants');
 const reportsRoutes = require('./routes/api/reports');
 const notesRoutes = require('./routes/api/notes');
+const mapboxesRoutes = require('./routes/api/mapboxes');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/api/users', usersRoutes);
 app.use('/api/plants', plantsRoutes);
 app.use('/api/reports/notes', notesRoutes);
 app.use('/api/reports', reportsRoutes);
+app.use('/api/mapbox', mapboxesRoutes);
 
 // Catch all for bad routes 
 app.get('/*', (req, res) => {

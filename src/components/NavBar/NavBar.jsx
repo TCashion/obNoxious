@@ -54,6 +54,11 @@ class NavBar extends Component {
                                 <div className="nav-wrapper">
                                     <a href="#!" data-target="slide-out" className="sidenav-trigger left NavBar-menu-icon show-on-sm"><i className="material-icons">menu</i></a>
                                     <ul className="left hide-on-sm-and-down">
+                                        <li className="NavBar-logo-li">
+                                            <div className="NavBar-logo-container">
+                                                <img className="NavBar-logo" src="https://i.imgur.com/NMGuA3T.png" alt="Logo"/>
+                                            </div>
+                                        </li>
                                         <li>
                                             <Link to='/' onClick={this.resetLinksToHidden}>HOME</Link>
                                         </li>
@@ -103,7 +108,7 @@ class NavBar extends Component {
                         </div>
                     }
                 </nav>
-                <SideNav 
+                <SideNav
                     {...this.props}
                     addDropdownVisible={this.state.addDropdownVisible}
                     handleAddLinkClick={this.handleAddLinkClick}

@@ -4,10 +4,11 @@ import DeleteModal from '../../components/DeleteModal/DeleteModal';
 import AddNoteModal from '../../components/AddNoteModal/AddNoteModal';
 import DeleteNoteModal from '../../components/DeleteNoteModal/DeleteNoteModal';
 import notesService from '../../services/notesService';
+import MapDisplay from '../../components/MapDisplay/MapDisplay';
 
 class ReportShowPage extends Component {
     state = {
-        reportData: {...this.getInitialReportState()}
+        reportData: { ...this.getInitialReportState() }
     }
 
     getInitialReportState() {
@@ -31,8 +32,8 @@ class ReportShowPage extends Component {
     }
 
     handleDeleteNote = async (note) => {
-        note.user=this.state.reportData.user;
-        note.reportId=this.state.reportData._id;
+        note.user = this.state.reportData.user;
+        note.reportId = this.state.reportData._id;
         const updatedReport = await notesService.deleteNote(note);
         this.setState((state) => ({
             reportData: updatedReport
@@ -44,6 +45,19 @@ class ReportShowPage extends Component {
         });
     }
 
+    handleMoveMarker = (newLngLat) => {
+        const newLocation = {
+            lat: newLngLat.lat,
+            long: newLngLat.lng
+        }
+        this.setState((state) => ({
+            reportData: {
+                ...state.reportData, 
+                location: newLocation
+            }
+        }));
+    }
+    
     removeStateFromLocalStorage = () => {
         localStorage.removeItem('reportData');
     }
@@ -106,7 +120,12 @@ class ReportShowPage extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col s12 m6">
+                        <MapDisplay 
+                            reportData={this.state.reportData}
+                            handleMoveMarker={this.handleMoveMarker}
+                            type='showReport'
+                        />
+                        <div className="col s12">
                             <div className="card ReportShow-card">
                                 <div className="card-content">
                                     <div className="card-title">
@@ -148,7 +167,7 @@ class ReportShowPage extends Component {
                                                                 {this.state.reportData.user._id === this.props.user._id ?
                                                                     <td>
                                                                         <div className="col-sm-12 button-row" style={{ display: 'inline' }}>
-                                                                            <DeleteNoteModal 
+                                                                            <DeleteNoteModal
                                                                                 handleDeleteNote={this.handleDeleteNote}
                                                                                 note={note}
                                                                             />
