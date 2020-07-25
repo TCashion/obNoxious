@@ -9,13 +9,6 @@ class MapDisplay extends Component {
         addMarkerOpen: false,
     }
 
-    // addNewMarker = () => {
-    //     // const newMarker = new Marker({ draggable: true })
-    //     //     .setLngLat(map.center)
-    //     //     .addTo(map)
-    //     // newMarker.on('dragend', () => this.onDragEnd(newMarker))
-    // }
-
     getMarkersArr = () => {
         let filledMarkersArr = [];
         if (this.props.type === 'createReport') {
@@ -43,7 +36,10 @@ class MapDisplay extends Component {
         await this.setState((state) => ({
             addMarkerOpen: !(state.addMarkerOpen)
         }));
-        if (this.state.addMarkerOpen) this.props.addNewMarkerToReportData(this.state.mapCenter);
+        if (this.state.addMarkerOpen) {
+            this.props.addNewMarkerToReportData(this.state.mapCenter);
+            this.initMap();
+        };
     }
 
     initMap = async () => {
@@ -52,13 +48,12 @@ class MapDisplay extends Component {
         const map = new mapboxgl.Map({
             container: 'map-container',
             style: 'mapbox://styles/mapbox/satellite-streets-v11', // stylesheet location
-            center: markersArr[0], // starting position [lng, lat]
+            center: markersArr[markersArr.length - 1], // starting position [lng, lat]
             zoom: 14 // starting zoom
         });
+        map.on('moveend', () => this.setMapCenterInState(map));
         this.initExistingMapMarkers(markersArr, map);
-        this.setState({
-            mapCenter: map.getCenter()
-        });
+        this.setMapCenterInState(map);
     }
 
     initExistingMapMarkers = (markersArr, map) => {
@@ -81,6 +76,10 @@ class MapDisplay extends Component {
         this.setState({ clientPositionLngLat });
         this.props.setClientCoordinatesToForm(clientPositionLngLat);
         this.initMap();
+    }
+
+    setMapCenterInState = (map) => {
+        this.setState({mapCenter: map.getCenter()});
     }
 
     /* ---------- Lifecycle methods ---------- */
@@ -106,6 +105,7 @@ class MapDisplay extends Component {
                     <button
                         className="btn btn-default"
                         onClick={this.handleAddMarkerToggle}
+                        disabled={this.state.addMarkerOpen}
                     >ADD ANOTHER POINT</button>
                 </div>
             </div>

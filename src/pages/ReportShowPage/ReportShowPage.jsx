@@ -97,9 +97,7 @@ class ReportShowPage extends Component {
         const notesCopy = [...reportDataCopy.notes];
         notesCopy.sort(this.props.sortByDateAscending);
         reportDataCopy.notes = notesCopy;
-        this.setState((state) => ({
-            reportData: reportDataCopy
-        }))
+        this.setState({reportData: reportDataCopy});
     }
 
     /* ---------- Lifecycle methods ---------- */
