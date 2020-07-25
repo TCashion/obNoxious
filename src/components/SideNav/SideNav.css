@@ -6,3 +6,21 @@
 .sidenav li>a {
     color: white;
 }
+
+
+.SideNav-logo-li {
+    height: 64px;
+    padding: 8px 15px;
+    display: flex;
+}
+
+.SideNav-logo-container {
+    background-color: var(--main-minus-one);
+    height: 48px;
+    width: 48px;
+    border-radius: 50%; 
+}
+
+.SideNav-logo {
+    height: 24px;
+}
