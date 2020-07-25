@@ -11,6 +11,25 @@ class ReportShowPage extends Component {
         reportData: { ...this.getInitialReportState() }
     }
 
+    addNewMarkerToReportData = (mapCenter) => {
+        const newMarkerData = {
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                coordinates: [[mapCenter.lng, mapCenter.lat]]
+            }
+        };
+        const reportDataCopy = { ...this.state.reportData };
+        const featureCollectionCopy = { ...reportDataCopy.featureCollection };
+        const featuresCopy = [...featureCollectionCopy.features]
+        featuresCopy.push(newMarkerData);
+        featureCollectionCopy.features = featuresCopy;
+        reportDataCopy.featureCollection = featureCollectionCopy;
+        this.setState({
+            reportData: reportDataCopy
+        });
+    }
+
     getInitialReportState() {
         if (localStorage.getItem('reportData')) {
             return JSON.parse(localStorage.getItem('reportData'));
@@ -46,18 +65,25 @@ class ReportShowPage extends Component {
     }
 
     handleMoveMarker = (newLngLat) => {
+        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
+        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
+        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
+        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
+        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
+        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
+        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
         const newLocation = {
             lat: newLngLat.lat,
             long: newLngLat.lng
         }
         this.setState((state) => ({
             reportData: {
-                ...state.reportData, 
+                ...state.reportData,
                 location: newLocation
             }
         }));
     }
-    
+
     removeStateFromLocalStorage = () => {
         localStorage.removeItem('reportData');
     }
@@ -113,16 +139,17 @@ class ReportShowPage extends Component {
                                             </div>
                                             :
                                             <>
-                                            <p style={{color: 'white'}}>obNoxious</p>
+                                                <p style={{ color: 'white' }}>obNoxious</p>
                                             </>
                                         }
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <MapDisplay 
-                            reportData={this.state.reportData}
+                        <MapDisplay
+                            addNewMarkerToReportData={this.addNewMarkerToReportData}
                             handleMoveMarker={this.handleMoveMarker}
+                            reportData={this.state.reportData}
                             type='showReport'
                         />
                         <div className="col s12">

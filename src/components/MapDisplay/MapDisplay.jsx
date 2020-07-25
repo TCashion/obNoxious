@@ -9,6 +9,13 @@ class MapDisplay extends Component {
         addMarkerOpen: false,
     }
 
+    // addNewMarker = () => {
+    //     // const newMarker = new Marker({ draggable: true })
+    //     //     .setLngLat(map.center)
+    //     //     .addTo(map)
+    //     // newMarker.on('dragend', () => this.onDragEnd(newMarker))
+    // }
+
     getMarkersArr = () => {
         let filledMarkersArr = [];
         if (this.props.type === 'createReport') {
@@ -32,19 +39,29 @@ class MapDisplay extends Component {
         return mapBoxToken;
     }
 
+    handleAddMarkerToggle = async () => {
+        await this.setState((state) => ({
+            addMarkerOpen: !(state.addMarkerOpen)
+        }));
+        if (this.state.addMarkerOpen) this.props.addNewMarkerToReportData(this.state.mapCenter);
+    }
+
     initMap = async () => {
         const markersArr = this.getMarkersArr();
         mapboxgl.accessToken = await this.getMapBoxToken();
-        var map = new mapboxgl.Map({
+        const map = new mapboxgl.Map({
             container: 'map-container',
             style: 'mapbox://styles/mapbox/satellite-streets-v11', // stylesheet location
             center: markersArr[0], // starting position [lng, lat]
             zoom: 14 // starting zoom
         });
-        this.initMapMarkers(markersArr, map);
+        this.initExistingMapMarkers(markersArr, map);
+        this.setState({
+            mapCenter: map.getCenter()
+        });
     }
 
-    initMapMarkers = (markersArr, map) => {
+    initExistingMapMarkers = (markersArr, map) => {
         markersArr.forEach((marker) => {
             const markerCoordsLngLat = marker;
             const newMarker = new Marker({ draggable: true })
@@ -86,7 +103,10 @@ class MapDisplay extends Component {
                             </div>
                         </div>
                     </div>
-                    <button className="btn btn-default">ADD ANOTHER POINT</button>
+                    <button
+                        className="btn btn-default"
+                        onClick={this.handleAddMarkerToggle}
+                    >ADD ANOTHER POINT</button>
                 </div>
             </div>
         )
