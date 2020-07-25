@@ -38,8 +38,8 @@ class MapDisplay extends Component {
     }
 
     handleAddMarker = () => {
-        // newMarker = this.getLatestMarker();
-        // this.props.handleAddFeature(newMarker);
+        const newMarker = this.getLatestMarker();
+        this.props.handleAddFeature(newMarker);
         this.setState({ addMarkerOpen: false });
     }
 
