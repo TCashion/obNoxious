@@ -62,6 +62,18 @@ class ReportShowPage extends Component {
         });
     }
 
+    handleCancelAddFeature = () => {
+        const reportDataCopy = { ...this.state.reportData };
+        const featureCollectionCopy = { ...reportDataCopy.featureCollection };
+        const featuresCopy = [...featureCollectionCopy.features]
+        featuresCopy.pop();
+        featureCollectionCopy.features = featuresCopy;
+        reportDataCopy.featureCollection = featureCollectionCopy;
+        this.setState({
+            reportData: reportDataCopy
+        });
+    }
+
     handleDeleteNote = async (note) => {
         note.user = this.state.reportData.user;
         note.reportId = this.state.reportData._id;
@@ -163,6 +175,7 @@ class ReportShowPage extends Component {
                         <MapDisplay
                             addNewMarkerToReportData={this.addNewMarkerToReportData}
                             handleAddFeature={this.handleAddFeature}
+                            handleCancelAddFeature={this.handleCancelAddFeature}
                             handleMoveMarker={this.handleMoveMarker}
                             handleUpdateReport={this.handleUpdateReport}
                             reportData={this.state.reportData}

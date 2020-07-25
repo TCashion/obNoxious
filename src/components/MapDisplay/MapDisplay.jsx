@@ -8,7 +8,7 @@ class MapDisplay extends Component {
     state = {
         addMarkerOpen: false,
     }
-    
+
     getClientCurrentPosition = () => {
         return navigator.geolocation.getCurrentPosition(this.setClientPosition);
     }
@@ -17,7 +17,7 @@ class MapDisplay extends Component {
         const featuresArr = this.props.reportData.featureCollection.features;
         return featuresArr[featuresArr.length - 1];
     }
-    
+
     getMarkersArr = () => {
         let filledMarkersArr = [];
         if (this.props.type === 'createReport') {
@@ -37,6 +37,12 @@ class MapDisplay extends Component {
         return mapBoxToken;
     }
 
+    handleAddMarker = () => {
+        // newMarker = this.getLatestMarker();
+        // this.props.handleAddFeature(newMarker);
+        this.setState({ addMarkerOpen: false });
+    }
+
     handleAddMarkerToggle = async () => {
         await this.setState((state) => ({
             addMarkerOpen: !(state.addMarkerOpen)
@@ -45,6 +51,12 @@ class MapDisplay extends Component {
             this.props.addNewMarkerToReportData(this.state.mapCenter);
             this.initMap();
         };
+    }
+
+    handleCancelAddMarker = async () => {
+        await this.props.handleCancelAddFeature();
+        this.setState({ addMarkerOpen: false });
+        this.initMap();
     }
 
     initMap = async () => {
@@ -84,7 +96,7 @@ class MapDisplay extends Component {
     }
 
     setMapCenterInState = (map) => {
-        this.setState({mapCenter: map.getCenter()});
+        this.setState({ mapCenter: map.getCenter() });
     }
 
     /* ---------- Lifecycle methods ---------- */
@@ -112,11 +124,17 @@ class MapDisplay extends Component {
                         onClick={this.handleAddMarkerToggle}
                         disabled={this.state.addMarkerOpen}
                     >ADD ANOTHER POINT</button>
-                    {this.state.addMarkerOpen ? 
-                        <button 
-                            className="btn btn-default"
-                            onClick={() => this.props.handleAddFeature(this.getLatestMarker())}
-                        >SAVE</button>
+                    {this.state.addMarkerOpen ?
+                        <>
+                            <button
+                                className="btn btn-default"
+                                onClick={this.handleAddMarker}
+                            >SAVE</button>
+                            <button
+                                className="btn btn-default"
+                                onClick={this.handleCancelAddMarker}
+                            >CANCEL</button>
+                        </>
                         :
                         null
                     }
