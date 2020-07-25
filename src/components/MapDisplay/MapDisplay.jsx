@@ -8,7 +8,16 @@ class MapDisplay extends Component {
     state = {
         addMarkerOpen: false,
     }
+    
+    getClientCurrentPosition = () => {
+        return navigator.geolocation.getCurrentPosition(this.setClientPosition);
+    }
 
+    getLatestMarker = () => {
+        const featuresArr = this.props.reportData.featureCollection.features;
+        return featuresArr[featuresArr.length - 1];
+    }
+    
     getMarkersArr = () => {
         let filledMarkersArr = [];
         if (this.props.type === 'createReport') {
@@ -21,10 +30,6 @@ class MapDisplay extends Component {
             });
         };
         return filledMarkersArr;
-    }
-
-    getClientCurrentPosition = () => {
-        return navigator.geolocation.getCurrentPosition(this.setClientPosition);
     }
 
     getMapBoxToken = async () => {
@@ -107,6 +112,14 @@ class MapDisplay extends Component {
                         onClick={this.handleAddMarkerToggle}
                         disabled={this.state.addMarkerOpen}
                     >ADD ANOTHER POINT</button>
+                    {this.state.addMarkerOpen ? 
+                        <button 
+                            className="btn btn-default"
+                            onClick={() => this.props.handleAddFeature(this.getLatestMarker())}
+                        >SAVE</button>
+                        :
+                        null
+                    }
                 </div>
             </div>
         )

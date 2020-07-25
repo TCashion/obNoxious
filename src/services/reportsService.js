@@ -36,8 +36,21 @@ function deleteReport(report) {
     .then(deletedReport => deletedReport.json())
 }
 
+function updateReport(report) {
+    return fetch(BASE_URL, {
+        method: 'PUT',
+        headers: new Headers({
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${tokenService.getToken()}`
+        }),
+        body: JSON.stringify(report)
+    })
+    .then(updatedReport => updatedReport.json());
+}
+
 export default {
     createReport,
     getReports,
-    deleteReport
+    deleteReport,
+    updateReport
 }

@@ -5,11 +5,12 @@ const path = require('path');
 const logger = require('morgan');
 const favicon = require('serve-favicon');
 const authorizations = require('./config/middleware/authorizations');
-const usersRoutes = require('./routes/api/users');
+const mapboxesRoutes = require('./routes/api/mapboxes');
+const featuresRoutes = require('./routes/api/features');
+const notesRoutes = require('./routes/api/notes');
 const plantsRoutes = require('./routes/api/plants');
 const reportsRoutes = require('./routes/api/reports');
-const notesRoutes = require('./routes/api/notes');
-const mapboxesRoutes = require('./routes/api/mapboxes');
+const usersRoutes = require('./routes/api/users');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use(authorizations.extractUserFromToken);
 app.use('/api/users', usersRoutes);
 app.use('/api/plants', plantsRoutes);
+app.use('/api/reports/features', featuresRoutes);
 app.use('/api/reports/notes', notesRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/mapbox', mapboxesRoutes);

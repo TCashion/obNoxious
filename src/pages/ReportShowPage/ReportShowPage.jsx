@@ -3,7 +3,9 @@ import './ReportShowPage.css';
 import DeleteModal from '../../components/DeleteModal/DeleteModal';
 import AddNoteModal from '../../components/AddNoteModal/AddNoteModal';
 import DeleteNoteModal from '../../components/DeleteNoteModal/DeleteNoteModal';
+import featuresService from '../../services/featuresService';
 import notesService from '../../services/notesService';
+import reportsService from '../../services/reportsService';
 import MapDisplay from '../../components/MapDisplay/MapDisplay';
 
 class ReportShowPage extends Component {
@@ -38,11 +40,21 @@ class ReportShowPage extends Component {
         }
     }
 
+    handleAddFeature = async (newFeature) => {
+        newFeature.user = this.props.user;
+        newFeature.parentReportId = this.state.reportData._id; 
+        const updatedReport = await featuresService.createFeature(newFeature);
+        this.setState({reportData: updatedReport});
+        this.saveStateToLocalStorage(this.state.reportData);
+        this.props.history.push({
+            pathname: '/reports/detail',
+            state: this.state
+        });
+    }
+
     handleAddNote = async (note) => {
         const updatedReport = await notesService.createNote(note);
-        this.setState((state) => ({
-            reportData: updatedReport
-        }));
+        this.setState({reportData: updatedReport});
         this.saveStateToLocalStorage(this.state.reportData);
         this.props.history.push({
             pathname: '/reports/detail',
@@ -82,6 +94,10 @@ class ReportShowPage extends Component {
                 location: newLocation
             }
         }));
+    }
+
+    handleUpdateReport = async () => {
+        await reportsService.updateReport(this.state.reportData);
     }
 
     removeStateFromLocalStorage = () => {
@@ -146,7 +162,9 @@ class ReportShowPage extends Component {
                         </div>
                         <MapDisplay
                             addNewMarkerToReportData={this.addNewMarkerToReportData}
+                            handleAddFeature={this.handleAddFeature}
                             handleMoveMarker={this.handleMoveMarker}
+                            handleUpdateReport={this.handleUpdateReport}
                             reportData={this.state.reportData}
                             type='showReport'
                         />
