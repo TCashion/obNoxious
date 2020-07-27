@@ -21,11 +21,19 @@ class MapDisplay extends Component {
     getMarkersArr = () => {
         let filledMarkersArr = [];
         if (this.props.type === 'createReport') {
-            filledMarkersArr.push(this.state.clientPositionLngLat);
+            const markerObj = {
+                id: null, 
+                coordinates: this.state.clientPositionLngLat
+            };
+            filledMarkersArr.push(markerObj);
         } else if (this.props.type === 'showReport') {
             this.props.reportData.featureCollection.features.forEach((feature) => {
                 feature.geometry.coordinates.forEach((pointCoordinates) => {
-                    filledMarkersArr.push(pointCoordinates)
+                    const markerObj = {
+                        id: feature._id,
+                        coordinates: pointCoordinates
+                    }
+                    filledMarkersArr.push(markerObj)
                 });
             });
         };
@@ -65,7 +73,7 @@ class MapDisplay extends Component {
         const map = new mapboxgl.Map({
             container: 'map-container',
             style: 'mapbox://styles/mapbox/satellite-streets-v11', // stylesheet location
-            center: markersArr[markersArr.length - 1], // starting position [lng, lat]
+            center: markersArr[markersArr.length - 1].coordinates, // starting position [lng, lat]
             zoom: 14 // starting zoom
         });
         map.on('moveend', () => this.setMapCenterInState(map));
@@ -75,23 +83,26 @@ class MapDisplay extends Component {
 
     initExistingMapMarkers = (markersArr, map) => {
         markersArr.forEach((marker) => {
-            const markerCoordsLngLat = marker;
+            const markerCoordsLngLat = marker.coordinates;
             const newMarker = new Marker({ draggable: true })
                 .setLngLat(markerCoordsLngLat)
                 .addTo(map)
-            newMarker.on('dragend', () => this.onDragEnd(newMarker))
+            newMarker.on('dragend', () => this.handleDrag(newMarker));
+            if (this.props.type === 'showReport') newMarker.getElement().setAttribute('id', marker.id)
         });
     }
 
-    onDragEnd(marker) {
+    handleDrag(marker) {
+        const markerId = marker.getElement().id;
         const newLngLat = marker.getLngLat();
-        this.props.handleMoveMarker(newLngLat);
+        this.props.handleMoveMarker(markerId, newLngLat);
     }
 
     setClientPosition = (position) => {
         const clientPositionLngLat = [position.coords.longitude, position.coords.latitude];
         this.setState({ clientPositionLngLat });
-        this.props.setClientCoordinatesToForm(clientPositionLngLat);
+        const updatedMarkerObj = {coordinates: clientPositionLngLat};
+        this.props.setClientCoordinatesToForm(updatedMarkerObj);
         this.initMap();
     }
 

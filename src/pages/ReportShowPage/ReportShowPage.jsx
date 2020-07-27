@@ -88,24 +88,31 @@ class ReportShowPage extends Component {
         });
     }
 
-    handleMoveMarker = (newLngLat) => {
-        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
-        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
-        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
-        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
-        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
-        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
-        // THIS NEEDS TO BE REFACTORED BASED ON NEW STRUCTURE
-        const newLocation = {
-            lat: newLngLat.lat,
-            long: newLngLat.lng
-        }
-        this.setState((state) => ({
-            reportData: {
-                ...state.reportData,
-                location: newLocation
+    handleMoveMarker = (markerId, newLngLat) => {
+        const updatedMarkerObj = {
+            id: markerId,
+            coordinates: [newLngLat.lng, newLngLat.lat]
+        };
+        this.state.reportData.featureCollection.features.forEach((feature, idx) => {
+            if (feature._id === updatedMarkerObj.id) {
+                console.log('match')
+                const reportDataCopy = { ...this.state.reportData };
+                const featureCollectionCopy = { ...reportDataCopy.featureCollection };
+                const featuresCopy = [...featureCollectionCopy.features];
+                const featureCopy = {...feature};
+                const geometryCopy = {...featureCopy.geometry};
+                let coordinatesCopy = [...geometryCopy.coordinates];
+                coordinatesCopy = [updatedMarkerObj.coordinates];
+                geometryCopy.coordinates = coordinatesCopy;
+                featureCopy.geometry = geometryCopy;
+                featuresCopy[idx] = featureCopy;
+                featureCollectionCopy.features = featuresCopy;
+                reportDataCopy.featureCollection = featureCollectionCopy;
+                this.setState({
+                    reportData: reportDataCopy
+                });
             }
-        }));
+        })
     }
 
     handleUpdateReport = async () => {
