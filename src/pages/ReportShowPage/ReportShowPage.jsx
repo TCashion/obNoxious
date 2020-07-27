@@ -32,6 +32,24 @@ class ReportShowPage extends Component {
         });
     }
 
+    copyFeatureCollectionAndUpdate = (feature, updatedMarkerObj, idx) => {
+        const reportDataCopy = { ...this.state.reportData };
+        const featureCollectionCopy = { ...reportDataCopy.featureCollection };
+        const featuresCopy = [...featureCollectionCopy.features];
+        const featureCopy = { ...feature };
+        const geometryCopy = { ...featureCopy.geometry };
+        let coordinatesCopy = [...geometryCopy.coordinates];
+        coordinatesCopy = [updatedMarkerObj.coordinates];
+        geometryCopy.coordinates = coordinatesCopy;
+        featureCopy.geometry = geometryCopy;
+        featuresCopy[idx] = featureCopy;
+        featureCollectionCopy.features = featuresCopy;
+        reportDataCopy.featureCollection = featureCollectionCopy;
+        this.setState({
+            reportData: reportDataCopy
+        });
+    }
+
     getInitialReportState() {
         if (localStorage.getItem('reportData')) {
             return JSON.parse(localStorage.getItem('reportData'));
@@ -119,40 +137,12 @@ class ReportShowPage extends Component {
     updatePositionOnState = (updatedMarkerObj) => {
         this.state.reportData.featureCollection.features.forEach((feature, idx) => {
             if (feature._id === updatedMarkerObj.id) {
-                const reportDataCopy = { ...this.state.reportData };
-                const featureCollectionCopy = { ...reportDataCopy.featureCollection };
-                const featuresCopy = [...featureCollectionCopy.features];
-                const featureCopy = { ...feature };
-                const geometryCopy = { ...featureCopy.geometry };
-                let coordinatesCopy = [...geometryCopy.coordinates];
-                coordinatesCopy = [updatedMarkerObj.coordinates];
-                geometryCopy.coordinates = coordinatesCopy;
-                featureCopy.geometry = geometryCopy;
-                featuresCopy[idx] = featureCopy;
-                featureCollectionCopy.features = featuresCopy;
-                reportDataCopy.featureCollection = featureCollectionCopy;
-                this.setState({
-                    reportData: reportDataCopy
-                });
+                this.copyFeatureCollectionAndUpdate(feature, updatedMarkerObj, idx);
             } else if (updatedMarkerObj.id === 'new-marker') {
                 const idx = this.state.reportData.featureCollection.features.length - 1;
                 const feature = this.state.reportData.featureCollection.features[idx];
-                const reportDataCopy = { ...this.state.reportData };
-                const featureCollectionCopy = { ...reportDataCopy.featureCollection };
-                const featuresCopy = [...featureCollectionCopy.features];
-                const featureCopy = { ...feature };
-                const geometryCopy = { ...featureCopy.geometry };
-                let coordinatesCopy = [...geometryCopy.coordinates];
-                coordinatesCopy = [updatedMarkerObj.coordinates];
-                geometryCopy.coordinates = coordinatesCopy;
-                featureCopy.geometry = geometryCopy;
-                featuresCopy[idx] = featureCopy;
-                featureCollectionCopy.features = featuresCopy;
-                reportDataCopy.featureCollection = featureCollectionCopy;
-                this.setState({
-                    reportData: reportDataCopy
-                });
-            }
+                this.copyFeatureCollectionAndUpdate(feature, updatedMarkerObj, idx);
+            };
         });
         this.saveStateToLocalStorage(this.state.reportData);
     }
