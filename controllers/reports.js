@@ -45,9 +45,23 @@ async function deleteOne(req, res) {
     }
 }
 
+async function update(req, res) {
+    try {
+        const updatedReport = await Report.findByIdAndUpdate(
+            req.body._id,
+            {...req.body},
+            { new: true }
+        );
+        res.status(200).json(updatedReport)
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
+
 module.exports = {
     index,
     create, 
+    deleteOne,
     findOne,
-    deleteOne
+    update
 }

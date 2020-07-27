@@ -1,12 +1,13 @@
 const router = require('express').Router(); 
-const mapBoxesCtrl = require('../../controllers/mapboxes');
+const featuresCtrl = require('../../controllers/features');
 const authorizations = require('../../config/middleware/authorizations');
+
 
 /*---------- Public Routes ----------*/
 
 
 /*---------- Protected Routes ----------*/
-router.get('/', authorizations.checkUserLoggedIn, mapBoxesCtrl.retreiveMapBoxAccessToken)
+router.post('/', authorizations.checkUserLoggedIn, authorizations.checkUserIsCreator, featuresCtrl.create)
 
 module.exports = router; 
 

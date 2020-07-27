@@ -12,8 +12,8 @@ class AddReportPage extends Component {
         report: { ...this.getInitialReportState() }
     }
 
-    setClientCoordinatesToForm = (clientCoordindates) => {
-        this.updatePositionOnState(clientCoordindates);
+    setClientCoordinatesToForm = (updatedMarkerObj) => {
+        this.updatePositionOnState(updatedMarkerObj);
     }
 
     getInitialReportState() {
@@ -45,9 +45,12 @@ class AddReportPage extends Component {
         }));
     }
 
-    handleMoveMarker = (newLngLat) => {
-        const newLocation = [newLngLat.lng, newLngLat.lat];
-        this.updatePositionOnState(newLocation);
+    handleMoveMarker = (markerId, newLngLat) => {
+        const updatedMarkerObj = {
+            id: markerId,
+            coordinates: [newLngLat.lng, newLngLat.lat]
+        };
+        this.updatePositionOnState(updatedMarkerObj);
     }
 
     handleSubmit = async (e) => {
@@ -68,7 +71,7 @@ class AddReportPage extends Component {
         });
     }
 
-    updatePositionOnState = (newCoordinates) => {
+    updatePositionOnState = (updatedMarkerObj) => {
         this.setState((state) => ({
             report: {
                 ...state.report,
@@ -78,7 +81,7 @@ class AddReportPage extends Component {
                         type: 'Feature',
                         geometry: {
                             type: 'Point',
-                            coordinates: [newCoordinates ? newCoordinates : [0,0]]
+                            coordinates: updatedMarkerObj.coordinates
                         }
                     }]
                 }

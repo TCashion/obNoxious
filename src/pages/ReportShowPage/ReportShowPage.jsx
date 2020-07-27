@@ -3,12 +3,51 @@ import './ReportShowPage.css';
 import DeleteModal from '../../components/DeleteModal/DeleteModal';
 import AddNoteModal from '../../components/AddNoteModal/AddNoteModal';
 import DeleteNoteModal from '../../components/DeleteNoteModal/DeleteNoteModal';
+import featuresService from '../../services/featuresService';
 import notesService from '../../services/notesService';
+import reportsService from '../../services/reportsService';
 import MapDisplay from '../../components/MapDisplay/MapDisplay';
 
 class ReportShowPage extends Component {
     state = {
         reportData: { ...this.getInitialReportState() }
+    }
+
+    addNewMarkerToReportData = (mapCenter) => {
+        const newMarkerData = {
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                coordinates: [[mapCenter.lng, mapCenter.lat]]
+            }
+        };
+        const reportDataCopy = { ...this.state.reportData };
+        const featureCollectionCopy = { ...reportDataCopy.featureCollection };
+        const featuresCopy = [...featureCollectionCopy.features]
+        featuresCopy.push(newMarkerData);
+        featureCollectionCopy.features = featuresCopy;
+        reportDataCopy.featureCollection = featureCollectionCopy;
+        this.setState({
+            reportData: reportDataCopy
+        });
+    }
+
+    copyFeatureCollectionAndUpdate = (feature, updatedMarkerObj, idx) => {
+        const reportDataCopy = { ...this.state.reportData };
+        const featureCollectionCopy = { ...reportDataCopy.featureCollection };
+        const featuresCopy = [...featureCollectionCopy.features];
+        const featureCopy = { ...feature };
+        const geometryCopy = { ...featureCopy.geometry };
+        let coordinatesCopy = [...geometryCopy.coordinates];
+        coordinatesCopy = [updatedMarkerObj.coordinates];
+        geometryCopy.coordinates = coordinatesCopy;
+        featureCopy.geometry = geometryCopy;
+        featuresCopy[idx] = featureCopy;
+        featureCollectionCopy.features = featuresCopy;
+        reportDataCopy.featureCollection = featureCollectionCopy;
+        this.setState({
+            reportData: reportDataCopy
+        });
     }
 
     getInitialReportState() {
@@ -19,15 +58,37 @@ class ReportShowPage extends Component {
         }
     }
 
-    handleAddNote = async (note) => {
-        const updatedReport = await notesService.createNote(note);
-        this.setState((state) => ({
-            reportData: updatedReport
-        }));
+    handleAddFeature = async (newFeature) => {
+        newFeature.user = this.props.user;
+        newFeature.parentReportId = this.state.reportData._id;
+        const updatedReport = await featuresService.createFeature(newFeature);
+        this.setState({ reportData: updatedReport });
         this.saveStateToLocalStorage(this.state.reportData);
         this.props.history.push({
             pathname: '/reports/detail',
             state: this.state
+        });
+    }
+
+    handleAddNote = async (note) => {
+        const updatedReport = await notesService.createNote(note);
+        this.setState({ reportData: updatedReport });
+        this.saveStateToLocalStorage(this.state.reportData);
+        this.props.history.push({
+            pathname: '/reports/detail',
+            state: this.state
+        });
+    }
+
+    handleCancelAddFeature = () => {
+        const reportDataCopy = { ...this.state.reportData };
+        const featureCollectionCopy = { ...reportDataCopy.featureCollection };
+        const featuresCopy = [...featureCollectionCopy.features]
+        featuresCopy.pop();
+        featureCollectionCopy.features = featuresCopy;
+        reportDataCopy.featureCollection = featureCollectionCopy;
+        this.setState({
+            reportData: reportDataCopy
         });
     }
 
@@ -45,19 +106,18 @@ class ReportShowPage extends Component {
         });
     }
 
-    handleMoveMarker = (newLngLat) => {
-        const newLocation = {
-            lat: newLngLat.lat,
-            long: newLngLat.lng
-        }
-        this.setState((state) => ({
-            reportData: {
-                ...state.reportData, 
-                location: newLocation
-            }
-        }));
+    handleMoveMarker = (markerId, newLngLat) => {
+        const updatedMarkerObj = {
+            id: markerId,
+            coordinates: [newLngLat.lng, newLngLat.lat]
+        };
+        this.updatePositionOnState(updatedMarkerObj);
     }
-    
+
+    handleUpdateReport = async () => {
+        await reportsService.updateReport(this.state.reportData);
+    }
+
     removeStateFromLocalStorage = () => {
         localStorage.removeItem('reportData');
     }
@@ -71,9 +131,20 @@ class ReportShowPage extends Component {
         const notesCopy = [...reportDataCopy.notes];
         notesCopy.sort(this.props.sortByDateAscending);
         reportDataCopy.notes = notesCopy;
-        this.setState((state) => ({
-            reportData: reportDataCopy
-        }))
+        this.setState({ reportData: reportDataCopy });
+    }
+
+    updatePositionOnState = (updatedMarkerObj) => {
+        this.state.reportData.featureCollection.features.forEach((feature, idx) => {
+            if (feature._id === updatedMarkerObj.id) {
+                this.copyFeatureCollectionAndUpdate(feature, updatedMarkerObj, idx);
+            } else if (updatedMarkerObj.id === 'new-marker') {
+                const idx = this.state.reportData.featureCollection.features.length - 1;
+                const feature = this.state.reportData.featureCollection.features[idx];
+                this.copyFeatureCollectionAndUpdate(feature, updatedMarkerObj, idx);
+            };
+        });
+        this.saveStateToLocalStorage(this.state.reportData);
     }
 
     /* ---------- Lifecycle methods ---------- */
@@ -113,17 +184,22 @@ class ReportShowPage extends Component {
                                             </div>
                                             :
                                             <>
-                                            <p style={{color: 'white'}}>obNoxious</p>
+                                                <p style={{ color: 'white' }}>obNoxious</p>
                                             </>
                                         }
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <MapDisplay 
-                            reportData={this.state.reportData}
+                        <MapDisplay
+                            addNewMarkerToReportData={this.addNewMarkerToReportData}
+                            handleAddFeature={this.handleAddFeature}
+                            handleCancelAddFeature={this.handleCancelAddFeature}
                             handleMoveMarker={this.handleMoveMarker}
+                            handleUpdateReport={this.handleUpdateReport}
+                            reportData={this.state.reportData}
                             type='showReport'
+                            user={this.props.user}
                         />
                         <div className="col s12">
                             <div className="card ReportShow-card">
