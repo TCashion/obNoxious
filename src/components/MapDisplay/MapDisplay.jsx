@@ -119,22 +119,28 @@ class MapDisplay extends Component {
                             </div>
                         </div>
                     </div>
-                    <button
-                        className="btn btn-default"
-                        onClick={this.handleAddMarkerToggle}
-                        disabled={this.state.addMarkerOpen}
-                    >ADD ANOTHER POINT</button>
-                    {this.state.addMarkerOpen ?
-                        <>
+                    {(this.props.type === 'showReport' && this.props.user._id === this.props.reportData.user._id) ?
+                        <div className="MapDisplay-btn-display">
                             <button
                                 className="btn btn-default"
-                                onClick={this.handleAddMarker}
-                            >SAVE</button>
-                            <button
-                                className="btn btn-default"
-                                onClick={this.handleCancelAddMarker}
-                            >CANCEL</button>
-                        </>
+                                onClick={this.handleAddMarkerToggle}
+                                style={{display: this.state.addMarkerOpen ? 'none' : 'inline-block'}}
+                            >ADD ANOTHER POINT</button>
+                            {this.state.addMarkerOpen ?
+                                <>
+                                    <button
+                                        className="btn btn-default"
+                                        onClick={this.handleAddMarker}
+                                    >SAVE</button>
+                                    <button
+                                        className="btn btn-default"
+                                        onClick={this.handleCancelAddMarker}
+                                    >CANCEL</button>
+                                </>
+                                :
+                                null
+                            }
+                        </div>
                         :
                         null
                     }

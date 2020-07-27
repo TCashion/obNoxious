@@ -7,14 +7,24 @@
 .MapDisplay-card, .MapDisplay-content {
     max-width: 450px;
     margin: 1rem;
+    overflow: hidden;
 }
 
 .MapDisplay-card > .card-content {
     padding: 0 24px; 
+    margin-bottom: 1rem; 
 }
 
 .MapDisplay-card > .btn {
     margin: 1rem;
+}
+
+.MapDisplay-btn-display {
+    margin: 1rem;
+}
+
+.MapDisplay-btn-display > .btn {
+    margin: 0 1rem;
 }
 
 @media only screen and (max-width: 768px) {

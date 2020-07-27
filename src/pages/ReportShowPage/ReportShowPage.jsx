@@ -180,6 +180,7 @@ class ReportShowPage extends Component {
                             handleUpdateReport={this.handleUpdateReport}
                             reportData={this.state.reportData}
                             type='showReport'
+                            user={this.props.user}
                         />
                         <div className="col s12">
                             <div className="card ReportShow-card">
