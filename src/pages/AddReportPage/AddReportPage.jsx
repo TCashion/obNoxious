@@ -72,7 +72,6 @@ class AddReportPage extends Component {
     }
 
     updatePositionOnState = (updatedMarkerObj) => {
-        console.log(updatedMarkerObj)
         this.setState((state) => ({
             report: {
                 ...state.report,

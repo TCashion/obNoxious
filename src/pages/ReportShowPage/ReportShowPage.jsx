@@ -42,9 +42,9 @@ class ReportShowPage extends Component {
 
     handleAddFeature = async (newFeature) => {
         newFeature.user = this.props.user;
-        newFeature.parentReportId = this.state.reportData._id; 
+        newFeature.parentReportId = this.state.reportData._id;
         const updatedReport = await featuresService.createFeature(newFeature);
-        this.setState({reportData: updatedReport});
+        this.setState({ reportData: updatedReport });
         this.saveStateToLocalStorage(this.state.reportData);
         this.props.history.push({
             pathname: '/reports/detail',
@@ -54,7 +54,7 @@ class ReportShowPage extends Component {
 
     handleAddNote = async (note) => {
         const updatedReport = await notesService.createNote(note);
-        this.setState({reportData: updatedReport});
+        this.setState({ reportData: updatedReport });
         this.saveStateToLocalStorage(this.state.reportData);
         this.props.history.push({
             pathname: '/reports/detail',
@@ -93,26 +93,7 @@ class ReportShowPage extends Component {
             id: markerId,
             coordinates: [newLngLat.lng, newLngLat.lat]
         };
-        this.state.reportData.featureCollection.features.forEach((feature, idx) => {
-            if (feature._id === updatedMarkerObj.id) {
-                console.log('match')
-                const reportDataCopy = { ...this.state.reportData };
-                const featureCollectionCopy = { ...reportDataCopy.featureCollection };
-                const featuresCopy = [...featureCollectionCopy.features];
-                const featureCopy = {...feature};
-                const geometryCopy = {...featureCopy.geometry};
-                let coordinatesCopy = [...geometryCopy.coordinates];
-                coordinatesCopy = [updatedMarkerObj.coordinates];
-                geometryCopy.coordinates = coordinatesCopy;
-                featureCopy.geometry = geometryCopy;
-                featuresCopy[idx] = featureCopy;
-                featureCollectionCopy.features = featuresCopy;
-                reportDataCopy.featureCollection = featureCollectionCopy;
-                this.setState({
-                    reportData: reportDataCopy
-                });
-            }
-        })
+        this.updatePositionOnState(updatedMarkerObj);
     }
 
     handleUpdateReport = async () => {
@@ -132,7 +113,29 @@ class ReportShowPage extends Component {
         const notesCopy = [...reportDataCopy.notes];
         notesCopy.sort(this.props.sortByDateAscending);
         reportDataCopy.notes = notesCopy;
-        this.setState({reportData: reportDataCopy});
+        this.setState({ reportData: reportDataCopy });
+    }
+
+    updatePositionOnState = (updatedMarkerObj) => {
+        this.state.reportData.featureCollection.features.forEach((feature, idx) => {
+            if (feature._id === updatedMarkerObj.id) {
+                const reportDataCopy = { ...this.state.reportData };
+                const featureCollectionCopy = { ...reportDataCopy.featureCollection };
+                const featuresCopy = [...featureCollectionCopy.features];
+                const featureCopy = { ...feature };
+                const geometryCopy = { ...featureCopy.geometry };
+                let coordinatesCopy = [...geometryCopy.coordinates];
+                coordinatesCopy = [updatedMarkerObj.coordinates];
+                geometryCopy.coordinates = coordinatesCopy;
+                featureCopy.geometry = geometryCopy;
+                featuresCopy[idx] = featureCopy;
+                featureCollectionCopy.features = featuresCopy;
+                reportDataCopy.featureCollection = featureCollectionCopy;
+                this.setState({
+                    reportData: reportDataCopy
+                });
+            }
+        });
     }
 
     /* ---------- Lifecycle methods ---------- */
