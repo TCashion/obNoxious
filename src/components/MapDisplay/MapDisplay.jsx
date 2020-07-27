@@ -48,6 +48,7 @@ class MapDisplay extends Component {
 
     handleAddMarker = () => {
         const newMarker = this.getLatestMarker();
+        console.log(newMarker)
         this.props.handleAddFeature(newMarker);
         this.setState({ addMarkerOpen: false });
     }
@@ -89,7 +90,7 @@ class MapDisplay extends Component {
                 .setLngLat(markerCoordsLngLat)
                 .addTo(map)
             newMarker.on('dragend', () => this.handleDrag(newMarker));
-            if (this.props.type === 'showReport') newMarker.getElement().setAttribute('id', marker.id)
+            if (this.props.type === 'showReport') newMarker.getElement().setAttribute('id', marker.id ? marker.id : 'new-marker')
         });
     }
 
