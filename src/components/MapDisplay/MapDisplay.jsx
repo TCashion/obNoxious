@@ -7,6 +7,7 @@ class MapDisplay extends Component {
 
     state = {
         addMarkerOpen: false,
+        markerMoved: false
     }
 
     getClientCurrentPosition = () => {
@@ -96,6 +97,7 @@ class MapDisplay extends Component {
         const markerId = marker.getElement().id;
         const newLngLat = marker.getLngLat();
         this.props.handleMoveMarker(markerId, newLngLat);
+        this.setState({markerMoved: true})
     }
 
     setClientPosition = (position) => {
@@ -108,6 +110,10 @@ class MapDisplay extends Component {
 
     setMapCenterInState = (map) => {
         this.setState({ mapCenter: map.getCenter() });
+    }
+
+    updateMarkerPositions = () => {
+        this.props.handleUpdateReport(); 
     }
 
     /* ---------- Lifecycle methods ---------- */
@@ -147,6 +153,16 @@ class MapDisplay extends Component {
                                         className="btn btn-default"
                                         onClick={this.handleCancelAddMarker}
                                     >CANCEL</button>
+                                </>
+                                :
+                                null
+                            }
+                            {this.state.markerMoved ?
+                                <>
+                                    <button
+                                        className="btn btn-default"
+                                        onClick={this.updateMarkerPositions}
+                                    >SAVE</button>
                                 </>
                                 :
                                 null
