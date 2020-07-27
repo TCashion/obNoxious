@@ -136,6 +136,7 @@ class ReportShowPage extends Component {
                 });
             }
         });
+        this.saveStateToLocalStorage(this.state.reportData);
     }
 
     /* ---------- Lifecycle methods ---------- */
