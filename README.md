@@ -43,8 +43,8 @@ Check out some of the features of the obNoxious app:
 ![Authentication](https://i.imgur.com/V3RktZH.png)
 * Ability for authenticated users to contribute to the database
 ![Add Plants](https://i.imgur.com/huWMlvN.png)
-* Logic to prevent duplicate database entries
-![Prevent Duplicates](https://i.imgur.com/OPJiMSy.png)
+* Tag the locations of reports with a built-in MapBox GL API. 
+![MapBox API](https://i.imgur.com/8KmG9lW.png)
 
 ## Technologies Used
 
@@ -60,9 +60,10 @@ As well as a few other helpers:
 * HTML5
 * CSS / MaterializeCSS
 
-And, as mentioned before, the NatureServe Explorer API: 
+## APIs implemented 
 
 * https://explorer.natureserve.org/ 
+* MapBox GL API
 
 ## Getting Started
 
@@ -71,11 +72,6 @@ And, as mentioned before, the NatureServe Explorer API:
 ## Next Steps 
 
 Here are some of the major remaining icebox features: 
-
-* AAU, I want to tag the locations of my reports with a built-in map API. 
-
-COMING SOON!
-![MapBox API](https://i.imgur.com/8KmG9lW.png)
 
 * AAU, I want to upload photos of the species that I report. 
 * AAU, I want to get special super-user access so that I can download all user reports (for example, if a state or agricultural agency would like to view the map data).
