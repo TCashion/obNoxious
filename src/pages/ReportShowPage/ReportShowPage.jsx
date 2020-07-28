@@ -122,6 +122,10 @@ class ReportShowPage extends Component {
         localStorage.removeItem('reportData');
     }
 
+    resetMarkerPositions = () => {
+        this.setState({reportData: this.props.history.location.state.report})
+    }
+
     saveStateToLocalStorage = (reportData) => {
         localStorage.setItem('reportData', JSON.stringify(reportData))
     }
@@ -198,6 +202,7 @@ class ReportShowPage extends Component {
                             handleMoveMarker={this.handleMoveMarker}
                             handleUpdateReport={this.handleUpdateReport}
                             reportData={this.state.reportData}
+                            resetMarkerPositions={this.resetMarkerPositions}
                             type='showReport'
                             user={this.props.user}
                         />
