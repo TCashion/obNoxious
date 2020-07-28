@@ -48,7 +48,6 @@ class MapDisplay extends Component {
 
     handleAddMarker = () => {
         const newMarker = this.getLatestMarker();
-        console.log(newMarker)
         this.props.handleAddFeature(newMarker);
         this.setState({ addMarkerOpen: false });
     }
@@ -70,8 +69,8 @@ class MapDisplay extends Component {
     }
 
     handleCancelMoveMarker = async () => {
-        this.setState({ markerMoved: false });
         await this.props.resetMarkerPositions();
+        this.setState({ markerMoved: false });
         this.initMap();
     }
 

@@ -123,7 +123,7 @@ class ReportShowPage extends Component {
     }
 
     resetMarkerPositions = () => {
-        this.setState({reportData: this.props.history.location.state.report})
+        this.setState({reportData: this.props.history.location.state.reportData});
     }
 
     saveStateToLocalStorage = (reportData) => {
