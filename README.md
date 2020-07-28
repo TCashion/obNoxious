@@ -12,7 +12,7 @@ When I initially set out to create this app, I was unable to find an API contain
 
 Inasive species are an issue worldwide, but this app focuses on those species invading North America, specifically the United States. 
 
-The obNoxious app servers two purposes: 
+The obNoxious app serves two purposes: 
 
 * 1) To provide an API resource available to the public that contains identifying information about noxious plant species. 
 * 2) To provide an interface for authenticated users to report sightings of noxious species, thereby building a user-supported database that maps the distribution of some of the US's most tenacious invaders.
