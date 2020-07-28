@@ -69,6 +69,19 @@ class MapDisplay extends Component {
         this.initMap();
     }
 
+    handleCancelMoveMarker = async () => {
+        this.setState({ markerMoved: false });
+        await this.props.resetMarkerPositions();
+        this.initMap();
+    }
+
+    handleDrag(marker) {
+        const markerId = marker.getElement().id;
+        const newLngLat = marker.getLngLat();
+        this.props.handleMoveMarker(markerId, newLngLat);
+        if (!this.state.addMarkerOpen) this.setState({markerMoved: true});
+    }
+
     initMap = async () => {
         const markersArr = this.getMarkersArr();
         mapboxgl.accessToken = await this.getMapBoxToken();
@@ -92,13 +105,6 @@ class MapDisplay extends Component {
             newMarker.on('dragend', () => this.handleDrag(newMarker));
             if (this.props.type === 'showReport') newMarker.getElement().setAttribute('id', marker.id ? marker.id : 'new-marker')
         });
-    }
-
-    handleDrag(marker) {
-        const markerId = marker.getElement().id;
-        const newLngLat = marker.getLngLat();
-        this.props.handleMoveMarker(markerId, newLngLat);
-        if (!this.state.addMarkerOpen) this.setState({markerMoved: true});
     }
 
     saveMarkerPositions = () => {
@@ -143,7 +149,7 @@ class MapDisplay extends Component {
                             <button
                                 className="btn btn-default"
                                 onClick={this.handleAddMarkerToggle}
-                                style={{display: this.state.addMarkerOpen ? 'none' : 'inline-block'}}
+                                style={{display: this.state.addMarkerOpen || this.state.markerMoved ? 'none' : 'inline-block'}}
                             >ADD ANOTHER POINT</button>
                             {this.state.addMarkerOpen ?
                                 <>
@@ -165,6 +171,10 @@ class MapDisplay extends Component {
                                         className="btn btn-default"
                                         onClick={this.saveMarkerPositions}
                                     >SAVE</button>
+                                    <button
+                                        className="btn btn-default"
+                                        onClick={this.handleCancelMoveMarker}
+                                    >RESET</button>
                                 </>
                                 :
                                 null
