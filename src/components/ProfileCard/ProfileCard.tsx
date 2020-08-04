@@ -2,7 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './ProfileCard.css';
 
-function ProfileCard({ user }) {
+interface UserProps {
+    user: {
+        name: string,
+    }
+}
+
+function ProfileCard({ user }: UserProps) {
     return (
         <div className="row row-center-card">
             <div className="col s12 m7 l4">
