@@ -4,8 +4,8 @@ import './NavDropdown.css';
 
 interface NavDropdownProps {
     type: string,
-    addDropdownVisible?: string, 
-    viewDropdownVisible?: string,
+    addDropdownVisible?: boolean, 
+    viewDropdownVisible?: boolean,
     resetLinksToHidden: () => void,
 }
 

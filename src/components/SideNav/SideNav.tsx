@@ -3,7 +3,20 @@ import { Link } from 'react-router-dom';
 import './SideNav.css';
 import NavDropdown from '../NavDropdown/NavDropdown';
 
-function SideNav(props) {
+interface SideNavProps {
+    type: string,
+    addDropdownVisible?: boolean, 
+    viewDropdownVisible?: boolean,
+    resetLinksToHidden: () => void,
+    user: {
+        name: string
+    },
+    handleAddLinkClick: () => void,
+    handleViewLinkClick: () => void,
+    handleLogout: () => void
+}
+
+function SideNav(props: SideNavProps) {
     return (
         <>
             {props.user ?
