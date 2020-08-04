@@ -2,8 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './NavDropdown.css';
 
+interface NavDropdownProps {
+    type: string,
+    addDropdownVisible?: boolean, 
+    viewDropdownVisible?: boolean,
+    resetLinksToHidden: () => void,
+}
 
-function NavDropdown(props) {
+function NavDropdown(props: NavDropdownProps) {
     let dropdownStyle;
     if (props.type === 'add') {
         dropdownStyle = {
