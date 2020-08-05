@@ -2,7 +2,7 @@ import React, { Component, FormEvent } from 'react';
 import * as natureserveAPI from '../../services/natureserveAPI';
 import './AddPlantPage.css';
 
-interface PlantFromObnoxiousDatabase {
+interface PlantForObnoxiousDatabase {
     commonName: string,
     scientificName: string,
     taxonomy: {
@@ -44,7 +44,13 @@ interface PlantFromNatureServe {
 }
 
 const initialState = {
-    plant: {},
+    plant: {
+        commonName: '',
+        scientificName: '',
+        taxonomy: {},
+        distribution: [''],
+        nsxUrl: ''
+    },
     message: '',
     messageColor: 'crimson'
 }
@@ -53,7 +59,7 @@ type IProps = {
     user: {
         _id: string,
     },
-    plants: object[],
+    plants: PlantForObnoxiousDatabase[],
     handleAddPlant: (plant: object) => void,
     parseTaxonomy: (plant: object) => string[],
     parseDistribution: (plant: object) => string
@@ -72,23 +78,22 @@ class AddPlantPage extends Component<IProps, IState> {
             };
         });
 
-        const plantAttributes = {
+        const plantAttributes: PlantForObnoxiousDatabase = {
             commonName: plant.primaryCommonName,
             scientificName: plant.scientificName,
             taxonomy: {
-                kingdom: plant.speciesGlobal.kingdom ? plant.speciesGlobal.kingdom : undefined,
-                phylum: plant.speciesGlobal.phylum ? plant.speciesGlobal.phylum : undefined,
-                class: plant.speciesGlobal.taxclass ? plant.speciesGlobal.taxclass : undefined,
-                order: plant.speciesGlobal.taxorder ? plant.speciesGlobal.taxorder : undefined,
-                family: plant.speciesGlobal.family ? plant.speciesGlobal.family : undefined,
-                genus: plant.speciesGlobal.genus ? plant.speciesGlobal.genus : undefined
+                kingdom: plant.speciesGlobal.kingdom ? plant.speciesGlobal.kingdom : null,
+                phylum: plant.speciesGlobal.phylum ? plant.speciesGlobal.phylum : null,
+                class: plant.speciesGlobal.taxclass ? plant.speciesGlobal.taxclass : null,
+                order: plant.speciesGlobal.taxorder ? plant.speciesGlobal.taxorder : null,
+                family: plant.speciesGlobal.family ? plant.speciesGlobal.family : null,
+                genus: plant.speciesGlobal.genus ? plant.speciesGlobal.genus : null
             },
             distribution,
             nsxUrl: 'https://explorer.natureserve.org' + plant.nsxUrl
         }
-        this.setState((state) => ({
+        this.setState(({
             plant: {
-                ...state.plant,
                 ...plantAttributes
             }
         }));
@@ -168,10 +173,10 @@ class AddPlantPage extends Component<IProps, IState> {
         });
     }
 
-    verifyInvasiveSpecies = (speciesData) => {
+    verifyInvasiveSpecies = (speciesData: PlantFromNatureServe): boolean => {
         const nations = speciesData.nations;
         let invasive = false;
-        nations.forEach((nation, idx) => {
+        nations.forEach((nation) => {
             if (nation.nationCode === 'US' && nation.subnations[0].exotic && nation.subnations[1].exotic) invasive = true;
         })
         return invasive;
