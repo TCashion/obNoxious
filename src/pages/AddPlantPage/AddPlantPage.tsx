@@ -1,39 +1,98 @@
-import React, { Component } from 'react';
+import React, { Component, FormEvent } from 'react';
 import * as natureserveAPI from '../../services/natureserveAPI';
 import './AddPlantPage.css';
 
-class AddPlantPage extends Component {
-    state = {
-        plant: { ...this.getInitialPlantState() },
-        message: '',
-        messageColor: 'crimson'
-    }
+interface PlantForObnoxiousDatabase {
+    commonName: string,
+    scientificName: string,
+    taxonomy: {
+        kingdom: string | null,
+        phylum: string | null,
+        class: string | null,
+        order: string | null,
+        family: string | null,
+        genus: string | null
+    },
+    distribution: string[],
+    nsxUrl: string
+}
 
-    addPlantToState = (plant) => {
-        const distribution = [];
+interface PlantFromNatureServe {
+    recordType: string,
+    nsxUrl: string,
+    scientificName: string,
+    primaryCommonName: string,
+    nations: {
+        nationCode: string,
+        subnations: {
+            subnationCode: string,
+            exotic: boolean
+        }[]
+    }[]
+    ,
+    speciesGlobal: {
+        kingdom: string | null,
+        phylum: string | null,
+        taxclass: string | null,
+        taxorder: string | null,
+        family: string | null,
+        genus: string | null
+    }
+}
+
+const initialState = {
+    existingPlantFound: false,
+    plant: {
+        commonName: '',
+        scientificName: '',
+        taxonomy: {},
+        distribution: [''],
+        nsxUrl: ''
+    },
+    message: '',
+    messageColor: 'crimson'
+}
+
+type IProps = {
+    user: {
+        _id: string,
+    },
+    plants: PlantForObnoxiousDatabase[],
+    getOnePlant: (scientificName: string) => object;
+    handleAddPlant: (plant: object) => void,
+    parseTaxonomy: (plant: object) => string[],
+    parseDistribution: (plant: object) => string
+}
+
+type IState = Readonly<typeof initialState>;
+
+class AddPlantPage extends Component<IProps, IState> {
+    readonly state: IState = initialState;
+
+    addPlantToState = (plant: PlantFromNatureServe) => {
+        const distribution: string[] = [];
         plant.nations.forEach((nation) => {
             if (nation.nationCode === 'US') {
                 nation.subnations.forEach(subnation => distribution.push(subnation.subnationCode))
             };
         });
 
-        const plantAttributes = {
+        const plantAttributes: PlantForObnoxiousDatabase = {
             commonName: plant.primaryCommonName,
             scientificName: plant.scientificName,
             taxonomy: {
-                kingdom: plant.speciesGlobal.kingdom ? plant.speciesGlobal.kingdom : undefined,
-                phylum: plant.speciesGlobal.phylum ? plant.speciesGlobal.phylum : undefined,
-                class: plant.speciesGlobal.taxclass ? plant.speciesGlobal.taxclass : undefined,
-                order: plant.speciesGlobal.taxorder ? plant.speciesGlobal.taxorder : undefined,
-                family: plant.speciesGlobal.family ? plant.speciesGlobal.family : undefined,
-                genus: plant.speciesGlobal.genus ? plant.speciesGlobal.genus : undefined
+                kingdom: plant.speciesGlobal.kingdom ? plant.speciesGlobal.kingdom : null,
+                phylum: plant.speciesGlobal.phylum ? plant.speciesGlobal.phylum : null,
+                class: plant.speciesGlobal.taxclass ? plant.speciesGlobal.taxclass : null,
+                order: plant.speciesGlobal.taxorder ? plant.speciesGlobal.taxorder : null,
+                family: plant.speciesGlobal.family ? plant.speciesGlobal.family : null,
+                genus: plant.speciesGlobal.genus ? plant.speciesGlobal.genus : null
             },
             distribution,
             nsxUrl: 'https://explorer.natureserve.org' + plant.nsxUrl
         }
-        this.setState((state) => ({
+        this.setState(({
             plant: {
-                ...state.plant,
                 ...plantAttributes
             }
         }));
@@ -51,31 +110,31 @@ class AddPlantPage extends Component {
         }
     }
 
-    getNatureServePlant = async (searchTerm) => {
+    getNatureServePlant = async (searchTerm: string) => {
         const plant = await natureserveAPI.getPlantInfo(searchTerm);
         return plant;
     }
 
-    handleChange = (e) => {
+    handleChange = (e: FormEvent<HTMLInputElement>): void => {
         e.persist();
         this.updateMessage('', 'crimson');
         this.setState((state) => ({
             plant: {
                 ...state.plant,
-                commonName: e.target.value
+                commonName: (e.target as HTMLInputElement).value
             }
         }));
     }
 
-    handleSubmitConfirmation = (e) => {
+    handleSubmitConfirmation = (e: FormEvent) => {
         e.preventDefault();
-        if (this.scanExistingPlants(this.state.plant.scientificName)) return;
+        if (this.state.existingPlantFound) return;
         this.props.handleAddPlant(this.state.plant);
         this.resetPlantState();
         this.updateMessage('Successfully added the plant to the database. Thank you!', 'green')
     }
 
-    handleSubmitSearch = async (e) => {
+    handleSubmitSearch = async (e: FormEvent) => {
         e.preventDefault();
         try {
             const newPlant = await this.getNatureServePlant(this.state.plant.commonName);
@@ -88,35 +147,33 @@ class AddPlantPage extends Component {
         }
     }
 
-    handleWrongPlant = (e) => {
+    handleWrongPlant = () => {
         this.resetPlantState();
     }
 
     resetPlantState = () => {
-        this.setState(({ plant }) => ({
-            plant: this.getInitialPlantState()
+        this.setState(({
+            plant: this.getInitialPlantState(),
+            existingPlantFound: false
         }));
     }
 
-    scanExistingPlants = (scientificName) => {
-        let exists = false;
-        this.props.plants.forEach(function (plant) {
-            if (plant.scientificName.toLowerCase() === scientificName.toLowerCase()) exists = true;
-        });
-        return exists;
+    scanExistingPlants = async (scientificName: string) => {
+        let existingPlant = await this.props.getOnePlant(scientificName);
+        if (existingPlant) this.setState({ existingPlantFound: true })
+        return existingPlant ? true : false;
     };
 
-    updateMessage = (msg, color) => {
+    updateMessage = (msg: string, color: string) => {
         this.setState({
             message: msg,
             messageColor: color
         });
     }
 
-    verifyInvasiveSpecies = (speciesData) => {
-        const nations = speciesData.nations;
+    verifyInvasiveSpecies = (speciesData: PlantFromNatureServe): boolean => {
         let invasive = false;
-        nations.forEach((nation, idx) => {
+        speciesData.nations.forEach((nation) => {
             if (nation.nationCode === 'US' && nation.subnations[0].exotic && nation.subnations[1].exotic) invasive = true;
         })
         return invasive;
@@ -124,6 +181,12 @@ class AddPlantPage extends Component {
 
     validateForm() {
         return !(this.state.plant.commonName);
+    }
+
+    /* ---------- Lifecycle methods ---------- */
+
+    componentDidMount = () => {
+        this.getInitialPlantState();
     }
 
     render() {
@@ -136,7 +199,11 @@ class AddPlantPage extends Component {
                                 {this.state.plant.nsxUrl ?
                                     <>
                                         <div className="card-title">
-                                            Is this the plant you wish to add to the database?:
+                                            {this.state.existingPlantFound ?
+                                                <>This plant already exists in the database:</>
+                                                :
+                                                <>Is this the plant you wish to add to the database?:</>
+                                            }
                                         </div>
                                         <div>
                                             <form onSubmit={this.handleSubmitConfirmation}>
@@ -150,15 +217,24 @@ class AddPlantPage extends Component {
                                                 </div>
                                                 <div className="input-field col s12">
                                                     <label htmlFor="taxonomy" className="active">Taxonomy:</label>
-                                                    <textarea name="taxonomy" className="materialize-textarea" id="taxonomy" cols="30" rows="10" disabled value={this.props.parseTaxonomy(this.state.plant)} />
+                                                    <textarea name="taxonomy" className="materialize-textarea" id="taxonomy" cols={30} rows={10} disabled value={this.props.parseTaxonomy(this.state.plant)} />
                                                 </div>
                                                 <div className="input-field col s12">
                                                     <label htmlFor="distribution" className="active">US Distribution:</label>
-                                                    <textarea name="distribution" className="materialize-textarea" id="distribution" cols="30" rows="10" disabled value={this.props.parseDistribution(this.state.plant)} />
+                                                    <textarea name="distribution" className="materialize-textarea" id="distribution" cols={30} rows={10} disabled value={this.props.parseDistribution(this.state.plant)} />
                                                 </div>
                                                 <div className="col-sm-12 text-center button-row">
-                                                    <button type="submit" className="btn btn-default AddPlant-btn" disabled={this.scanExistingPlants(this.state.plant.scientificName)}>Yes</button>
-                                                    <button className="btn btn-danger AddPlant-btn" onClick={this.handleWrongPlant}>No</button>
+                                                    {this.state.existingPlantFound ?
+                                                        <>
+                                                            <button className="btn btn-danger AddPlant-btn" onClick={this.handleWrongPlant}>Cancel</button>
+                                                        </>
+                                                        :
+                                                        <>
+                                                            <button type="submit" className="btn btn-default AddPlant-btn" disabled={this.state.existingPlantFound}
+                                                            >Yes</button>
+                                                            <button className="btn btn-danger AddPlant-btn" onClick={this.handleWrongPlant}>No</button>
+                                                        </>
+                                                    }
                                                 </div>
                                                 <div className="col-sm-12 text-center">
                                                     <p>Data provided by: <a href="https://explorer.natureserve.org/" target="_blank" rel="noopener noreferrer">NatureServeExplorer</a></p>
