@@ -160,7 +160,7 @@ class AddPlantPage extends Component<IProps, IState> {
 
     scanExistingPlants = async (scientificName: string) => {
         let existingPlant = await this.props.getOnePlant(scientificName);
-        if (existingPlant) this.setState({existingPlantFound: true})
+        if (existingPlant) this.setState({ existingPlantFound: true })
         return existingPlant ? true : false;
     };
 
@@ -199,7 +199,11 @@ class AddPlantPage extends Component<IProps, IState> {
                                 {this.state.plant.nsxUrl ?
                                     <>
                                         <div className="card-title">
-                                            Is this the plant you wish to add to the database?:
+                                            {this.state.existingPlantFound ?
+                                                <>This plant already exists in the database:</>
+                                                :
+                                                <>Is this the plant you wish to add to the database?:</>
+                                            }
                                         </div>
                                         <div>
                                             <form onSubmit={this.handleSubmitConfirmation}>
@@ -220,9 +224,17 @@ class AddPlantPage extends Component<IProps, IState> {
                                                     <textarea name="distribution" className="materialize-textarea" id="distribution" cols={30} rows={10} disabled value={this.props.parseDistribution(this.state.plant)} />
                                                 </div>
                                                 <div className="col-sm-12 text-center button-row">
-                                                    <button type="submit" className="btn btn-default AddPlant-btn" disabled={this.state.existingPlantFound}
-                                                    >Yes</button>
-                                                    <button className="btn btn-danger AddPlant-btn" onClick={this.handleWrongPlant}>No</button>
+                                                    {this.state.existingPlantFound ?
+                                                        <>
+                                                            <button className="btn btn-danger AddPlant-btn" onClick={this.handleWrongPlant}>Cancel</button>
+                                                        </>
+                                                        :
+                                                        <>
+                                                            <button type="submit" className="btn btn-default AddPlant-btn" disabled={this.state.existingPlantFound}
+                                                            >Yes</button>
+                                                            <button className="btn btn-danger AddPlant-btn" onClick={this.handleWrongPlant}>No</button>
+                                                        </>
+                                                    }
                                                 </div>
                                                 <div className="col-sm-12 text-center">
                                                     <p>Data provided by: <a href="https://explorer.natureserve.org/" target="_blank" rel="noopener noreferrer">NatureServeExplorer</a></p>
