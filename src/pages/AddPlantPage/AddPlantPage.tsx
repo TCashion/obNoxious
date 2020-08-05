@@ -1,16 +1,69 @@
-import React, { Component } from 'react';
+import React, { Component, SyntheticEvent } from 'react';
 import * as natureserveAPI from '../../services/natureserveAPI';
 import './AddPlantPage.css';
 
-class AddPlantPage extends Component {
-    state = {
-        plant: { ...this.getInitialPlantState() },
-        message: '',
-        messageColor: 'crimson'
-    }
+interface PlantFromObnoxiousDatabase {
+    commonName: string,
+    scientificName: string,
+    taxonomy: {
+        kingdom: string | null,
+        phylum: string | null,
+        class: string | null,
+        order: string | null,
+        family: string | null,
+        genus: string | null
+    },
+    distribution: string[],
+    nsxUrl: string
+}
 
-    addPlantToState = (plant) => {
-        const distribution = [];
+interface PlantFromNatureServe {
+    recordType: string,
+    nsxUrl: string,
+    scientificName: string,
+    primaryCommonName: string,
+    nations: [
+        {
+            nationCode: string,
+            subnations: [
+                {
+                    subnationCode: string,
+                    exotic: boolean
+                }
+            ]
+        }
+    ],
+    speciesGlobal: {
+        kingdom: string | null,
+        phylum: string | null,
+        taxclass: string | null,
+        taxorder: string | null,
+        family: string | null,
+        genus: string | null
+    }
+}
+
+const initialState = {
+    plant: {},
+    message: '',
+    messageColor: 'crimson'
+}
+
+type IProps = {
+    user: object,
+    plants: object[],
+    handleAddPlant: (plant: object) => void,
+    parseTaxonomy: (plant: object) => string[],
+    parseDistribution: (plant: object) => string
+}
+
+type IState = Readonly<typeof initialState>;
+
+class AddPlantPage extends Component<IProps, IState> {
+    readonly state: IState = initialState;
+
+    addPlantToState = (plant: PlantFromNatureServe) => {
+        const distribution: string[] = [];
         plant.nations.forEach((nation) => {
             if (nation.nationCode === 'US') {
                 nation.subnations.forEach(subnation => distribution.push(subnation.subnationCode))
@@ -67,7 +120,7 @@ class AddPlantPage extends Component {
         }));
     }
 
-    handleSubmitConfirmation = (e) => {
+    handleSubmitConfirmation = (e: MouseEvent) => {
         e.preventDefault();
         if (this.scanExistingPlants(this.state.plant.scientificName)) return;
         this.props.handleAddPlant(this.state.plant);
@@ -75,7 +128,7 @@ class AddPlantPage extends Component {
         this.updateMessage('Successfully added the plant to the database. Thank you!', 'green')
     }
 
-    handleSubmitSearch = async (e) => {
+    handleSubmitSearch = async (e: MouseEvent) => {
         e.preventDefault();
         try {
             const newPlant = await this.getNatureServePlant(this.state.plant.commonName);
@@ -88,17 +141,17 @@ class AddPlantPage extends Component {
         }
     }
 
-    handleWrongPlant = (e) => {
+    handleWrongPlant = () => {
         this.resetPlantState();
     }
 
     resetPlantState = () => {
-        this.setState(({ plant }) => ({
+        this.setState(({
             plant: this.getInitialPlantState()
         }));
     }
 
-    scanExistingPlants = (scientificName) => {
+    scanExistingPlants = (scientificName: string) => {
         let exists = false;
         this.props.plants.forEach(function (plant) {
             if (plant.scientificName.toLowerCase() === scientificName.toLowerCase()) exists = true;
@@ -106,7 +159,7 @@ class AddPlantPage extends Component {
         return exists;
     };
 
-    updateMessage = (msg, color) => {
+    updateMessage = (msg: string, color: string) => {
         this.setState({
             message: msg,
             messageColor: color
@@ -124,6 +177,12 @@ class AddPlantPage extends Component {
 
     validateForm() {
         return !(this.state.plant.commonName);
+    }
+
+    /* ---------- Lifecycle methods ---------- */
+
+    componentDidMount = () => {
+        this.getInitialPlantState();
     }
 
     render() {
