@@ -22,17 +22,14 @@ interface PlantFromNatureServe {
     nsxUrl: string,
     scientificName: string,
     primaryCommonName: string,
-    nations: [
-        {
-            nationCode: string,
-            subnations: [
-                {
-                    subnationCode: string,
-                    exotic: boolean
-                }
-            ]
-        }
-    ],
+    nations: {
+        nationCode: string,
+        subnations: {
+            subnationCode: string,
+            exotic: boolean
+        }[]
+    }[]
+    ,
     speciesGlobal: {
         kingdom: string | null,
         phylum: string | null,
@@ -174,9 +171,8 @@ class AddPlantPage extends Component<IProps, IState> {
     }
 
     verifyInvasiveSpecies = (speciesData: PlantFromNatureServe): boolean => {
-        const nations = speciesData.nations;
         let invasive = false;
-        nations.forEach((nation) => {
+        speciesData.nations.forEach((nation) => {
             if (nation.nationCode === 'US' && nation.subnations[0].exotic && nation.subnations[1].exotic) invasive = true;
         })
         return invasive;
@@ -216,11 +212,11 @@ class AddPlantPage extends Component<IProps, IState> {
                                                 </div>
                                                 <div className="input-field col s12">
                                                     <label htmlFor="taxonomy" className="active">Taxonomy:</label>
-                                                    <textarea name="taxonomy" className="materialize-textarea" id="taxonomy" cols="30" rows="10" disabled value={this.props.parseTaxonomy(this.state.plant)} />
+                                                    <textarea name="taxonomy" className="materialize-textarea" id="taxonomy" cols={30} rows={10} disabled value={this.props.parseTaxonomy(this.state.plant)} />
                                                 </div>
                                                 <div className="input-field col s12">
                                                     <label htmlFor="distribution" className="active">US Distribution:</label>
-                                                    <textarea name="distribution" className="materialize-textarea" id="distribution" cols="30" rows="10" disabled value={this.props.parseDistribution(this.state.plant)} />
+                                                    <textarea name="distribution" className="materialize-textarea" id="distribution" cols={30} rows={10} disabled value={this.props.parseDistribution(this.state.plant)} />
                                                 </div>
                                                 <div className="col-sm-12 text-center button-row">
                                                     <button type="submit" className="btn btn-default AddPlant-btn" disabled={this.scanExistingPlants(this.state.plant.scientificName)}>Yes</button>
