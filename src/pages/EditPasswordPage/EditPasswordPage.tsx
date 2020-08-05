@@ -1,7 +1,14 @@
 import React from 'react';
 import EditPasswordForm from '../../components/EditPasswordForm/EditPasswordForm';
 
-function EditPasswordPage(props) {
+type IProps = {
+    user: {
+        _id: string, 
+        email: string
+    },
+}
+
+function EditPasswordPage(props: IProps) {
     return (
         <>
             <EditPasswordForm
