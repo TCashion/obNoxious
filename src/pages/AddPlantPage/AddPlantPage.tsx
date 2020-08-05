@@ -3,6 +3,7 @@ import * as natureserveAPI from '../../services/natureserveAPI';
 import './AddPlantPage.css';
 
 interface PlantForObnoxiousDatabase {
+    user: string,
     commonName: string,
     scientificName: string,
     taxonomy: {
@@ -43,6 +44,7 @@ interface PlantFromNatureServe {
 const initialState = {
     existingPlantFound: false,
     plant: {
+        user: '',
         commonName: '',
         scientificName: '',
         taxonomy: {},
@@ -78,6 +80,7 @@ class AddPlantPage extends Component<IProps, IState> {
         });
 
         const plantAttributes: PlantForObnoxiousDatabase = {
+            user: this.props.user._id,
             commonName: plant.primaryCommonName,
             scientificName: plant.scientificName,
             taxonomy: {
@@ -181,12 +184,6 @@ class AddPlantPage extends Component<IProps, IState> {
 
     validateForm() {
         return !(this.state.plant.commonName);
-    }
-
-    /* ---------- Lifecycle methods ---------- */
-
-    componentDidMount = () => {
-        this.getInitialPlantState();
     }
 
     render() {
