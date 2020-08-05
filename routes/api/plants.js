@@ -4,6 +4,7 @@ const authorizations = require('../../config/middleware/authorizations');
 
 /*---------- Public Routes ----------*/
 router.get('/', plantsCtrl.index);
+router.get('/:id', plantsCtrl.getOne);
 
 /*---------- Protected Routes ----------*/
 router.post('/', authorizations.checkUserLoggedIn, plantsCtrl.create)

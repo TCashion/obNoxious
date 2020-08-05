@@ -41,6 +41,7 @@ interface PlantFromNatureServe {
 }
 
 const initialState = {
+    existingPlantFound: false,
     plant: {
         commonName: '',
         scientificName: '',
@@ -57,6 +58,7 @@ type IProps = {
         _id: string,
     },
     plants: PlantForObnoxiousDatabase[],
+    getOnePlant: (scientificName: string) => object;
     handleAddPlant: (plant: object) => void,
     parseTaxonomy: (plant: object) => string[],
     parseDistribution: (plant: object) => string
@@ -126,7 +128,7 @@ class AddPlantPage extends Component<IProps, IState> {
 
     handleSubmitConfirmation = (e: FormEvent) => {
         e.preventDefault();
-        if (this.scanExistingPlants(this.state.plant.scientificName)) return;
+        if (this.state.existingPlantFound) return;
         this.props.handleAddPlant(this.state.plant);
         this.resetPlantState();
         this.updateMessage('Successfully added the plant to the database. Thank you!', 'green')
@@ -151,16 +153,15 @@ class AddPlantPage extends Component<IProps, IState> {
 
     resetPlantState = () => {
         this.setState(({
-            plant: this.getInitialPlantState()
+            plant: this.getInitialPlantState(),
+            existingPlantFound: false
         }));
     }
 
-    scanExistingPlants = (scientificName: string) => {
-        let exists = false;
-        this.props.plants.forEach(function (plant) {
-            if (plant.scientificName.toLowerCase() === scientificName.toLowerCase()) exists = true;
-        });
-        return exists;
+    scanExistingPlants = async (scientificName: string) => {
+        let existingPlant = await this.props.getOnePlant(scientificName);
+        if (existingPlant) this.setState({existingPlantFound: true})
+        return existingPlant ? true : false;
     };
 
     updateMessage = (msg: string, color: string) => {
@@ -219,7 +220,8 @@ class AddPlantPage extends Component<IProps, IState> {
                                                     <textarea name="distribution" className="materialize-textarea" id="distribution" cols={30} rows={10} disabled value={this.props.parseDistribution(this.state.plant)} />
                                                 </div>
                                                 <div className="col-sm-12 text-center button-row">
-                                                    <button type="submit" className="btn btn-default AddPlant-btn" disabled={this.scanExistingPlants(this.state.plant.scientificName)}>Yes</button>
+                                                    <button type="submit" className="btn btn-default AddPlant-btn" disabled={this.state.existingPlantFound}
+                                                    >Yes</button>
                                                     <button className="btn btn-danger AddPlant-btn" onClick={this.handleWrongPlant}>No</button>
                                                 </div>
                                                 <div className="col-sm-12 text-center">

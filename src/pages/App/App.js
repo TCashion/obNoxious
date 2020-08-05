@@ -35,9 +35,9 @@ class App extends Component {
     return reports;
   }
 
-  getOneReport = async (_id) => {
-    const report = await reportsService.getOne(_id)
-    return report;
+  getOnePlant = async(scientificName) => {
+    const plant = await plantsService.getOne(scientificName);
+    return plant; 
   }
 
   getTodaysDate = () => {
@@ -156,6 +156,7 @@ class App extends Component {
             <Route exact path='/plants/new' render={({ history }) =>
               userService.getUser() ?
                 <AddPlantPage
+                  getOnePlant={this.getOnePlant}
                   handleAddPlant={this.handleAddPlant}
                   history={history}
                   parseDistribution={this.parseDistribution}
@@ -189,7 +190,6 @@ class App extends Component {
             <Route exact path='/reports/new' render={({ history }) =>
               userService.getUser() ?
                 <AddReportPage
-                  getOneReport={this.getOneReport}
                   getTodaysDate={this.getTodaysDate}
                   handleAddReport={this.handleAddReport}
                   history={history}

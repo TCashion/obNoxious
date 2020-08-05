@@ -23,7 +23,17 @@ function createPlant(plant) {
     .then(newPlant => newPlant.json());
 }
 
+function getOne(scientificName) {
+    return fetch(`${BASE_URL}/${scientificName}`, {
+        headers: new Headers ({
+            'Content-type': 'application/json',
+        }),
+    })
+    .then(plant => plant.json());
+}
+
 export default {
     createPlant,
     getPlants,
+    getOne
 }
