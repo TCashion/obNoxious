@@ -1,4 +1,4 @@
-import React, { Component, SyntheticEvent } from 'react';
+import React, { Component, FormEvent } from 'react';
 import * as natureserveAPI from '../../services/natureserveAPI';
 import './AddPlantPage.css';
 
@@ -50,7 +50,9 @@ const initialState = {
 }
 
 type IProps = {
-    user: object,
+    user: {
+        _id: string,
+    },
     plants: object[],
     handleAddPlant: (plant: object) => void,
     parseTaxonomy: (plant: object) => string[],
@@ -104,23 +106,23 @@ class AddPlantPage extends Component<IProps, IState> {
         }
     }
 
-    getNatureServePlant = async (searchTerm) => {
+    getNatureServePlant = async (searchTerm: string) => {
         const plant = await natureserveAPI.getPlantInfo(searchTerm);
         return plant;
     }
 
-    handleChange = (e) => {
+    handleChange = (e: FormEvent<HTMLInputElement>): void => {
         e.persist();
         this.updateMessage('', 'crimson');
         this.setState((state) => ({
             plant: {
                 ...state.plant,
-                commonName: e.target.value
+                commonName: (e.target as HTMLInputElement).value
             }
         }));
     }
 
-    handleSubmitConfirmation = (e: MouseEvent) => {
+    handleSubmitConfirmation = (e: FormEvent) => {
         e.preventDefault();
         if (this.scanExistingPlants(this.state.plant.scientificName)) return;
         this.props.handleAddPlant(this.state.plant);
@@ -128,7 +130,7 @@ class AddPlantPage extends Component<IProps, IState> {
         this.updateMessage('Successfully added the plant to the database. Thank you!', 'green')
     }
 
-    handleSubmitSearch = async (e: MouseEvent) => {
+    handleSubmitSearch = async (e: FormEvent) => {
         e.preventDefault();
         try {
             const newPlant = await this.getNatureServePlant(this.state.plant.commonName);
