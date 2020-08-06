@@ -71,7 +71,11 @@ class EditPasswordForm extends Component <IProps, IState> {
     /* ---------- Lifecycle methods ---------- */
 
     componentDidMount = () => {
-        this.getInitialFormData();
+        const formData = this.getInitialFormData();
+        this.setState((state) => ({
+            ...state,
+            formData
+        }));
     }
 
     render() {
