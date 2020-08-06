@@ -7,8 +7,9 @@ const initialState = {
         password: '',
         newPassword: '',
         passwordConf: '',
-        message: ''
-    }
+    },
+    message: '',
+    passwordUpdated: false
 };
 
 type IProps = {
@@ -29,7 +30,6 @@ class EditPasswordForm extends Component <IProps, IState> {
             password: '',
             newPassword: '',
             passwordConf: '',
-            message: ''
         }
     }
 
@@ -40,7 +40,8 @@ class EditPasswordForm extends Component <IProps, IState> {
             formData: {
                 ...this.state.formData,
                 [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value
-            }
+            }, 
+            passwordUpdated: false
         }))
     }
 
@@ -50,7 +51,8 @@ class EditPasswordForm extends Component <IProps, IState> {
             await userService.updatePassword(this.state.formData);
             this.updateMessage('Password change successful.');
             this.setState({
-                formData: { ...this.getInitialFormData() }
+                formData: { ...this.getInitialFormData() }, 
+                passwordUpdated: true
             })
         } catch (err) {
             this.updateMessage(err.message)
@@ -102,8 +104,8 @@ class EditPasswordForm extends Component <IProps, IState> {
                                         <input type="password" name="passwordConf" minLength={6} value={this.state.formData.passwordConf} onChange={this.handleChange} />
                                     </div>
                                     <div className="col-sm-12">
-                                        {this.state.formData.message ?
-                                            <p style={{ color: 'green' }}>{this.state.formData.message}</p>
+                                        {this.state.message ?
+                                            <p style={{ color: 'green' }}>{this.state.message}</p>
                                             :
                                             <button className="btn btn-default" type="submit" disabled={this.validateForm()}>UPDATE</button>
                                         }
