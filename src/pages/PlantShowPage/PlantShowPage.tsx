@@ -48,7 +48,9 @@ class PlantShowPage extends Component<IProps, IState> {
 
     handleClick = (e: MouseEvent) => {
         e.preventDefault();
-        console.log('click')
+        this.setState({
+            showPlantLocations: true
+        });
     }
 
     /* ---------- Lifecycle methods ---------- */
@@ -113,7 +115,6 @@ class PlantShowPage extends Component<IProps, IState> {
                                             </button>
                                         </div>
                                     </>
-
                                 }
                             </div>
                         </div>
