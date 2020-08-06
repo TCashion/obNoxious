@@ -1,6 +1,7 @@
 import React, { Component, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { PlantForObnoxiousDatabase } from '../../typescript/utils';
+import MapDisplay from '../../components/MapDisplay/MapDisplay';
 
 const initialPlantData: PlantForObnoxiousDatabase = {
     user: '',
@@ -46,8 +47,17 @@ class PlantShowPage extends Component<IProps, IState> {
         }));
     }
 
-    handleClick = (e: MouseEvent) => {
+    getReportedLocations = async () => {
+        // access reports service
+        // scan all reports for this plant based on _id
+        // create the featurecollection 
+        // create an interface for the featurecollection
+        // pass featurecollection into the map element 
+    }
+
+    handleClick = async (e: MouseEvent) => {
         e.preventDefault();
+        await this.getReportedLocations();
         this.setState({
             showPlantLocations: true
         });
@@ -93,32 +103,34 @@ class PlantShowPage extends Component<IProps, IState> {
                         </div>
                     </div>
                 </div>
-                <div className="row row-center-card mt5vh">
-                    <div className="col s12 m4">
-                        <div className="card">
-                            <div className="card-content">
-                                {this.state.showPlantLocations ?
-                                    <div className="card-title">
-                                        Distribution of reported sites:
-                                    </div>
-                                :
-                                    <>
+                <div className="row row-center-card PlantShowPage-row mt5vh">
+                    {this.state.showPlantLocations ?
+                        <>
+                            <MapDisplay
+                                type='showPlant'
+                            />
+                        </>
+                        :
+                        <>
+                            <div className="col s12 m4">
+                                <div className="card">
+                                    <div className="card-content">
                                         <div className="card-title">
                                             Show map?
                                         </div>
                                         <div className="col-sm-12 text-center button-row">
-                                            <button 
+                                            <button
                                                 className="btn btn-default"
                                                 onClick={this.handleClick}
                                             >
                                                 MAP
                                             </button>
                                         </div>
-                                    </>
-                                }
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </>
+                    }
                 </div>
             </>
         )

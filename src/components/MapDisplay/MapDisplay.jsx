@@ -3,6 +3,12 @@ import mapboxgl, { Marker } from 'mapbox-gl';
 import mapboxService from '../../services/mapboxService';
 import './MapDisplay.css';
 
+/* ----- To configure this element: ----- 
+The 'type' prop is set by which page will render the MapDisplay Element. 
+*/
+
+
+
 class MapDisplay extends Component {
 
     state = {
@@ -134,7 +140,11 @@ class MapDisplay extends Component {
         return (
             <div className="col s12 m6">
                 <div className="card MapDisplay-card">
-                    <h4>{this.props.type === 'createReport' ? 'Report location: ' : 'Reported Location(s): '}</h4>
+                    <h4>
+                        {this.props.type === 'createReport' && 'Report location:'}
+                        {this.props.type === 'showReport' && 'Reported location(s):'}
+                        {this.props.type === 'showPlant' && 'Distribution of reported sites:'}
+                    </h4>
                     <p>{this.props.type === 'createReport' ? 'Mark the initial point here. You can add more points on the next page.' : null}</p>
                     <div className="card-content">
                         <div className="MapDisplay-content">
