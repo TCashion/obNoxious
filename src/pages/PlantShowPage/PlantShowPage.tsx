@@ -1,9 +1,60 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { PlantForObnoxiousDatabase } from '../../typescript/utils';
 
-class PlantShowPage extends Component {
-    state = {
-        plantData: this.props.location.state.plant
+const initialState = {
+    plantData: {
+        user: '',
+        commonName: '',
+        scientificName: '',
+        taxonomy: {
+            kingdom: '',
+            phylum: '',
+            class: '',
+            order: '',
+            family: '',
+            genus: '',
+        },
+        distribution: [],
+        nsxUrl: '',
+    }
+};
+
+type IProps = {
+    location: {
+        state: {
+            plant: PlantForObnoxiousDatabase
+        }
+    },
+    parseTaxonomy: (plant: object) => string[],
+    parseDistribution: (plant: object) => string
+}
+
+type IState = Readonly<typeof initialState>;
+
+class PlantShowPage extends Component<IProps, IState> {
+    // state = {
+    //     plantData: this.props.location.state.plant
+    // }
+    readonly state = initialState;
+
+    getPlantData() {
+        // return {
+        //     ...this.props.location.state.plant
+        // }
+        const plantData: PlantForObnoxiousDatabase = this.props.location.state.plant
+        this.setState((state) => ({
+            plantData: {
+                ...state.plantData,
+                plantData
+            }
+        }));
+    }
+
+    /* ---------- Lifecycle methods ---------- */
+
+    componentDidMount = () => {
+        this.getPlantData();
     }
 
     render() {

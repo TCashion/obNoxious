@@ -21,9 +21,6 @@ type IProps = {
 type IState = Readonly<typeof initialState>;
 
 class EditPasswordForm extends Component <IProps, IState> {
-    // state = {
-    //     formData: { ...this.getInitialFormData() }
-    // }
     readonly state: IState = initialState;
 
     getInitialFormData() {
