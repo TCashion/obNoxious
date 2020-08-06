@@ -46,12 +46,12 @@ class AddPlantPage extends Component<IProps, IState> {
             commonName: plant.primaryCommonName,
             scientificName: plant.scientificName,
             taxonomy: {
-                kingdom: plant.speciesGlobal.kingdom ? plant.speciesGlobal.kingdom : null,
-                phylum: plant.speciesGlobal.phylum ? plant.speciesGlobal.phylum : null,
-                class: plant.speciesGlobal.taxclass ? plant.speciesGlobal.taxclass : null,
-                order: plant.speciesGlobal.taxorder ? plant.speciesGlobal.taxorder : null,
-                family: plant.speciesGlobal.family ? plant.speciesGlobal.family : null,
-                genus: plant.speciesGlobal.genus ? plant.speciesGlobal.genus : null
+                kingdom: plant.speciesGlobal.kingdom ? plant.speciesGlobal.kingdom : '',
+                phylum: plant.speciesGlobal.phylum ? plant.speciesGlobal.phylum : '',
+                class: plant.speciesGlobal.taxclass ? plant.speciesGlobal.taxclass : '',
+                order: plant.speciesGlobal.taxorder ? plant.speciesGlobal.taxorder : '',
+                family: plant.speciesGlobal.family ? plant.speciesGlobal.family : '',
+                genus: plant.speciesGlobal.genus ? plant.speciesGlobal.genus : ''
             },
             distribution,
             nsxUrl: 'https://explorer.natureserve.org' + plant.nsxUrl

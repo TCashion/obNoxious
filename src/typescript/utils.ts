@@ -3,12 +3,12 @@ export interface PlantForObnoxiousDatabase {
     commonName: string,
     scientificName: string,
     taxonomy: {
-        kingdom: string | null,
-        phylum: string | null,
-        class: string | null,
-        order: string | null,
-        family: string | null,
-        genus: string | null
+        kingdom: string,
+        phylum: string,
+        class: string,
+        order: string,
+        family: string,
+        genus: string
     },
     distribution: string[],
     nsxUrl: string

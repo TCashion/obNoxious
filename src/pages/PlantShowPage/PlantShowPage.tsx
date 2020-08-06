@@ -2,23 +2,23 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { PlantForObnoxiousDatabase } from '../../typescript/utils';
 
-const initialState = {
-    plantData: {
-        user: '',
-        commonName: '',
-        scientificName: '',
-        taxonomy: {
-            kingdom: '',
-            phylum: '',
-            class: '',
-            order: '',
-            family: '',
-            genus: '',
-        },
-        distribution: [],
-        nsxUrl: '',
-    }
+const initialPlantData: PlantForObnoxiousDatabase = {
+    user: '',
+    commonName: '',
+    scientificName: '',
+    taxonomy: {
+        kingdom: '',
+        phylum: '',
+        class: '',
+        order: '',
+        family: '',
+        genus: '',
+    },
+    distribution: [],
+    nsxUrl: '',
 };
+
+const initialState = { plantData: initialPlantData };
 
 type IProps = {
     location: {
@@ -33,21 +33,13 @@ type IProps = {
 type IState = Readonly<typeof initialState>;
 
 class PlantShowPage extends Component<IProps, IState> {
-    // state = {
-    //     plantData: this.props.location.state.plant
-    // }
-    readonly state = initialState;
+    readonly state: IState = initialState;
 
     getPlantData() {
-        // return {
-        //     ...this.props.location.state.plant
-        // }
-        const plantData: PlantForObnoxiousDatabase = this.props.location.state.plant
+        const plantData: PlantForObnoxiousDatabase = this.props.location.state.plant;
         this.setState((state) => ({
-            plantData: {
-                ...state.plantData,
+                ...state,
                 plantData
-            }
         }));
     }
 
