@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { PlantForObnoxiousDatabase } from '../../typescript/utils';
 
@@ -18,7 +18,10 @@ const initialPlantData: PlantForObnoxiousDatabase = {
     nsxUrl: '',
 };
 
-const initialState = { plantData: initialPlantData };
+const initialState = {
+    plantData: initialPlantData,
+    showPlantLocations: false
+};
 
 type IProps = {
     location: {
@@ -38,9 +41,14 @@ class PlantShowPage extends Component<IProps, IState> {
     getPlantData() {
         const plantData: PlantForObnoxiousDatabase = this.props.location.state.plant;
         this.setState((state) => ({
-                ...state,
-                plantData
+            ...state,
+            plantData
         }));
+    }
+
+    handleClick = (e: MouseEvent) => {
+        e.preventDefault();
+        console.log('click')
     }
 
     /* ---------- Lifecycle methods ---------- */
@@ -52,7 +60,7 @@ class PlantShowPage extends Component<IProps, IState> {
     render() {
         return (
             <>
-                <div className="row row-center-card mt15vh">
+                <div className="row row-center-card mt5vh">
                     <div className="col s12 m4">
                         <div className="card">
                             <div className="card-content">
@@ -79,6 +87,34 @@ class PlantShowPage extends Component<IProps, IState> {
                                         <Link to='/plants' className="btn btn-default">BACK</Link>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="row row-center-card mt5vh">
+                    <div className="col s12 m4">
+                        <div className="card">
+                            <div className="card-content">
+                                {this.state.showPlantLocations ?
+                                    <div className="card-title">
+                                        Distribution of reported sites:
+                                    </div>
+                                :
+                                    <>
+                                        <div className="card-title">
+                                            Show map?
+                                        </div>
+                                        <div className="col-sm-12 text-center button-row">
+                                            <button 
+                                                className="btn btn-default"
+                                                onClick={this.handleClick}
+                                            >
+                                                MAP
+                                            </button>
+                                        </div>
+                                    </>
+
+                                }
                             </div>
                         </div>
                     </div>
