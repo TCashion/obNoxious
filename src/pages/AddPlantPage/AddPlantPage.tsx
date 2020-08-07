@@ -61,7 +61,6 @@ class AddPlantPage extends Component<IProps, IState> {
                 ...plantAttributes
             }
         }));
-        if (this.scanExistingPlants(plant.scientificName)) { this.updateMessage('This plant is already in our database.', 'green') };
     }
 
     getInitialPlantState() {
@@ -103,6 +102,7 @@ class AddPlantPage extends Component<IProps, IState> {
         e.preventDefault();
         try {
             const newPlant = await this.getNatureServePlant(this.state.plant.commonName);
+            const existingPlant = await this.scanExistingPlants(newPlant.results[0].scientificName)
             this.verifyInvasiveSpecies(newPlant.results[0])
                 ? this.addPlantToState(newPlant.results[0])
                 :
@@ -125,8 +125,8 @@ class AddPlantPage extends Component<IProps, IState> {
 
     scanExistingPlants = async (scientificName: string) => {
         let existingPlant = await this.props.getOnePlant(scientificName);
+        console.log(existingPlant)
         if (existingPlant) this.setState({ existingPlantFound: true })
-        return existingPlant ? true : false;
     };
 
     updateMessage = (msg: string, color: string) => {
@@ -159,7 +159,7 @@ class AddPlantPage extends Component<IProps, IState> {
                                     <>
                                         <div className="card-title">
                                             {this.state.existingPlantFound ?
-                                                <>This plant already exists in the database:</>
+                                                <>This plant is already exists in the database:</>
                                                 :
                                                 <>Is this the plant you wish to add to the database?:</>
                                             }
