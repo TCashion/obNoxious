@@ -36,6 +36,17 @@ function deleteReport(report) {
     .then(deletedReport => deletedReport.json())
 }
 
+function getPlantReportedLocations(plantId) {
+    return fetch(`${BASE_URL}/plant/${plantId}`, {
+        method: 'GET',
+        headers: new Headers({
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${tokenService.getToken()}`
+        })
+    })
+    .then(locations => locations.json())
+}
+
 function updateReport(report) {
     return fetch(BASE_URL, {
         method: 'PUT',
@@ -50,6 +61,7 @@ function updateReport(report) {
 
 export default {
     createReport,
+    getPlantReportedLocations,
     getReports,
     deleteReport,
     updateReport

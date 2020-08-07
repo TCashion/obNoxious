@@ -1,45 +1,7 @@
 import React, { Component, FormEvent } from 'react';
+import { PlantForObnoxiousDatabase, PlantFromNatureServe } from '../../typescript/utils';
 import * as natureserveAPI from '../../services/natureserveAPI';
 import './AddPlantPage.css';
-
-interface PlantForObnoxiousDatabase {
-    user: string,
-    commonName: string,
-    scientificName: string,
-    taxonomy: {
-        kingdom: string | null,
-        phylum: string | null,
-        class: string | null,
-        order: string | null,
-        family: string | null,
-        genus: string | null
-    },
-    distribution: string[],
-    nsxUrl: string
-}
-
-interface PlantFromNatureServe {
-    recordType: string,
-    nsxUrl: string,
-    scientificName: string,
-    primaryCommonName: string,
-    nations: {
-        nationCode: string,
-        subnations: {
-            subnationCode: string,
-            exotic: boolean
-        }[]
-    }[]
-    ,
-    speciesGlobal: {
-        kingdom: string | null,
-        phylum: string | null,
-        taxclass: string | null,
-        taxorder: string | null,
-        family: string | null,
-        genus: string | null
-    }
-}
 
 const initialState = {
     existingPlantFound: false,
@@ -84,12 +46,12 @@ class AddPlantPage extends Component<IProps, IState> {
             commonName: plant.primaryCommonName,
             scientificName: plant.scientificName,
             taxonomy: {
-                kingdom: plant.speciesGlobal.kingdom ? plant.speciesGlobal.kingdom : null,
-                phylum: plant.speciesGlobal.phylum ? plant.speciesGlobal.phylum : null,
-                class: plant.speciesGlobal.taxclass ? plant.speciesGlobal.taxclass : null,
-                order: plant.speciesGlobal.taxorder ? plant.speciesGlobal.taxorder : null,
-                family: plant.speciesGlobal.family ? plant.speciesGlobal.family : null,
-                genus: plant.speciesGlobal.genus ? plant.speciesGlobal.genus : null
+                kingdom: plant.speciesGlobal.kingdom ? plant.speciesGlobal.kingdom : '',
+                phylum: plant.speciesGlobal.phylum ? plant.speciesGlobal.phylum : '',
+                class: plant.speciesGlobal.taxclass ? plant.speciesGlobal.taxclass : '',
+                order: plant.speciesGlobal.taxorder ? plant.speciesGlobal.taxorder : '',
+                family: plant.speciesGlobal.family ? plant.speciesGlobal.family : '',
+                genus: plant.speciesGlobal.genus ? plant.speciesGlobal.genus : ''
             },
             distribution,
             nsxUrl: 'https://explorer.natureserve.org' + plant.nsxUrl
@@ -99,7 +61,6 @@ class AddPlantPage extends Component<IProps, IState> {
                 ...plantAttributes
             }
         }));
-        if (this.scanExistingPlants(plant.scientificName)) { this.updateMessage('This plant is already in our database.', 'green') };
     }
 
     getInitialPlantState() {
@@ -141,6 +102,7 @@ class AddPlantPage extends Component<IProps, IState> {
         e.preventDefault();
         try {
             const newPlant = await this.getNatureServePlant(this.state.plant.commonName);
+            await this.scanExistingPlants(newPlant.results[0].scientificName);
             this.verifyInvasiveSpecies(newPlant.results[0])
                 ? this.addPlantToState(newPlant.results[0])
                 :
@@ -163,8 +125,7 @@ class AddPlantPage extends Component<IProps, IState> {
 
     scanExistingPlants = async (scientificName: string) => {
         let existingPlant = await this.props.getOnePlant(scientificName);
-        if (existingPlant) this.setState({ existingPlantFound: true })
-        return existingPlant ? true : false;
+        if (existingPlant) this.setState({ existingPlantFound: true });
     };
 
     updateMessage = (msg: string, color: string) => {
@@ -197,7 +158,7 @@ class AddPlantPage extends Component<IProps, IState> {
                                     <>
                                         <div className="card-title">
                                             {this.state.existingPlantFound ?
-                                                <>This plant already exists in the database:</>
+                                                <>This plant is already exists in the database:</>
                                                 :
                                                 <>Is this the plant you wish to add to the database?:</>
                                             }

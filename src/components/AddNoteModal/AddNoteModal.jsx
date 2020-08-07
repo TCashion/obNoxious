@@ -11,8 +11,8 @@ class AddNoteModal extends Component {
 
     getInitialNoteState() {
         return {
-            user: this.props.reportData.user,
-            parentReportId: this.props.reportData._id,
+            user: this.props.report.user,
+            parentReportId: this.props.report._id,
             note: '',
             date: this.props.getTodaysDate()
         }

@@ -3,11 +3,37 @@ import mapboxgl, { Marker } from 'mapbox-gl';
 import mapboxService from '../../services/mapboxService';
 import './MapDisplay.css';
 
+/* ----- To configure this element: ----- 
+
+The 'type' prop is set by which page will render the MapDisplay Element. 
+
+The getMarkersArr function returns the location data points based on the 
+specified type. 
+
+Location data for coordinates should be formated as feature collections
+according to GEOJSON format. 
+
+-------------------------------------- */
+
 class MapDisplay extends Component {
 
     state = {
         addMarkerOpen: false,
-        markerMoved: false
+        markerMoved: false, 
+        zoom: 15
+    }
+
+    filterFeaturesForArr(featureCollection, filledMarkersArr) {
+        featureCollection.features.forEach((feature) => {
+            feature.geometry.coordinates.forEach((pointCoordinates) => {
+                const markerObj = {
+                    id: feature._id,
+                    coordinates: pointCoordinates
+                }
+                filledMarkersArr.push(markerObj);
+            });
+        });
+        return filledMarkersArr;
     }
 
     getClientCurrentPosition = () => {
@@ -15,7 +41,7 @@ class MapDisplay extends Component {
     }
 
     getLatestMarker = () => {
-        const featuresArr = this.props.reportData.featureCollection.features;
+        const featuresArr = this.props.report.featureCollection.features;
         return featuresArr[featuresArr.length - 1];
     }
 
@@ -28,16 +54,11 @@ class MapDisplay extends Component {
             };
             filledMarkersArr.push(markerObj);
         } else if (this.props.type === 'showReport') {
-            this.props.reportData.featureCollection.features.forEach((feature) => {
-                feature.geometry.coordinates.forEach((pointCoordinates) => {
-                    const markerObj = {
-                        id: feature._id,
-                        coordinates: pointCoordinates
-                    }
-                    filledMarkersArr.push(markerObj)
-                });
-            });
+            this.filterFeaturesForArr(this.props.report.featureCollection, filledMarkersArr);
+        } else if (this.props.type === 'showPlant') {
+            this.filterFeaturesForArr(this.props.featureCollection, filledMarkersArr);
         };
+        this.setState({zoom: this.props.type === 'showPlant' ? 10 : 15});
         return filledMarkersArr;
     }
 
@@ -57,7 +78,7 @@ class MapDisplay extends Component {
             addMarkerOpen: !(state.addMarkerOpen)
         }));
         if (this.state.addMarkerOpen) {
-            this.props.addNewMarkerToReportData(this.state.mapCenter);
+            this.props.addNewMarkerToReport(this.state.mapCenter);
             this.initMap();
         };
     }
@@ -82,13 +103,13 @@ class MapDisplay extends Component {
     }
 
     initMap = async () => {
-        const markersArr = this.getMarkersArr();
+        const markersArr = await this.getMarkersArr();
         mapboxgl.accessToken = await this.getMapBoxToken();
         const map = new mapboxgl.Map({
             container: 'map-container',
             style: 'mapbox://styles/mapbox/satellite-streets-v11', // stylesheet location
             center: markersArr[markersArr.length - 1].coordinates, // starting position [lng, lat]
-            zoom: 14 // starting zoom
+            zoom: this.state.zoom // starting zoom
         });
         map.on('moveend', () => this.setMapCenterInState(map));
         this.initExistingMapMarkers(markersArr, map);
@@ -127,14 +148,18 @@ class MapDisplay extends Component {
 
     componentDidMount() {
         if (this.props.type === 'createReport') this.getClientCurrentPosition();
-        if (this.props.type === 'showReport') this.initMap();
+        if (this.props.type === 'showReport' || this.props.type === 'showPlant') this.initMap();
     }
 
     render() {
         return (
             <div className="col s12 m6">
                 <div className="card MapDisplay-card">
-                    <h4>{this.props.type === 'createReport' ? 'Report location: ' : 'Reported Location(s): '}</h4>
+                    <h4>
+                        {this.props.type === 'createReport' && 'Report location:'}
+                        {this.props.type === 'showReport' && 'Reported location(s):'}
+                        {this.props.type === 'showPlant' && 'Distribution of reported sites:'}
+                    </h4>
                     <p>{this.props.type === 'createReport' ? 'Mark the initial point here. You can add more points on the next page.' : null}</p>
                     <div className="card-content">
                         <div className="MapDisplay-content">
@@ -143,7 +168,7 @@ class MapDisplay extends Component {
                             </div>
                         </div>
                     </div>
-                    {(this.props.type === 'showReport' && this.props.user._id === this.props.reportData.user._id) ?
+                    {(this.props.type === 'showReport' && this.props.user._id === this.props.report.user._id) ?
                         <div className="MapDisplay-btn-display">
                             <button
                                 className="btn btn-default"
