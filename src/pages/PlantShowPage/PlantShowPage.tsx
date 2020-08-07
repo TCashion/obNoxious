@@ -1,9 +1,11 @@
 import React, { Component, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { PlantForObnoxiousDatabase } from '../../typescript/utils';
+import { PlantFromObnoxiousDatabase } from '../../typescript/utils';
 import MapDisplay from '../../components/MapDisplay/MapDisplay';
+import reportsService from '../../services/reportsService';
 
-const initialPlantData: PlantForObnoxiousDatabase = {
+const initialPlantData: PlantFromObnoxiousDatabase = {
+    _id: '',
     user: '',
     commonName: '',
     scientificName: '',
@@ -27,7 +29,7 @@ const initialState = {
 type IProps = {
     location: {
         state: {
-            plant: PlantForObnoxiousDatabase
+            plant: PlantFromObnoxiousDatabase
         }
     },
     parseTaxonomy: (plant: object) => string[],
@@ -40,26 +42,30 @@ class PlantShowPage extends Component<IProps, IState> {
     readonly state: IState = initialState;
 
     getPlantData() {
-        const plantData: PlantForObnoxiousDatabase = this.props.location.state.plant;
+        const plantData: PlantFromObnoxiousDatabase = this.props.location.state.plant;
         this.setState((state) => ({
             ...state,
             plantData
         }));
     }
 
-    getReportedLocations = async () => {
+    getReportedLocations = async (plantId: string) => {
+        const reportedLocations = await reportsService.getPlantReportedLocations(plantId); 
         // access reports service
         // scan all reports for this plant based on _id
         // create the featurecollection 
         // create an interface for the featurecollection
         // pass featurecollection into the map element 
+        return reportedLocations;
     }
 
     handleClick = async (e: MouseEvent) => {
         e.preventDefault();
-        await this.getReportedLocations();
+        const reportedLocations = await this.getReportedLocations(this.state.plantData._id);
+        console.log(reportedLocations);
         this.setState({
-            showPlantLocations: true
+            showPlantLocations: true, 
+            // reportedLocations
         });
     }
 

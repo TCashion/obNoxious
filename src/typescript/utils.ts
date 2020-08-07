@@ -14,6 +14,23 @@ export interface PlantForObnoxiousDatabase {
     nsxUrl: string
 }
 
+export interface PlantFromObnoxiousDatabase {
+    _id: string,
+    user: string,
+    commonName: string,
+    scientificName: string,
+    taxonomy: {
+        kingdom: string,
+        phylum: string,
+        class: string,
+        order: string,
+        family: string,
+        genus: string
+    },
+    distribution: string[],
+    nsxUrl: string
+}
+
 export interface PlantFromNatureServe {
     recordType: string,
     nsxUrl: string,

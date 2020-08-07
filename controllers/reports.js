@@ -58,10 +58,15 @@ async function update(req, res) {
     }
 }
 
+async function getPlantLocations(req, res) {
+    console.log(req.params)
+}
+
 module.exports = {
     index,
     create, 
     deleteOne,
     findOne,
-    update
+    update,
+    getPlantLocations
 }

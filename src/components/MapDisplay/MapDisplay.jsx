@@ -3,8 +3,17 @@ import mapboxgl, { Marker } from 'mapbox-gl';
 import mapboxService from '../../services/mapboxService';
 import './MapDisplay.css';
 
-/* ----- To configure this element: ----- 
+/* 
+
+----- To configure this element: ----- 
+
 The 'type' prop is set by which page will render the MapDisplay Element. 
+
+The getMarkersArr function returns the location data points based on the 
+specified type. 
+
+-------------------------------------- 
+
 */
 
 
@@ -43,6 +52,8 @@ class MapDisplay extends Component {
                     filledMarkersArr.push(markerObj)
                 });
             });
+        } else if (this.props.type === 'showPlant') {
+
         };
         return filledMarkersArr;
     }
