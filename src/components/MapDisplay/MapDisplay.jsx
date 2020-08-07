@@ -63,8 +63,8 @@ class MapDisplay extends Component {
                     filledMarkersArr.push(markerObj);
                 });
             });
-            this.setState({zoom: 10});
         };
+        this.setState({zoom: this.state.type === 'showPlant' ? 10 : 15});
         return filledMarkersArr;
     }
 
