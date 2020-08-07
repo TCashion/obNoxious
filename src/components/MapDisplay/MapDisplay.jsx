@@ -41,7 +41,7 @@ class MapDisplay extends Component {
     }
 
     getLatestMarker = () => {
-        const featuresArr = this.props.reportData.featureCollection.features;
+        const featuresArr = this.props.report.featureCollection.features;
         return featuresArr[featuresArr.length - 1];
     }
 
@@ -54,7 +54,7 @@ class MapDisplay extends Component {
             };
             filledMarkersArr.push(markerObj);
         } else if (this.props.type === 'showReport') {
-            this.filterFeaturesForArr(this.props.reportData.featureCollection, filledMarkersArr);
+            this.filterFeaturesForArr(this.props.report.featureCollection, filledMarkersArr);
         } else if (this.props.type === 'showPlant') {
             this.filterFeaturesForArr(this.props.featureCollection, filledMarkersArr);
         };
@@ -78,7 +78,7 @@ class MapDisplay extends Component {
             addMarkerOpen: !(state.addMarkerOpen)
         }));
         if (this.state.addMarkerOpen) {
-            this.props.addNewMarkerToReportData(this.state.mapCenter);
+            this.props.addNewMarkerToReport(this.state.mapCenter);
             this.initMap();
         };
     }
@@ -168,7 +168,7 @@ class MapDisplay extends Component {
                             </div>
                         </div>
                     </div>
-                    {(this.props.type === 'showReport' && this.props.user._id === this.props.reportData.user._id) ?
+                    {(this.props.type === 'showReport' && this.props.user._id === this.props.report.user._id) ?
                         <div className="MapDisplay-btn-display">
                             <button
                                 className="btn btn-default"

@@ -22,9 +22,10 @@ const initialPlantData: PlantFromObnoxiousDatabase = {
 };
 
 const initialState = {
-    plantData: initialPlantData,
+    plant: initialPlantData,
     showPlantLocations: false,
-    featureCollection: {}
+    featureCollection: {},
+    featureCollectionFound: false
 };
 
 type IProps = {
@@ -42,31 +43,33 @@ type IState = Readonly<typeof initialState>;
 class PlantShowPage extends Component<IProps, IState> {
     readonly state: IState = initialState;
 
-    getPlantData() {
-        const plantData: PlantFromObnoxiousDatabase = this.props.location.state.plant;
+    getPlant() {
+        const plant: PlantFromObnoxiousDatabase = this.props.location.state.plant;
         this.setState((state) => ({
             ...state,
-            plantData
+            plant
         }));
     }
 
     getReportedLocations = async (plantId: string) => {
-        return await reportsService.getPlantReportedLocations(plantId); 
+        return await reportsService.getPlantReportedLocations(plantId);
     }
 
     handleClick = async (e: MouseEvent) => {
         e.preventDefault();
-        const featureCollection: FeatureCollection = await this.getReportedLocations(this.state.plantData._id);
+        const featureCollection: FeatureCollection = await this.getReportedLocations(this.state.plant._id);
+        console.log(featureCollection.features)
         this.setState({
-            showPlantLocations: true, 
-            featureCollection
+            showPlantLocations: true,
+            featureCollection,
+            featureCollectionFound: featureCollection.features.length ? true : false
         });
     }
 
     /* ---------- Lifecycle methods ---------- */
 
     componentDidMount = () => {
-        this.getPlantData();
+        this.getPlant();
     }
 
     render() {
@@ -77,23 +80,23 @@ class PlantShowPage extends Component<IProps, IState> {
                         <div className="card">
                             <div className="card-content">
                                 <div className="card-title">
-                                    Detail for {this.state.plantData.commonName}
+                                    Detail for {this.state.plant.commonName}
                                 </div>
                                 <div>
                                     <div className="input-field col s12 left-align">
                                         <h6>Scientific Name:</h6>
-                                        <p className="inline-el">{this.state.plantData.scientificName}</p>
+                                        <p className="inline-el">{this.state.plant.scientificName}</p>
                                     </div>
                                     <div className="input-field col s12 left-align">
                                         <h6>Taxonomy:</h6>
-                                        <p className="inline-el">{this.props.parseTaxonomy(this.state.plantData)}</p>
+                                        <p className="inline-el">{this.props.parseTaxonomy(this.state.plant)}</p>
                                     </div>
                                     <div className="input-field col s12 left-align">
                                         <h6>Distribution in the US:</h6>
-                                        <p className="inline-el">{this.props.parseDistribution(this.state.plantData)}</p>
+                                        <p className="inline-el">{this.props.parseDistribution(this.state.plant)}</p>
                                     </div>
                                     <div className="col-sm-12 text-center">
-                                        <p>Source data: <a href={this.state.plantData.nsxUrl} target="_blank" rel="noopener noreferrer">NatureServeExplorer</a></p>
+                                        <p>Source data: <a href={this.state.plant.nsxUrl} target="_blank" rel="noopener noreferrer">NatureServeExplorer</a></p>
                                     </div>
                                     <div className="col-sm-12 text-center button-row">
                                         <Link to='/plants' className="btn btn-default">BACK</Link>
@@ -106,31 +109,43 @@ class PlantShowPage extends Component<IProps, IState> {
                 <div className="row row-center-card PlantShowPage-row mt5vh">
                     {this.state.showPlantLocations ?
                         <>
-                            <MapDisplay
-                                type='showPlant'
-                                featureCollection={this.state.featureCollection}
-                            />
-                        </>
-                        :
-                        <>
-                            <div className="col s12 m4">
-                                <div className="card">
-                                    <div className="card-content">
-                                        <div className="card-title">
-                                            Show map?
-                                        </div>
-                                        <div className="col-sm-12 text-center button-row">
-                                            <button
-                                                className="btn btn-default"
-                                                onClick={this.handleClick}
-                                            >
-                                                MAP
-                                            </button>
+                            {this.state.featureCollectionFound ?
+                                <MapDisplay
+                                    type='showPlant'
+                                    featureCollection={this.state.featureCollection}
+                                />
+                                :
+                                <div className="col s12 m4">
+                                    <div className="card">
+                                        <div className="card-content">
+                                            <div className="card-content">
+                                                <p>Sorry, no reports have been recorded yet for {this.state.plant.commonName}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         </>
+                        :
+                        <>
+                                <div className="col s12 m4">
+                                    <div className="card">
+                                        <div className="card-content">
+                                            <div className="card-title">
+                                                Show map?
+                                        </div>
+                                            <div className="col-sm-12 text-center button-row">
+                                                <button
+                                                    className="btn btn-default"
+                                                    onClick={this.handleClick}
+                                                >
+                                                    MAP
+                                            </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
                     }
                 </div>
             </>

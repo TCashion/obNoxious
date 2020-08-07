@@ -10,10 +10,10 @@ import MapDisplay from '../../components/MapDisplay/MapDisplay';
 
 class ReportShowPage extends Component {
     state = {
-        reportData: { ...this.getInitialReportState() }
+        report: { ...this.getInitialReportState() }
     }
 
-    addNewMarkerToReportData = (mapCenter) => {
+    addNewMarkerToReport = (mapCenter) => {
         const newMarkerData = {
             type: 'Feature',
             geometry: {
@@ -21,20 +21,20 @@ class ReportShowPage extends Component {
                 coordinates: [[mapCenter.lng, mapCenter.lat]]
             }
         };
-        const reportDataCopy = { ...this.state.reportData };
-        const featureCollectionCopy = { ...reportDataCopy.featureCollection };
+        const reportCopy = { ...this.state.report };
+        const featureCollectionCopy = { ...reportCopy.featureCollection };
         const featuresCopy = [...featureCollectionCopy.features]
         featuresCopy.push(newMarkerData);
         featureCollectionCopy.features = featuresCopy;
-        reportDataCopy.featureCollection = featureCollectionCopy;
+        reportCopy.featureCollection = featureCollectionCopy;
         this.setState({
-            reportData: reportDataCopy
+            report: reportCopy
         });
     }
 
     copyFeatureCollectionAndUpdate = (feature, updatedMarkerObj, idx) => {
-        const reportDataCopy = { ...this.state.reportData };
-        const featureCollectionCopy = { ...reportDataCopy.featureCollection };
+        const reportCopy = { ...this.state.report };
+        const featureCollectionCopy = { ...reportCopy.featureCollection };
         const featuresCopy = [...featureCollectionCopy.features];
         const featureCopy = { ...feature };
         const geometryCopy = { ...featureCopy.geometry };
@@ -44,15 +44,15 @@ class ReportShowPage extends Component {
         featureCopy.geometry = geometryCopy;
         featuresCopy[idx] = featureCopy;
         featureCollectionCopy.features = featuresCopy;
-        reportDataCopy.featureCollection = featureCollectionCopy;
+        reportCopy.featureCollection = featureCollectionCopy;
         this.setState({
-            reportData: reportDataCopy
+            report: reportCopy
         });
     }
 
     getInitialReportState() {
-        if (localStorage.getItem('reportData')) {
-            return JSON.parse(localStorage.getItem('reportData'));
+        if (localStorage.getItem('report')) {
+            return JSON.parse(localStorage.getItem('report'));
         } else {
             return this.props.location.state.report
         }
@@ -60,10 +60,10 @@ class ReportShowPage extends Component {
 
     handleAddFeature = async (newFeature) => {
         newFeature.user = this.props.user;
-        newFeature.parentReportId = this.state.reportData._id;
+        newFeature.parentReportId = this.state.report._id;
         const updatedReport = await featuresService.createFeature(newFeature);
-        this.setState({ reportData: updatedReport });
-        this.saveStateToLocalStorage(this.state.reportData);
+        this.setState({ report: updatedReport });
+        this.saveStateToLocalStorage(this.state.report);
         this.props.history.push({
             pathname: '/reports/detail',
             state: this.state
@@ -72,8 +72,8 @@ class ReportShowPage extends Component {
 
     handleAddNote = async (note) => {
         const updatedReport = await notesService.createNote(note);
-        this.setState({ reportData: updatedReport });
-        this.saveStateToLocalStorage(this.state.reportData);
+        this.setState({ report: updatedReport });
+        this.saveStateToLocalStorage(this.state.report);
         this.props.history.push({
             pathname: '/reports/detail',
             state: this.state
@@ -81,25 +81,25 @@ class ReportShowPage extends Component {
     }
 
     handleCancelAddFeature = () => {
-        const reportDataCopy = { ...this.state.reportData };
-        const featureCollectionCopy = { ...reportDataCopy.featureCollection };
+        const reportCopy = { ...this.state.report };
+        const featureCollectionCopy = { ...reportCopy.featureCollection };
         const featuresCopy = [...featureCollectionCopy.features]
         featuresCopy.pop();
         featureCollectionCopy.features = featuresCopy;
-        reportDataCopy.featureCollection = featureCollectionCopy;
+        reportCopy.featureCollection = featureCollectionCopy;
         this.setState({
-            reportData: reportDataCopy
+            report: reportCopy
         });
     }
 
     handleDeleteNote = async (note) => {
-        note.user = this.state.reportData.user;
-        note.reportId = this.state.reportData._id;
+        note.user = this.state.report.user;
+        note.reportId = this.state.report._id;
         const updatedReport = await notesService.deleteNote(note);
         this.setState((state) => ({
-            reportData: updatedReport
+            report: updatedReport
         }));
-        this.saveStateToLocalStorage(this.state.reportData);
+        this.saveStateToLocalStorage(this.state.report);
         this.props.history.push({
             pathname: '/reports/detail',
             state: this.state
@@ -115,40 +115,40 @@ class ReportShowPage extends Component {
     }
 
     handleUpdateReport = async () => {
-        await reportsService.updateReport(this.state.reportData);
+        await reportsService.updateReport(this.state.report);
     }
 
     removeStateFromLocalStorage = () => {
-        localStorage.removeItem('reportData');
+        localStorage.removeItem('report');
     }
 
     resetMarkerPositions = () => {
-        this.setState({reportData: this.props.history.location.state.reportData});
+        this.setState({report: this.props.history.location.state.report});
     }
 
-    saveStateToLocalStorage = (reportData) => {
-        localStorage.setItem('reportData', JSON.stringify(reportData))
+    saveStateToLocalStorage = (report) => {
+        localStorage.setItem('report', JSON.stringify(report))
     }
 
     sortNotesByDateAscending = () => {
-        const reportDataCopy = { ...this.state.reportData };
-        const notesCopy = [...reportDataCopy.notes];
+        const reportCopy = { ...this.state.report };
+        const notesCopy = [...reportCopy.notes];
         notesCopy.sort(this.props.sortByDateAscending);
-        reportDataCopy.notes = notesCopy;
-        this.setState({ reportData: reportDataCopy });
+        reportCopy.notes = notesCopy;
+        this.setState({ report: reportCopy });
     }
 
     updatePositionOnState = (updatedMarkerObj) => {
-        this.state.reportData.featureCollection.features.forEach((feature, idx) => {
+        this.state.report.featureCollection.features.forEach((feature, idx) => {
             if (feature._id === updatedMarkerObj.id) {
                 this.copyFeatureCollectionAndUpdate(feature, updatedMarkerObj, idx);
             } else if (updatedMarkerObj.id === 'new-marker') {
-                const idx = this.state.reportData.featureCollection.features.length - 1;
-                const feature = this.state.reportData.featureCollection.features[idx];
+                const idx = this.state.report.featureCollection.features.length - 1;
+                const feature = this.state.report.featureCollection.features[idx];
                 this.copyFeatureCollectionAndUpdate(feature, updatedMarkerObj, idx);
             };
         });
-        this.saveStateToLocalStorage(this.state.reportData);
+        this.saveStateToLocalStorage(this.state.report);
     }
 
     /* ---------- Lifecycle methods ---------- */
@@ -170,16 +170,16 @@ class ReportShowPage extends Component {
                             <div className="card ReportShow-card">
                                 <div className="card-content">
                                     <div className="card-title">
-                                        Detail for reported sighting of <span className="ReportShow-emphasized">{this.state.reportData.noxiousSpecies.commonName}</span> on <span className="ReportShow-emphasized">{this.state.reportData.date.split('T')[0]}</span>
+                                        Detail for reported sighting of <span className="ReportShow-emphasized">{this.state.report.noxiousSpecies.commonName}</span> on <span className="ReportShow-emphasized">{this.state.report.date.split('T')[0]}</span>
                                     </div>
                                     <div className="input-field col s12 left-align">
-                                        <p>Report created by <span className="ReportShow-emphasized">{this.state.reportData.user.name}</span></p>
+                                        <p>Report created by <span className="ReportShow-emphasized">{this.state.report.user.name}</span></p>
                                     </div>
                                     <div>
-                                        {this.state.reportData.user._id === this.props.user._id ?
+                                        {this.state.report.user._id === this.props.user._id ?
                                             <div className="col-sm-12 text-center button-row">
                                                 <DeleteModal
-                                                    itemData={this.state.reportData}
+                                                    itemData={this.state.report}
                                                     handleDeleteItem={this.props.handleDeleteReport}
                                                     history={this.props.history}
                                                     itemType='report'
@@ -196,12 +196,12 @@ class ReportShowPage extends Component {
                             </div>
                         </div>
                         <MapDisplay
-                            addNewMarkerToReportData={this.addNewMarkerToReportData}
+                            addNewMarkerToReport={this.addNewMarkerToReport}
                             handleAddFeature={this.handleAddFeature}
                             handleCancelAddFeature={this.handleCancelAddFeature}
                             handleMoveMarker={this.handleMoveMarker}
                             handleUpdateReport={this.handleUpdateReport}
-                            reportData={this.state.reportData}
+                            report={this.state.report}
                             resetMarkerPositions={this.resetMarkerPositions}
                             type='showReport'
                             user={this.props.user}
@@ -211,14 +211,14 @@ class ReportShowPage extends Component {
                                 <div className="card-content">
                                     <div className="card-title">
                                         Notes:
-                                        {this.state.reportData.user._id === this.props.user._id ?
+                                        {this.state.report.user._id === this.props.user._id ?
                                             <div className="col-sm-12 button-row" style={{ display: 'inline' }}>
                                                 <AddNoteModal
-                                                    refreshReportData={this.refreshReportData}
+                                                    refreshReport={this.refreshReport}
                                                     getTodaysDate={this.props.getTodaysDate}
                                                     handleAddNote={this.handleAddNote}
                                                     history={this.props.history}
-                                                    reportData={this.state.reportData}
+                                                    report={this.state.report}
                                                     parseDate={this.props.parseDate}
                                                 />
                                             </div>
@@ -227,13 +227,13 @@ class ReportShowPage extends Component {
                                         }
                                     </div>
                                     <div className="input-field col s12">
-                                        {this.state.reportData.notes.length ?
+                                        {this.state.report.notes.length ?
                                             <>
-                                                <p>Notes submitted by {this.state.reportData.user.name}:</p>
+                                                <p>Notes submitted by {this.state.report.user.name}:</p>
                                                 <table>
                                                     <thead>
                                                         <tr>
-                                                            {this.state.reportData.user._id === this.props.user._id ?
+                                                            {this.state.report.user._id === this.props.user._id ?
                                                                 <th></th>
                                                                 :
                                                                 <></>
@@ -243,9 +243,9 @@ class ReportShowPage extends Component {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {this.state.reportData.notes.map((note) =>
+                                                        {this.state.report.notes.map((note) =>
                                                             <tr key={note._id}>
-                                                                {this.state.reportData.user._id === this.props.user._id ?
+                                                                {this.state.report.user._id === this.props.user._id ?
                                                                     <td>
                                                                         <div className="col-sm-12 button-row" style={{ display: 'inline' }}>
                                                                             <DeleteNoteModal

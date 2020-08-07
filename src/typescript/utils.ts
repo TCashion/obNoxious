@@ -6,7 +6,7 @@ export interface FeatureCollection {
             type: string, 
             coordinates: number[]
         }
-    }
+    }[]
 }
 
 export interface PlantForObnoxiousDatabase {
