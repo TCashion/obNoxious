@@ -3,27 +3,37 @@ import mapboxgl, { Marker } from 'mapbox-gl';
 import mapboxService from '../../services/mapboxService';
 import './MapDisplay.css';
 
-/* 
-
------ To configure this element: ----- 
+/* ----- To configure this element: ----- 
 
 The 'type' prop is set by which page will render the MapDisplay Element. 
 
 The getMarkersArr function returns the location data points based on the 
 specified type. 
 
--------------------------------------- 
+Location data for coordinates should be formated as feature collections
+according to GEOJSON format. 
 
-*/
-
-
+-------------------------------------- */
 
 class MapDisplay extends Component {
 
     state = {
         addMarkerOpen: false,
         markerMoved: false, 
-        zoom: 14
+        zoom: 15
+    }
+
+    filterFeaturesForArr(featureCollection, filledMarkersArr) {
+        featureCollection.features.forEach((feature) => {
+            feature.geometry.coordinates.forEach((pointCoordinates) => {
+                const markerObj = {
+                    id: feature._id,
+                    coordinates: pointCoordinates
+                }
+                filledMarkersArr.push(markerObj);
+            });
+        });
+        return filledMarkersArr;
     }
 
     getClientCurrentPosition = () => {
@@ -44,27 +54,11 @@ class MapDisplay extends Component {
             };
             filledMarkersArr.push(markerObj);
         } else if (this.props.type === 'showReport') {
-            this.props.reportData.featureCollection.features.forEach((feature) => {
-                feature.geometry.coordinates.forEach((pointCoordinates) => {
-                    const markerObj = {
-                        id: feature._id,
-                        coordinates: pointCoordinates
-                    }
-                    filledMarkersArr.push(markerObj);
-                });
-            });
+            this.filterFeaturesForArr(this.props.reportData.featureCollection, filledMarkersArr);
         } else if (this.props.type === 'showPlant') {
-            this.props.reportedLocations.features.forEach((feature) => {
-                feature.geometry.coordinates.forEach((pointCoordinates) => {
-                    const markerObj = {
-                        id: feature._id,
-                        coordinates: pointCoordinates
-                    }
-                    filledMarkersArr.push(markerObj);
-                });
-            });
+            this.filterFeaturesForArr(this.props.featureCollection, filledMarkersArr);
         };
-        this.setState({zoom: this.state.type === 'showPlant' ? 10 : 15});
+        this.setState({zoom: this.props.type === 'showPlant' ? 10 : 15});
         return filledMarkersArr;
     }
 

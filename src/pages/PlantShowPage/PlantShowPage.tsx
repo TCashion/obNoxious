@@ -24,7 +24,7 @@ const initialPlantData: PlantFromObnoxiousDatabase = {
 const initialState = {
     plantData: initialPlantData,
     showPlantLocations: false,
-    reportedLocations: {}
+    featureCollection: {}
 };
 
 type IProps = {
@@ -56,10 +56,10 @@ class PlantShowPage extends Component<IProps, IState> {
 
     handleClick = async (e: MouseEvent) => {
         e.preventDefault();
-        const reportedLocations: FeatureCollection = await this.getReportedLocations(this.state.plantData._id);
+        const featureCollection: FeatureCollection = await this.getReportedLocations(this.state.plantData._id);
         this.setState({
             showPlantLocations: true, 
-            reportedLocations
+            featureCollection
         });
     }
 
@@ -108,7 +108,7 @@ class PlantShowPage extends Component<IProps, IState> {
                         <>
                             <MapDisplay
                                 type='showPlant'
-                                reportedLocations={this.state.reportedLocations}
+                                featureCollection={this.state.featureCollection}
                             />
                         </>
                         :
