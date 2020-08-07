@@ -1,6 +1,6 @@
 import React, { Component, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { PlantFromObnoxiousDatabase } from '../../typescript/utils';
+import { PlantFromObnoxiousDatabase, FeatureCollection } from '../../typescript/utils';
 import MapDisplay from '../../components/MapDisplay/MapDisplay';
 import reportsService from '../../services/reportsService';
 
@@ -23,7 +23,8 @@ const initialPlantData: PlantFromObnoxiousDatabase = {
 
 const initialState = {
     plantData: initialPlantData,
-    showPlantLocations: false
+    showPlantLocations: false,
+    reportedLocations: {}
 };
 
 type IProps = {
@@ -50,22 +51,15 @@ class PlantShowPage extends Component<IProps, IState> {
     }
 
     getReportedLocations = async (plantId: string) => {
-        const reportedLocations = await reportsService.getPlantReportedLocations(plantId); 
-        // access reports service
-        // scan all reports for this plant based on _id
-        // create the featurecollection 
-        // create an interface for the featurecollection
-        // pass featurecollection into the map element 
-        return reportedLocations;
+        return await reportsService.getPlantReportedLocations(plantId); 
     }
 
     handleClick = async (e: MouseEvent) => {
         e.preventDefault();
-        const reportedLocations = await this.getReportedLocations(this.state.plantData._id);
-        console.log(reportedLocations);
+        const reportedLocations: FeatureCollection = await this.getReportedLocations(this.state.plantData._id);
         this.setState({
             showPlantLocations: true, 
-            // reportedLocations
+            reportedLocations
         });
     }
 
@@ -114,6 +108,7 @@ class PlantShowPage extends Component<IProps, IState> {
                         <>
                             <MapDisplay
                                 type='showPlant'
+                                reportedLocations={this.state.reportedLocations}
                             />
                         </>
                         :

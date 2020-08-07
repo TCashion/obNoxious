@@ -5,11 +5,11 @@ const plant = require('../models/plant');
 async function index(req, res) {
     try {
         const reports = await Report.find({})
-        .populate('noxiousSpecies')
-        .populate('user')
-        .exec(function(err, reports) {
-            res.status(200).json(reports);
-        });
+            .populate('noxiousSpecies')
+            .populate('user')
+            .exec(function (err, reports) {
+                res.status(200).json(reports);
+            });
     } catch (err) {
         res.status(500).json(err)
     }
@@ -17,10 +17,10 @@ async function index(req, res) {
 
 async function create(req, res) {
     try {
-        const plant = await Plant.findOne({commonName: req.body.noxiousSpecies})
+        const plant = await Plant.findOne({ commonName: req.body.noxiousSpecies })
         req.body.noxiousSpecies = plant;
         const report = await Report.create(req.body);
-        Report.populate(report, { path: 'user', model: 'User' }, function(err, report) {
+        Report.populate(report, { path: 'user', model: 'User' }, function (err, report) {
             res.status(201).json(report);
         })
     } catch (err) {
@@ -50,7 +50,7 @@ async function update(req, res) {
     try {
         const updatedReport = await Report.findByIdAndUpdate(
             req.body._id,
-            {...req.body},
+            { ...req.body },
             { new: true }
         );
         res.status(200).json(updatedReport)
@@ -62,13 +62,17 @@ async function update(req, res) {
 async function getPlantLocations(req, res) {
     try {
         const ObjectId = require('mongoose').Types.ObjectId;
-        const plantReports = await Report.find({'noxiousSpecies': new ObjectId(req.params.id)});
-        const featureCollection = [
-            {
-                type: 'FeatureCollection',
-                features: plantReports.map((report) => report.featureCollection.features)
-            }
-        ];
+        const plantReports = await Report.find({ 'noxiousSpecies': new ObjectId(req.params.id) });
+        const features = [];
+        plantReports.forEach((report) => {
+            report.featureCollection.features.forEach((feature) => {
+                features.push(feature)
+            });
+        });
+        const featureCollection = {
+            type: 'FeatureCollection',
+            features
+        };
         res.status(200).json(featureCollection);
     } catch (err) {
         res.status(500).json(err)
@@ -77,7 +81,7 @@ async function getPlantLocations(req, res) {
 
 module.exports = {
     index,
-    create, 
+    create,
     deleteOne,
     findOne,
     update,

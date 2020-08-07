@@ -22,7 +22,8 @@ class MapDisplay extends Component {
 
     state = {
         addMarkerOpen: false,
-        markerMoved: false
+        markerMoved: false, 
+        zoom: 14
     }
 
     getClientCurrentPosition = () => {
@@ -49,11 +50,20 @@ class MapDisplay extends Component {
                         id: feature._id,
                         coordinates: pointCoordinates
                     }
-                    filledMarkersArr.push(markerObj)
+                    filledMarkersArr.push(markerObj);
                 });
             });
         } else if (this.props.type === 'showPlant') {
-
+            this.props.reportedLocations.features.forEach((feature) => {
+                feature.geometry.coordinates.forEach((pointCoordinates) => {
+                    const markerObj = {
+                        id: feature._id,
+                        coordinates: pointCoordinates
+                    }
+                    filledMarkersArr.push(markerObj);
+                });
+            });
+            this.setState({zoom: 10});
         };
         return filledMarkersArr;
     }
@@ -99,13 +109,13 @@ class MapDisplay extends Component {
     }
 
     initMap = async () => {
-        const markersArr = this.getMarkersArr();
+        const markersArr = await this.getMarkersArr();
         mapboxgl.accessToken = await this.getMapBoxToken();
         const map = new mapboxgl.Map({
             container: 'map-container',
             style: 'mapbox://styles/mapbox/satellite-streets-v11', // stylesheet location
             center: markersArr[markersArr.length - 1].coordinates, // starting position [lng, lat]
-            zoom: 14 // starting zoom
+            zoom: this.state.zoom // starting zoom
         });
         map.on('moveend', () => this.setMapCenterInState(map));
         this.initExistingMapMarkers(markersArr, map);
@@ -144,7 +154,7 @@ class MapDisplay extends Component {
 
     componentDidMount() {
         if (this.props.type === 'createReport') this.getClientCurrentPosition();
-        if (this.props.type === 'showReport') this.initMap();
+        if (this.props.type === 'showReport' || this.props.type === 'showPlant') this.initMap();
     }
 
     render() {

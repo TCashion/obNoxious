@@ -1,3 +1,14 @@
+export interface FeatureCollection {
+    type: string, 
+    features: {
+        type: string,
+        geometry: {
+            type: string, 
+            coordinates: number[]
+        }
+    }
+}
+
 export interface PlantForObnoxiousDatabase {
     user: string,
     commonName: string,
