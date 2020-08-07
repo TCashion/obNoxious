@@ -116,6 +116,7 @@ class ReportShowPage extends Component {
 
     handleUpdateReport = async () => {
         await reportsService.updateReport(this.state.report);
+        this.saveStateToLocalStorage(this.state.report);
     }
 
     removeStateFromLocalStorage = () => {
@@ -148,7 +149,6 @@ class ReportShowPage extends Component {
                 this.copyFeatureCollectionAndUpdate(feature, updatedMarkerObj, idx);
             };
         });
-        this.saveStateToLocalStorage(this.state.report);
     }
 
     /* ---------- Lifecycle methods ---------- */
@@ -203,6 +203,7 @@ class ReportShowPage extends Component {
                             handleUpdateReport={this.handleUpdateReport}
                             report={this.state.report}
                             resetMarkerPositions={this.resetMarkerPositions}
+                            saveStateToLocalStorage={this.saveStateToLocalStorage}
                             type='showReport'
                             user={this.props.user}
                         />

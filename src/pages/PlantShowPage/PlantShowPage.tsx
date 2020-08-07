@@ -58,7 +58,6 @@ class PlantShowPage extends Component<IProps, IState> {
     handleClick = async (e: MouseEvent) => {
         e.preventDefault();
         const featureCollection: FeatureCollection = await this.getReportedLocations(this.state.plant._id);
-        console.log(featureCollection.features)
         this.setState({
             showPlantLocations: true,
             featureCollection,
