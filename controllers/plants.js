@@ -21,10 +21,6 @@ async function create(req, res) {
 
 async function getOne(req, res) {
     try {
-        // const plant = await Plant.findOne({$or: [
-        //     {scientificName: req.params.id},
-        //     {_id: req.params.id}
-        // ]});
         const plant = await Plant.findOne({scientificName: req.params.id});
         res.status(200).json(plant)
     } catch (err) {

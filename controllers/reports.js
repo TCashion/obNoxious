@@ -1,5 +1,6 @@
 const Plant = require('../models/plant');
 const Report = require('../models/report');
+const plant = require('../models/plant');
 
 async function index(req, res) {
     try {
@@ -59,7 +60,19 @@ async function update(req, res) {
 }
 
 async function getPlantLocations(req, res) {
-    console.log(req.params)
+    try {
+        const ObjectId = require('mongoose').Types.ObjectId;
+        const plantReports = await Report.find({'noxiousSpecies': new ObjectId(req.params.id)});
+        const featureCollection = [
+            {
+                type: 'FeatureCollection',
+                features: plantReports.map((report) => report.featureCollection.features)
+            }
+        ];
+        res.status(200).json(featureCollection);
+    } catch (err) {
+        res.status(500).json(err)
+    }
 }
 
 module.exports = {
