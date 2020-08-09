@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import LoginForm from '../../components/LoginForm/LoginForm';
 
 class LoginPage extends Component {
@@ -13,16 +14,19 @@ class LoginPage extends Component {
 
     render() {
         return (
-            <div>
-                <LoginForm 
-                    {...this.props}
-                    updateMessage={this.updateMessage} 
-                    handleSignupOrLogin={this.props.handleSignupOrLogin} 
-                />
-                <p>
-                    {this.state.message}
-                </p>
-            </div>
+            <>
+                <div>
+                    <LoginForm 
+                        {...this.props}
+                        updateMessage={this.updateMessage} 
+                        handleSignupOrLogin={this.props.handleSignupOrLogin} 
+                    />
+                    <p>
+                        {this.state.message}
+                    </p>
+                </div>
+                <p>No account yet? <Link to='/signup'>Sign Up</Link></p>
+            </>
         )
     }
 }
