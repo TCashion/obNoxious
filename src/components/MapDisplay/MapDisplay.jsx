@@ -104,6 +104,7 @@ class MapDisplay extends Component {
 
     initMap = async () => {
         const markersArr = await this.getMarkersArr();
+        if (markersArr.length === 0) return; 
         mapboxgl.accessToken = await this.getMapBoxToken();
         const map = new mapboxgl.Map({
             container: 'map-container',

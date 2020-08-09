@@ -28,8 +28,16 @@ code {
   background-color: var(--main-minus-three);
 }
 
+.btn-default:hover {
+  background-color: var(--main-minus-two);
+}
+
 .btn-danger {
   background-color: crimson;
+}
+
+.btn-danger:hover {
+  background-color: red;
 }
 
 nav {

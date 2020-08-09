@@ -33,7 +33,7 @@ type IProps = {
         state: {
             plant: PlantFromObnoxiousDatabase
         }
-    },
+    },  
     parseTaxonomy: (plant: object) => string[],
     parseDistribution: (plant: object) => string
 }
@@ -75,7 +75,7 @@ class PlantShowPage extends Component<IProps, IState> {
         return (
             <>
                 <div className="row row-center-card mt5vh">
-                    <div className="col s12 m4">
+                    <div className="col s12 m6">
                         <div className="card">
                             <div className="card-content">
                                 <div className="card-title">
@@ -114,7 +114,7 @@ class PlantShowPage extends Component<IProps, IState> {
                                     featureCollection={this.state.featureCollection}
                                 />
                                 :
-                                <div className="col s12 m4">
+                                <div className="col s12 m6">
                                     <div className="card">
                                         <div className="card-content">
                                             <div className="card-content">
