@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './ReportShowPage.css';
 import DeleteModal from '../../components/DeleteModal/DeleteModal';
 import AddNoteModal from '../../components/AddNoteModal/AddNoteModal';
@@ -170,7 +171,16 @@ class ReportShowPage extends Component {
                             <div className="card ReportShow-card">
                                 <div className="card-content">
                                     <div className="card-title">
-                                        Detail for reported sighting of <span className="ReportShow-emphasized">{this.state.report.noxiousSpecies.commonName}</span> on <span className="ReportShow-emphasized">{this.state.report.date.split('T')[0]}</span>
+                                        Detail for reported sighting of 
+                                        <Link 
+                                            className="ReportShow-emphasized"
+                                            to={{
+                                                pathname: '/plants/detail',
+                                                state: {plant: this.state.report.noxiousSpecies}
+                                            }}
+                                        >
+                                            {this.state.report.noxiousSpecies.commonName}
+                                        </Link> on <span className="ReportShow-emphasized">{this.state.report.date.split('T')[0]}</span>
                                     </div>
                                     <div className="input-field col s12 left-align">
                                         <p>Report created by <span className="ReportShow-emphasized">{this.state.report.user.name}</span></p>
