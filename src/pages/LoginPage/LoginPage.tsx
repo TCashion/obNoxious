@@ -2,14 +2,25 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import LoginForm from '../../components/LoginForm/LoginForm';
 
-class LoginPage extends Component {
+const initialState = {
+    message: ''
+};
 
-    state = {
-        message: '',
-    }
+type IProps = {
+    handleSignupOrLogin: () => void
+};
 
-    updateMessage = (msg) => {
-        this.setState({ message: msg });
+type IState = Readonly<typeof initialState>;
+
+class LoginPage extends Component <IProps, IState> {
+
+    readonly state: IState = initialState;
+
+    updateMessage = (msg: string) => {
+        this.setState((state) => ({ 
+            ...state,
+            message: msg 
+        }));
     }
 
     render() {
