@@ -17,6 +17,10 @@ The obNoxious app serves two purposes:
 * 1) To provide an API resource available to the public that contains identifying information about noxious plant species. 
 * 2) To provide an interface for authenticated users to report sightings of noxious species, thereby building a user-supported database that maps the distribution of some of the US's most tenacious invaders.
 
+## Getting Started
+
+* Visit the deployed app at: https://obnoxious.herokuapp.com/
+
 ## Accessing the API
 
 The method and URL endpoint for the obNoxious API are: 
@@ -64,10 +68,6 @@ As well as a few other helpers:
 
 * https://explorer.natureserve.org/ 
 * MapBox GL API
-
-## Getting Started
-
-* Visit the deployed app at: https://obnoxious.herokuapp.com/
 
 ## Next Steps 
 
