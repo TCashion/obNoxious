@@ -52,7 +52,7 @@ This app employs the MERN stack:
 
 * MongoDB / Mongoose
 * ExpressJS
-* React
+* React with Typescript
 * Node.JS
 
 As well as a few other helpers: 
